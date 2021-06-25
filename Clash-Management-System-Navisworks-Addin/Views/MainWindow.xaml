@@ -64,7 +64,7 @@
                       PreviewMouseUp="LoginExpander_PreviewMouseUp">
                 <StackPanel>
                     <TextBlock Text="User Name"
-                               Margin="5,25,5,5"/>
+                               Margin="5,5,5,5"/>
                     <TextBox Name="UserNameTxt"
                              Margin="5,5,5,5"
                              Text="Enter User Name.."
@@ -77,6 +77,11 @@
                     <Button Name="LoginBtn" 
                             Content="Login"
                             Margin="65,15,15,5"/>
+                    <TextBlock Name="LoginFeedbackTxt"
+                            Text="Log in Status"
+                            Margin="5,5,5,5"
+                            HorizontalAlignment="Center"/>
+
                 </StackPanel>
             </Expander>
             <Expander Name="SelectProjectExpander"

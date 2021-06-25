@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBModels\dummy.cs" />
+    <Compile Include="DB\AssemblyResourcesHandler.cs" />
     <Compile Include="DB\dummy.cs" />
     <Compile Include="Doc\Draft.cs" />
     <Compile Include="Logging\dummy.cs" />
