@@ -56,28 +56,28 @@
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
-                      Height="25" 
+                      Height="200" 
                       IsExpanded="False" 
                       Background="MintCream"
                       Foreground="LightSlateGray"
                       FontFamily="Century Gothic, Courier New"
-                      IsEnabled="False">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="5"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                </Grid>
+                      PreviewMouseUp="LoginExpander_PreviewMouseUp">
+                <StackPanel>
+                    <TextBlock Text="User Name"
+                               Margin="5,25,5,5"/>
+                    <TextBox Name="UserNameTxt"
+                             Margin="5,5,5,5"
+                             Text="Enter User Name.."
+                             Foreground="DimGray"/>
+                    <TextBlock Text="Password"
+                               Margin="5,5,5,5"/>
+                    <PasswordBox Name="PasswordTxt"
+                             Margin="5,5,5,5"
+                             Foreground="DimGray"/>
+                    <Button Name="LoginBtn" 
+                            Content="Login"
+                            Margin="65,15,15,5"/>
+                </StackPanel>
             </Expander>
             <Expander Name="SelectProjectExpander"
                       Grid.ColumnSpan="5" 
@@ -189,7 +189,7 @@
                 HorizontalAlignment="Center" 
                 Margin="0,0,0,0"
                 Grid.Row="11" 
-                Width="50"
+                Width="70"
                 VerticalAlignment="Center" 
                 Background="MintCream"
                 Foreground="LightSlateGray"
@@ -202,7 +202,7 @@
                 HorizontalAlignment="Center" 
                 Margin="0,0,0,0"
                 Grid.Row="11" 
-                Width="50"
+                Width="70"
                 VerticalAlignment="Center" 
                 Background="MintCream"
                 Foreground="LightSlateGray"
@@ -215,7 +215,7 @@
                 HorizontalAlignment="Center" 
                 Margin="0,0,0,0"
                 Grid.Row="11" 
-                Width="50"
+                Width="70"
                 VerticalAlignment="Center" 
                 Background="MintCream"
                 Foreground="LightSlateGray"
