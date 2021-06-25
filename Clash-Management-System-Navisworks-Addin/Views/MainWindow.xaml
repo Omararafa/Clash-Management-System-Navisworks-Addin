@@ -50,14 +50,16 @@
                       Grid.Column="0" 
                       Header="Login"
                       HorizontalAlignment="Stretch"
-                      Margin="0,0,0,0"
+                      Margin="0,1,0,0"
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
                       Height="25" 
-                      Foreground="#FF3FA0AA" 
-                      Background="#FFA22C2C" 
-                      IsExpanded="True">
+                      IsExpanded="False" 
+                      Background="MintCream"
+                      Foreground="LightSlateGray"
+                      FontFamily="Century Gothic, Courier New"
+                      IsEnabled="False">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -84,15 +86,18 @@
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
-                      Height="200"
-                      IsExpanded="True" 
-                      Background="FF272727">
+                      Height="25"
+                      IsExpanded="False" 
+                      Background="MintCream"
+                      Foreground="LightSlateGray"
+                      FontFamily="Century Gothic, Courier New"
+                      IsEnabled="False">
                 <StackPanel>
                     <TextBlock Text="Select a Project"
                                Margin="5,25,5,5"/>
                     <ComboBox Name="ProjectCbx" 
                               Text="Select a Project"
-                              Margin="5,25,5,5"/>
+                              Margin="5,5,5,5"/>
                     <Button Name="SelectProjectBtn" 
                             Content="Ok"
                             Margin="65,15,15,5"/>
@@ -108,8 +113,20 @@
                       VerticalAlignment="Top"
                       Height="25"
                       IsExpanded="False" 
-                      Foreground="#FF272727" 
-                      Background="#FFA22C2C">
+                      Background="MintCream"
+                      Foreground="LightSlateGray"
+                      FontFamily="Century Gothic, Courier New"
+                      IsEnabled="False">
+                <StackPanel>
+                    <TextBlock Text="Select a Clash Matrix"
+                               Margin="5,25,5,5"/>
+                    <ComboBox Name="ClashMatrixCbx" 
+                              Text="Select a Clash Matrix"
+                              Margin="5,5,5,5"/>
+                    <Button Name="SelectClashMatrixBtn" 
+                            Content="Ok"
+                            Margin="65,15,15,5"/>
+                </StackPanel>
             </Expander>
             <Expander Grid.ColumnSpan="5" 
                       Grid.Column="0" 
@@ -119,12 +136,42 @@
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
-                      Height="25"
+                      Height="200"
                       IsExpanded="False" 
-                      Foreground="#FF272727" 
-                      Background="#FFA22C2C">
+                      Background="MintCream"
+                      Foreground="LightSlateGray"
+                      FontFamily="Century Gothic, Courier New"
+                      IsEnabled="False">
+                <StackPanel>
+                    <TextBlock Text="Select a Function"
+                               Margin="5,25,5,5"/>
+                    <RadioButton Name="FunctionClashTestsRBtn"
+                                 Content="Get Clash Tests"
+                                 Margin="5,5,5,5"/>
+                    <RadioButton Name="FunctionSearchSetsRBtn"
+                                 Content="Sync Search Sets"
+                                 Margin="5,5,5,5"/>
+                    <RadioButton Name="FunctionClashResultsRBtn"
+                                 Content="Sync Clash Results"
+                                 Margin="5,5,5,5"/>
+                    <Button Name="SelectFunctionBtn" 
+                            Content="Execute"
+                            Margin="65,15,15,5"/>
+                </StackPanel>
             </Expander>
         </StackPanel>
+        <DataGrid 
+            Name="PresenterDataGrid"
+            Grid.ColumnSpan="8" 
+            Grid.Column="4" 
+            HorizontalAlignment="Stretch" 
+            Grid.Row="3" 
+            Grid.RowSpan="7" 
+            VerticalAlignment="Stretch"
+            Background="MintCream"
+            Foreground="LightSlateGray"
+            FontFamily="Century Gothic, Courier New"
+            />
 
 
     </Grid>
