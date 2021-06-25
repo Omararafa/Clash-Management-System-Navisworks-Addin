@@ -4,7 +4,7 @@
 library
 C#
 .cs
-D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\
+C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\
 Clash_Management_System_Navisworks_Addin
 none
 false
@@ -12,14 +12,9 @@ DEBUG;TRACE
 
 11892971807
 
-<<<<<<< HEAD
-17-1955859241
-18-1144771850
-=======
-18818268640
-17-821772689
->>>>>>> d3aa37485800eb45c9fd2ec795199f33e314ec31
+181496748688
+20-560563231
 Views\MainWindow.xaml;
 
-False
+True
 
