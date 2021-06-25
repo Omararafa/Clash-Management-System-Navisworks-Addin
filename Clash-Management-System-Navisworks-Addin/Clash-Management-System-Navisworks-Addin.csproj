@@ -19,10 +19,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash Management\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,14 +37,25 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdWindows">
+      <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\AdWindows.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Autodesk.Navisworks.Api">
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Api.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Automation">
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Automation.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Clash">
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Clash.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="navisworks.gui.roamer">
+      <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\navisworks.gui.roamer.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Controls">
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Controls.dll</HintPath>
@@ -86,10 +98,25 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="NW\AddinRibbon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>set path=D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\NW\AddinRibbon.xaml
+
+set addinPath=C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash Management
+set addinPath1=C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash Management\en-US\
+
+mkdir "%25addinPath1%25"
+
+copy /Y "%25path%25" "%25addinPath%25" 
+copy /Y "%25path%25" "%25addinPath1%25"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
