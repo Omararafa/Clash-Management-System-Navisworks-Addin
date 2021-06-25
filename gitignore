@@ -14,6 +14,11 @@ bin
 obj
 packages
 .vs
+*/**/bin/Debug
+*/**/obj/Debug
+obj
+bin
+Debug
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
