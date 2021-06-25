@@ -76,7 +76,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         }
 
 
-        private static SavedItemCollection GetSearchSets(DocumentSelectionSets documentSelectionSets)
+        private static List<SelectionSet> GetDocumentSearchSets(DocumentSelectionSets documentSelectionSets)
         {
             SavedItemCollection searchSelectionSets = documentSelectionSets.Value;
             List<SelectionSet> searchSets = new List<SelectionSet>();
@@ -90,7 +90,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
                 }
             }
 
-            return null;
+            return searchSets;
         }
 
 
