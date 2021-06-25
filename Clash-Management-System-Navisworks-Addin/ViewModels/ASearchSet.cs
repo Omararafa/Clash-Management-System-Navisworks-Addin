@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Clash_Management_System_Navisworks_Addin.ViewModels
 {
-    class ASearchSet
+    public class ASearchSet
     {
         public int PK { get; set; }
         public string SRCHSER_NAME { get; set; }
         public int TRADE_ID { get; set; }
         public int PROJECT_ID { get; set; }
         public string MODIFIED_BY { get; set; }
+        public EntityComparisonResult Status { get; set; }
+
     }
 }
