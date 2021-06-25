@@ -31,7 +31,7 @@ namespace Clash_Management_System_Navisworks_Addin
     #endregion
 
 
-    [Plugin("Test", "1A95B102 - 765B - 46AD - ACD2 - AF65DC3B92DC", DisplayName = "Hello!")]
+    [Plugin("Test", "WYHk", DisplayName = "Hello!")]
     public class NWCmd : AddInPlugin
     {
         public override int Execute(params string[] parameters)

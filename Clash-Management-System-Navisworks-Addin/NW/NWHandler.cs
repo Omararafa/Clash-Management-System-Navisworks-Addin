@@ -93,6 +93,28 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return searchSets;
         }
 
+        private static List<ASearchSet> GetASearchSetsList(List<SelectionSet> searchSets)
+        {
+            List<ASearchSet> AsearchSets = new List<ASearchSet>();
+
+            foreach (SelectionSet set in searchSets)
+            {
+
+
+            }
+
+            return AsearchSets;
+        }
+
+        private static ASearchSet GetASearchSet(SelectionSet SearchSet)
+        {
+            ASearchSet aSearchSet = new ASearchSet();
+
+            aSearchSet.SRCHSER_NAME = SearchSet.DisplayName;
+
+            return null;
+        }
+
 
         #endregion
 
