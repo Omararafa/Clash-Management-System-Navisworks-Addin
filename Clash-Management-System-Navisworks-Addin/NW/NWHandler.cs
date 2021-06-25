@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Navisworks.Api;
 using Autodesk.Navisworks.Api.Clash;
-using Clash_Management_System_Navisworks_Addin.ViewModels;
 using Autodesk.Navisworks.Api.DocumentParts;
+using Clash_Management_System_Navisworks_Addin.ViewModels;
 
 namespace Clash_Management_System_Navisworks_Addin.NW
 {
@@ -18,7 +18,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
     {
         #region ClashMatrixMethods
 
-        static AClashMatrix CreateClashMatrix(List<object>clashMatrixData)
+        static AClashMatrix CreateClashMatrix(List<object> clashMatrixData)
         {
             throw new Exception("Method CreateClashMatrix: Work in progress");
             return null;

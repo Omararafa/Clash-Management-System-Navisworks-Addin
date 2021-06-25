@@ -4,17 +4,17 @@
 library
 C#
 .cs
-C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\
 Clash_Management_System_Navisworks_Addin
 none
 false
 DEBUG;TRACE
 
-11892971807
+2581132727
 
 181496748688
-18-1144771850
-Views\MainWindow.xaml;
+20-646898775
+NW\AddinRibbon.xaml;Views\MainWindow.xaml;
 
-True
+False
 

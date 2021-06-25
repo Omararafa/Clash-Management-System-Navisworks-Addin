@@ -11,15 +11,15 @@
     xmlns:local="clr-namespace:Autodesk.Navisworks.Gui.Roamer.AIRLook;assembly=navisworks.gui.roamer">
     <!-- END STANDARD SECTION DO NOT EDIT -->
 
-    <RibbonTab Id="External Tool" KeyTip="T1">
+    <RibbonTab Id="ID_CustomTab_1" KeyTip="T1">
         <RibbonPanel x:Uid="RibbonPane1_1">
             <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" KeyTip="C1" Title="Tools">
 
-                <local:NWRibbonButton x:Uid="Tool Panel" Id="Tool Panel"
+                <local:NWRibbonButton x:Uid="ID_Button_1" Id="ID_Button_1"
                             Size="Large"
                             KeyTip="B1"
                             ShowText="True"
-                            Text="Tool Panel"
+                            Text="Button_1"
                             Orientation="Vertical"/>
 
             </RibbonPanelSource>

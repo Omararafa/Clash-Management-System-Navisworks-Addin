@@ -15,3 +15,15 @@ C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Manage
 C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin.csproj.CopyComplete
 C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin.dll
 C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin.pdb
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\NW\AddinRibbon.baml
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Views\MainWindow.g.cs
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin_MarkupCompile.cache
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin_MarkupCompile.lref
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Views\MainWindow.baml
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin.g.resources
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin.csproj.CoreCompileInputs.cache
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin.dll
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin.pdb
+C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash Management\Clash-Management-System-Navisworks-Addin.dll
+C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash Management\Clash-Management-System-Navisworks-Addin.pdb
+D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin.csproj.AssemblyReference.cache
