@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Clash_Management_System_Navisworks_Addin.Views
 {
-    class dummy
-    {
+    public class ViewsHandler
+    { 
+        public void main()
+        {
+            MainWindow mw = new MainWindow();
+        }
     }
 }
