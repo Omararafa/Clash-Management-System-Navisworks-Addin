@@ -44,5 +44,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 expander.Height = expandedTrueHeight;
             }
         }
+
+        #region View Moderator Methods
+
+        #endregion
+
+
     }
 }
