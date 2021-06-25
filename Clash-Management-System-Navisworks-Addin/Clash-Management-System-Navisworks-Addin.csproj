@@ -53,12 +53,13 @@
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Clash.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Autodesk.Navisworks.Controls">
+      <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="navisworks.gui.roamer">
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\navisworks.gui.roamer.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Autodesk.Navisworks.Controls">
-      <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Controls.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -81,7 +82,7 @@
     <Compile Include="DB\dummy.cs" />
     <Compile Include="Doc\Draft.cs" />
     <Compile Include="Logging\dummy.cs" />
-    <Compile Include="NW\NWDCmd.cs" />
+    <Compile Include="NWCmd.cs" />
     <Compile Include="NW\NWHandler.cs" />
     <Compile Include="NW\NWRibbon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="ViewModels\AClashMatrix.cs" />
     <Compile Include="ViewModels\AClashTest.cs" />
     <Compile Include="ViewModels\AClashTestResult.cs" />
+    <Compile Include="ViewModels\EntityComparisonResult.cs" />
     <Compile Include="ViewModels\Project.cs" />
     <Compile Include="ViewModels\ASearchSet.cs" />
     <Compile Include="ViewModels\User.cs" />
@@ -98,7 +100,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="NW\AddinRibbon.xaml">
+    <Page Include="NW\Clash-Management-System-Navisworks-Addin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -109,14 +111,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>set path=D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\NW\AddinRibbon.xaml
-
-set addinPath=C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash Management
-set addinPath1=C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash Management\en-US\
-
-mkdir "%25addinPath1%25"
-
-copy /Y "%25path%25" "%25addinPath%25" 
-copy /Y "%25path%25" "%25addinPath1%25"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
