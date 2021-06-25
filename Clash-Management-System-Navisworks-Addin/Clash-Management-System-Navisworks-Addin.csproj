@@ -81,7 +81,7 @@
     <Compile Include="DB\dummy.cs" />
     <Compile Include="Doc\Draft.cs" />
     <Compile Include="Logging\dummy.cs" />
-    <Compile Include="NW\NWDCmd.cs" />
+    <Compile Include="NW\NWCmd.cs" />
     <Compile Include="NW\NWHandler.cs" />
     <Compile Include="NW\NWRibbon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,6 +95,7 @@
     <Compile Include="ViewModels\AClashTest.cs" />
     <Compile Include="ViewModels\AClashTestResult.cs" />
     <Compile Include="ViewModels\Credentials.cs" />
+    <Compile Include="ViewModels\EntityComparisonResult.cs" />
     <Compile Include="ViewModels\Project.cs" />
     <Compile Include="ViewModels\ASearchSet.cs" />
     <Compile Include="ViewModels\User.cs" />
@@ -104,10 +105,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="NW\AddinRibbon.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
