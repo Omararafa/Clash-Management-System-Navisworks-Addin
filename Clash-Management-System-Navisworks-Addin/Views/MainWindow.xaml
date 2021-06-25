@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:NwControls="clr-namespace:Autodesk.Navisworks.Api.Controls;assembly=Autodesk.Navisworks.Controls"
         xmlns:local="clr-namespace:Clash_Management_System_Navisworks_Addin.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="494.3" Width="800">
-    <Grid>
+    <Grid Name="WindowGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="80"/>
@@ -37,7 +38,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
-        <StackPanel 
+        <StackPanel Name="SidebarExpandersStackPanel"
             Grid.ColumnSpan="2" 
             Grid.Column="1" 
             HorizontalAlignment="Stretch" 
@@ -45,12 +46,13 @@
             Grid.Row="3" 
             Grid.RowSpan="7" 
             VerticalAlignment="Stretch" 
-            Background="#FF32A80F">
-            <Expander Grid.ColumnSpan="5" 
+            Background="LightSeaGreen">
+            <Expander Name="LoginExpander"
+                      Grid.ColumnSpan="5" 
                       Grid.Column="0" 
                       Header="Login"
                       HorizontalAlignment="Stretch"
-                      Margin="0,1,0,0"
+                      Margin="1,1,1,0"
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
@@ -82,7 +84,7 @@
                       Grid.Column="0" 
                       Header="Project"
                       HorizontalAlignment="Stretch"
-                      Margin="0,0,0,0"
+                      Margin="1,0,1,0"
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
@@ -103,11 +105,12 @@
                             Margin="65,15,15,5"/>
                 </StackPanel>
             </Expander>
-            <Expander Grid.ColumnSpan="5" 
+            <Expander Name="SelectClashMatrixExpander"
+                      Grid.ColumnSpan="5" 
                       Grid.Column="0" 
                       Header="Clash Matrix"
                       HorizontalAlignment="Stretch"
-                      Margin="0,0,0,0"
+                      Margin="1,0,1,0"
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
@@ -128,11 +131,12 @@
                             Margin="65,15,15,5"/>
                 </StackPanel>
             </Expander>
-            <Expander Grid.ColumnSpan="5" 
+            <Expander Name="SelectFunctionExpander"
+                      Grid.ColumnSpan="5" 
                       Grid.Column="0" 
                       Header="Select Function"
                       HorizontalAlignment="Stretch"
-                      Margin="0,0,0,0"
+                      Margin="1,0,1,0"
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
@@ -160,8 +164,7 @@
                 </StackPanel>
             </Expander>
         </StackPanel>
-        <DataGrid 
-            Name="PresenterDataGrid"
+        <DataGrid Name="PresenterDataGrid"
             Grid.ColumnSpan="8" 
             Grid.Column="4" 
             HorizontalAlignment="Stretch" 
@@ -170,8 +173,68 @@
             VerticalAlignment="Stretch"
             Background="MintCream"
             Foreground="LightSlateGray"
-            FontFamily="Century Gothic, Courier New"
-            />
+            FontFamily="Century Gothic, Courier New" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" MaxColumnWidth="100" MinRowHeight="38"
+            >
+            <DataGrid.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF68AF82" Offset="1"/>
+                </LinearGradientBrush>
+            </DataGrid.BorderBrush>
+        </DataGrid>
+        <Button Name="AboutBtn"
+                Grid.ColumnSpan="1" 
+                Content="About!" 
+                Grid.Column="1" 
+                HorizontalAlignment="Center" 
+                Margin="0,0,0,0"
+                Grid.Row="11" 
+                Width="50"
+                VerticalAlignment="Center" 
+                Background="MintCream"
+                Foreground="LightSlateGray"
+                FontFamily="Century Gothic, Courier New"
+                />
+        <Button Name="HelpDeskBtn"
+                Grid.ColumnSpan="1" 
+                Content="Help Desk" 
+                Grid.Column="2" 
+                HorizontalAlignment="Center" 
+                Margin="0,0,0,0"
+                Grid.Row="11" 
+                Width="50"
+                VerticalAlignment="Center" 
+                Background="MintCream"
+                Foreground="LightSlateGray"
+                FontFamily="Century Gothic, Courier New"
+                />
+        <Button Name="HelpFileBtn"
+                Grid.ColumnSpan="1" 
+                Content="Help File" 
+                Grid.Column="4" 
+                HorizontalAlignment="Center" 
+                Margin="0,0,0,0"
+                Grid.Row="11" 
+                Width="50"
+                VerticalAlignment="Center" 
+                Background="MintCream"
+                Foreground="LightSlateGray"
+                FontFamily="Century Gothic, Courier New"
+                />
+        <Button Name="Run"
+                Grid.ColumnSpan="2" 
+                Content="Run" 
+                Grid.Column="10" 
+                HorizontalAlignment="Center" 
+                Margin="0,0,0,0"
+                Grid.Row="11" 
+                Width="80"
+                VerticalAlignment="Center" 
+                Background="MintCream"
+                Foreground="LightSlateGray"
+                FontFamily="Century Gothic, Courier New"
+                
+                />
 
 
     </Grid>
