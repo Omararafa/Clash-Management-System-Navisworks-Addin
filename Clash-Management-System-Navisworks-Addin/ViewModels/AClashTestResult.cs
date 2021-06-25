@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Clash_Management_System_Navisworks_Addin.ViewModels
 {
-    class ClashTest
+    class AClashTestResult
     {
-        public string Name { get; set; }
+        public AClashTest ClashTest { get; set; }
     }
 }

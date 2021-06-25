@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Clash_Management_System_Navisworks_Addin.DBModels
+namespace Clash_Management_System_Navisworks_Addin.Views
 {
     class dummy
     {
