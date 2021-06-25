@@ -9,5 +9,6 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
     public class Project
     {
         public string Name { get; set; }
+        public int Id { get; set; }
     }
 }

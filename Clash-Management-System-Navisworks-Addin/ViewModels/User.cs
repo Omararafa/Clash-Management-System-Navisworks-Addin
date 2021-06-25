@@ -9,6 +9,5 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
     public class User
     {
         public string Name { get; set; }
-
     }
 }

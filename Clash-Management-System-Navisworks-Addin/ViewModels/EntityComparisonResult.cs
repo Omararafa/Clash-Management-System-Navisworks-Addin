@@ -11,6 +11,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         Added,
         Removed,
         Modified,
-        UnModified
+        UnModified,
+        NotChecked
     }
 }

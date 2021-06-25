@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
 using Autodesk.Navisworks.Api;
+using System.Collections.Generic;
 using Autodesk.Navisworks.Api.Clash;
 using Autodesk.Navisworks.Api.DocumentParts;
+using Clash_Management_System_Navisworks_Addin.Views;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
 
 namespace Clash_Management_System_Navisworks_Addin.NW
@@ -66,13 +68,13 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return null;
         }
 
-        static ASearchSet GetSearchSet(Document document)
+        static List<ASearchSet> GetSearchSet(Document document)
         {
-            DocumentSelectionSets selectionSets = Autodesk.Navisworks.Api.Application.ActiveDocument.SelectionSets;
-            //selectionSets
+            DocumentSelectionSets selectionSets = document.SelectionSets;
+            List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSets);
+            List<ASearchSet> AsearchSets = GetASearchSetsList(documentSearchSets);
 
-            throw new Exception("Method GetSearchSet: Work in progress");
-            return null;
+            return AsearchSets;
         }
 
 
@@ -99,22 +101,20 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
             foreach (SelectionSet set in searchSets)
             {
-
-
+                ASearchSet aSearchSet = GetASearchSet(set);
+                AsearchSets.Add(aSearchSet);
             }
 
             return AsearchSets;
         }
 
-        private static ASearchSet GetASearchSet(SelectionSet SearchSet)
+        private static ASearchSet GetASearchSet(SelectionSet searchSet)
         {
-            ASearchSet aSearchSet = new ASearchSet();
+            ASearchSet aSearchSet = new ASearchSet(searchSet, ViewsHandler.CurrentProject, 
+                                                   ViewsHandler.CurrentUser.Name, ViewsHandler.CurrentAClashMatrix, true);
 
-            aSearchSet.SRCHSER_NAME = SearchSet.DisplayName;
-
-            return null;
+            return aSearchSet;
         }
-
 
         #endregion
 

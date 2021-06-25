@@ -37,14 +37,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             return false;
         }
 
-
-
-
-
         #endregion
-
-
-
 
     }
 }
