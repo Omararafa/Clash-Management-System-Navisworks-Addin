@@ -1,0 +1,4 @@
+C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin.csproj.AssemblyReference.cache
+C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Views\MainWindow.g.cs
+C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin_MarkupCompile.cache
+C:\Users\Bary\source\repos\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\obj\Debug\Clash-Management-System-Navisworks-Addin_MarkupCompile.lref

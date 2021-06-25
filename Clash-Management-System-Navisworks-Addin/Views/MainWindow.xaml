@@ -54,11 +54,10 @@
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
-                      Height="200" 
+                      Height="25" 
                       Foreground="#FF3FA0AA" 
                       Background="#FFA22C2C" 
                       IsExpanded="True">
-
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -75,11 +74,33 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                 </Grid>
-
+            </Expander>
+            <Expander Name="SelectProjectExpander"
+                      Grid.ColumnSpan="5" 
+                      Grid.Column="0" 
+                      Header="Project"
+                      HorizontalAlignment="Stretch"
+                      Margin="0,0,0,0"
+                      Grid.Row="4" 
+                      Grid.RowSpan="3"
+                      VerticalAlignment="Top"
+                      Height="200"
+                      IsExpanded="True" 
+                      Background="FF272727">
+                <StackPanel>
+                    <TextBlock Text="Select a Project"
+                               Margin="5,25,5,5"/>
+                    <ComboBox Name="ProjectCbx" 
+                              Text="Select a Project"
+                              Margin="5,25,5,5"/>
+                    <Button Name="SelectProjectBtn" 
+                            Content="Ok"
+                            Margin="65,15,15,5"/>
+                </StackPanel>
             </Expander>
             <Expander Grid.ColumnSpan="5" 
                       Grid.Column="0" 
-                      Header="Select Project"
+                      Header="Clash Matrix"
                       HorizontalAlignment="Stretch"
                       Margin="0,0,0,0"
                       Grid.Row="4" 
@@ -87,20 +108,7 @@
                       VerticalAlignment="Top"
                       Height="25"
                       IsExpanded="False" 
-                      Foreground="#FF3FA0AA" 
-                      Background="#FFA22C2C">
-            </Expander>
-            <Expander Grid.ColumnSpan="5" 
-                      Grid.Column="0" 
-                      Header="Select Clash Matrix"
-                      HorizontalAlignment="Stretch"
-                      Margin="0,0,0,0"
-                      Grid.Row="4" 
-                      Grid.RowSpan="3"
-                      VerticalAlignment="Top"
-                      Height="25"
-                      IsExpanded="False" 
-                      Foreground="#FF3FA0AA" 
+                      Foreground="#FF272727" 
                       Background="#FFA22C2C">
             </Expander>
             <Expander Grid.ColumnSpan="5" 
@@ -113,7 +121,7 @@
                       VerticalAlignment="Top"
                       Height="25"
                       IsExpanded="False" 
-                      Foreground="#FF3FA0AA" 
+                      Foreground="#FF272727" 
                       Background="#FFA22C2C">
             </Expander>
         </StackPanel>

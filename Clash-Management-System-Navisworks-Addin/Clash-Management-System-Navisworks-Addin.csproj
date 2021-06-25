@@ -74,7 +74,7 @@
     <Compile Include="ViewModels\Project.cs" />
     <Compile Include="ViewModels\SearchSet.cs" />
     <Compile Include="ViewModels\User.cs" />
-    <Compile Include="Views\dummy.cs" />
+    <Compile Include="Views\ViewsHandler.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
