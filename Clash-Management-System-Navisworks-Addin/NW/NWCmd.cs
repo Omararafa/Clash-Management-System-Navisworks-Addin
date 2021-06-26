@@ -1,11 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using Autodesk.Navisworks.Api;
+using System.Collections.Generic;
 using Autodesk.Navisworks.Api.Plugins;
+using Autodesk.Navisworks.Api.DocumentParts;
+using Clash_Management_System_Navisworks_Addin.NW;
 using Clash_Management_System_Navisworks_Addin.Views;
+using Clash_Management_System_Navisworks_Addin.Testing;
 
 namespace Clash_Management_System_Navisworks_Addin
 {
@@ -23,7 +27,7 @@ namespace Clash_Management_System_Navisworks_Addin
             switch (commandId)
             {
                 case "BE":
-                    MessageBox.Show("Button 1", "Hello from Button1!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    SearchSetClassTests.SearchSetTest();
                     break;
 
                 case "WPFUI":

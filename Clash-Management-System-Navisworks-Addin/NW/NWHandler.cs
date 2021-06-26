@@ -71,32 +71,33 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         static List<ASearchSet> GetSearchSet(Document document)
         {
-            DocumentSelectionSets selectionSets = document.SelectionSets;
-            List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSets);
+            DocumentSelectionSets selectionSearchSets = document.SelectionSets;
+            List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSearchSets);
             List<ASearchSet> AsearchSets = GetASearchSetsList(documentSearchSets);
 
             return AsearchSets;
         }
 
 
-        private static List<SelectionSet> GetDocumentSearchSets(DocumentSelectionSets documentSelectionSets)
+        public static List<SelectionSet> GetDocumentSearchSets(DocumentSelectionSets documentSelectionSets)
         {
-            SavedItemCollection searchSelectionSets = documentSelectionSets.Value;
-            List<SelectionSet> searchSets = new List<SelectionSet>();
+            SavedItemCollection searchSelectionSets = documentSelectionSets.RootItem.Children;
+            List<SelectionSet> documentSearchSets = new List<SelectionSet>();
+
 
             foreach (SavedItem item in searchSelectionSets)
             {
                 SelectionSet searchSet = item as SelectionSet;
                 if (searchSet != null && searchSet.HasSearch)
                 {
-                    searchSets.Add(searchSet);
+                    documentSearchSets.Add(searchSet);
                 }
             }
 
-            return searchSets;
+            return documentSearchSets;
         }
 
-        private static List<ASearchSet> GetASearchSetsList(List<SelectionSet> searchSets)
+        public static List<ASearchSet> GetASearchSetsList(List<SelectionSet> searchSets)
         {
             List<ASearchSet> AsearchSets = new List<ASearchSet>();
 
@@ -109,7 +110,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return AsearchSets;
         }
 
-        private static ASearchSet GetASearchSet(SelectionSet searchSet)
+        public static ASearchSet GetASearchSet(SelectionSet searchSet)
         {
             ASearchSet aSearchSet = new ASearchSet(searchSet, ViewsHandler.CurrentProject, 
                                                    ViewsHandler.CurrentUser.Name, ViewsHandler.CurrentAClashMatrix, true);
