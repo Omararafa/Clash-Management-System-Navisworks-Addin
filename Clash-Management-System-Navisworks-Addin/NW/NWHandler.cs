@@ -7,6 +7,7 @@ using Autodesk.Navisworks.Api;
 using System.Collections.Generic;
 using Autodesk.Navisworks.Api.Clash;
 using Autodesk.Navisworks.Api.DocumentParts;
+using App = Autodesk.Navisworks.Api.Application;
 using Clash_Management_System_Navisworks_Addin.Views;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
 
@@ -19,6 +20,13 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
     public static class NWHandler
     {
+        #region StaticaMembers
+
+        public static Document document = App.ActiveDocument;
+
+        #endregion
+
+
         #region ClashMatrixMethods
 
         static AClashMatrix CreateClashMatrix(List<object> clashMatrixData)
@@ -69,7 +77,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return null;
         }
 
-        static List<ASearchSet> GetSearchSet(Document document)
+        public static List<ASearchSet> GetSearchSet(Document document)
         {
             DocumentSelectionSets selectionSearchSets = document.SelectionSets;
             List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSearchSets);
@@ -79,7 +87,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         }
 
 
-        public static List<SelectionSet> GetDocumentSearchSets(DocumentSelectionSets documentSelectionSets)
+        static List<SelectionSet> GetDocumentSearchSets(DocumentSelectionSets documentSelectionSets)
         {
             SavedItemCollection searchSelectionSets = documentSelectionSets.Value;
             List<SelectionSet> documentSearchSets = new List<SelectionSet>();
@@ -93,7 +101,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return documentSearchSets;
         }
 
-        public static List<ASearchSet> GetASearchSetsList(List<SelectionSet> searchSets)
+        static List<ASearchSet> GetASearchSetsList(List<SelectionSet> searchSets)
         {
             List<ASearchSet> AsearchSets = new List<ASearchSet>();
 
@@ -106,7 +114,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return AsearchSets;
         }
 
-        public static ASearchSet GetASearchSet(SelectionSet searchSet)
+        static ASearchSet GetASearchSet(SelectionSet searchSet)
         {
             ASearchSet aSearchSet = new ASearchSet(searchSet, ViewsHandler.CurrentProject, 
                                                    ViewsHandler.CurrentUser.Name, ViewsHandler.CurrentAClashMatrix, true);
@@ -114,7 +122,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return aSearchSet;
         }
 
-        public static void GetAllAndNestedSearchSets (SavedItem item, List<SelectionSet> documentSearchSets)
+        static void GetAllAndNestedSearchSets (SavedItem item, List<SelectionSet> documentSearchSets)
         {
             if (item.IsGroup)
             {
@@ -146,5 +154,17 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
 
         #endregion
+
+        //TODO:delete or check method below
+        static void dummy(List<ASearchSet> NWSS, List<ASearchSet> DBSS)
+        {
+            List<ASearchSet> combined = new List<ASearchSet>();
+
+            combined.AddRange(NWSS);
+            combined.AddRange(DBSS);
+
+
+
+        }
     }
 }

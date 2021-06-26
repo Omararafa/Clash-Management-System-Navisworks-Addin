@@ -27,7 +27,6 @@ namespace Clash_Management_System_Navisworks_Addin
             switch (commandId)
             {
                 case "BE":
-                    SearchSetClassTests.SearchSetTest();
                     break;
 
                 case "WPFUI":

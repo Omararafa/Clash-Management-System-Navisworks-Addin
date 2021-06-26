@@ -13,21 +13,26 @@ namespace Clash_Management_System_Navisworks_Addin.Testing
 {
     public static class SearchSetClassTests
     {
-        public static void SearchSetTest()
-        {
-            string data = string.Empty;
-            Document document = App.ActiveDocument;
-            DocumentSelectionSets selectionSets = document.SelectionSets;
+            // >> the mothod has been tested and set private in the NWHandler
+        //public static void SearchSetTest()
+        //{
+        //    return;
 
-            List<SelectionSet> documentSearchSets = NWHandler.GetDocumentSearchSets(selectionSets);
+        //    string data = string.Empty;
+        //    Document document = App.ActiveDocument;
+        //    DocumentSelectionSets selectionSets = document.SelectionSets;
 
-            foreach (var item in documentSearchSets)
-            {
-                data += item.DisplayName + " .. " + item.HasSearch.ToString();
-                data += Environment.NewLine;
-            }
+        //    List<SelectionSet> documentSearchSets = NWHandler.GetDocumentSearchSets(selectionSets);
 
-            MessageBox.Show(data);
-        }
+        //    foreach (var item in documentSearchSets)
+        //    {
+        //        data += item.DisplayName + " .. " + item.HasSearch.ToString();
+        //        data += Environment.NewLine;
+        //    }
+
+        //    MessageBox.Show(data);
+        //}
+
+
     }
 }
