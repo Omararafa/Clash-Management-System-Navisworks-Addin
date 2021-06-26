@@ -176,7 +176,8 @@
                                  Margin="5,5,5,5"/>
                     <Button Name="SelectFunctionBtn" 
                             Content="Execute"
-                            Margin="65,15,15,5"/>
+                            Margin="65,15,15,5"
+                            Click="SelectFunctionBtn_Click"/>
                 </StackPanel>
             </Expander>
         </StackPanel>

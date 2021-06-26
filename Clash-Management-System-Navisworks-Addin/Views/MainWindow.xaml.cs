@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Clash_Management_System_Navisworks_Addin.ViewModels;
 
 namespace Clash_Management_System_Navisworks_Addin.Views
 {
@@ -29,11 +31,13 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         public Brush expanderHighlightBackground = (Brush)ColorConverter.ConvertFromString("MintCream");
         public Brush expanderHighlightForeground = (Brush)ColorConverter.ConvertFromString("LightSlateGray");
         */
-        public Brush expanderNormalBackground=Brushes.MintCream;
-        public Brush expanderNormalForeground=Brushes.LightSlateGray;
-        public Brush expanderHighlightBackground= Brushes.MintCream;
+        public Brush expanderNormalBackground = Brushes.MintCream;
+        public Brush expanderNormalForeground = Brushes.LightSlateGray;
+        public Brush expanderHighlightBackground = Brushes.MintCream;
         public Brush expanderHighlightForeground = Brushes.LightSlateGray;
         List<Expander> SidebarExpanders = new List<Expander>();
+
+        
 
         public MainWindow()
         {
@@ -66,6 +70,39 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 DeactivateExpander(ex);
             }
+
+        }
+
+
+        public void PresentSearchSetsOnDataGrid(DataGrid datagrid, List<ASearchSet> data)
+        {
+            DataTable dataTable = new DataTable("Search Sets");
+            
+            dataTable.Columns.Add("Name");
+            dataTable.Columns.Add("Project");
+            dataTable.Columns.Add("Clash Matrix");
+            dataTable.Columns.Add("Trade Id");
+            dataTable.Columns.Add("Modified By");
+            dataTable.Columns.Add("Status");
+
+            foreach (var searchSet in data)
+            {
+                dataTable.Rows.Add(
+                    searchSet.SearchSetName,
+                    searchSet.Project.Name,
+                    searchSet.clashMatrix.Name,
+                    searchSet.TradeId.ToString(),
+                    searchSet.ModifiedBy.ToString(),
+                    searchSet.Status.ToString()
+                    ) ;
+            }
+            datagrid.ItemsSource = dataTable.DefaultView;
+            
+
+            
+
+
+
         }
 
         private void Expander_PreviewMouseUp(object sender, RoutedEventArgs e)
@@ -192,8 +229,15 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
 
 
+
         #endregion
 
-
+        private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (FunctionSearchSetsRBtn.IsChecked==true)
+            {
+                PresentSearchSetsOnDataGrid(PresenterDataGrid, ViewsHandler.SearchSetsFromNW);
+            }
+        }
     }
 }
