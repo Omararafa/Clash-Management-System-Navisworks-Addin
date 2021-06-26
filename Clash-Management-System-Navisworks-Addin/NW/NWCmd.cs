@@ -31,14 +31,33 @@ namespace Clash_Management_System_Navisworks_Addin
     #endregion
 
 
-    [Plugin("Test", "WYHk", DisplayName = "Hello!")]
-    public class NWCmd : AddInPlugin
+    [Plugin("Clash-Management-System-Navisworks-Addin", "WYHk", DisplayName = "Hello!")]
+    [RibbonLayout("Clash-Management-System-Navisworks-Addin.xaml")]
+    [RibbonTab("ID_CustomTab_1", DisplayName = "Clash Management")]
+    [Command("Clash-Management-System-Navisworks-Addin", CanToggle = true, DisplayName = "Clash Manager")]
+
+
+    class Clash_Management_System_Navisworks_Addin : CommandHandlerPlugin
     {
-        public override int Execute(params string[] parameters)
+        bool m_toEnableButton = true; // to enable button or not
+        public override int ExecuteCommand(string commandId, params string[] parameters)
         {
-            MessageBox.Show("Hello, World!", "Excute", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
+
+            switch (commandId)
+            {
+
+                case "Clash-Management-System-Navisworks-Addin":
+                    {
+                        MessageBox.Show("Hello, Wael!", "Holla, it worked!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        break;
+
+                    }
+            }
 
             return 0;
         }
+
     }
 }

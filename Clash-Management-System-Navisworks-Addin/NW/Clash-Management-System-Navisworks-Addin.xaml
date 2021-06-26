@@ -11,19 +11,19 @@
     xmlns:local="clr-namespace:Autodesk.Navisworks.Gui.Roamer.AIRLook;assembly=navisworks.gui.roamer">
     <!-- END STANDARD SECTION DO NOT EDIT -->
 
+
+
     <RibbonTab Id="ID_CustomTab_1" KeyTip="T1">
         <RibbonPanel x:Uid="RibbonPane1_1">
-            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" KeyTip="C1" Title="Tools">
+            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" KeyTip="C1" Title="Large Button">
 
-                <local:NWRibbonButton x:Uid="ID_Button_1" Id="ID_Button_1"
-                            Size="Large"
-                            KeyTip="B1"
-                            ShowText="True"
-                            Text="Button_1"
-                            Orientation="Vertical"/>
-
+                <local:NWRibbonButton x:Uid="Clash-Management-System-Navisworks-Addin" Id="Clash-Management-System-Navisworks-Addin"
+                                    Size="Large"
+                                    KeyTip="B1"
+                                    ShowText="True"   
+                                    Text="Button 1 in xaml"
+                                    Orientation="Vertical"/>
             </RibbonPanelSource>
         </RibbonPanel>
     </RibbonTab>
-
 </RibbonControl>
