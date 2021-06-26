@@ -18,6 +18,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         public static List<AClashMatrix> CurrentProjectClashMatrix { get; set; }
         #endregion
 
+
+        
+        
         #region Static Methods
         static bool WriteCredentialsToAssembly(string name,string password)
         {

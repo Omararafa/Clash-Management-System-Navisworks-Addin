@@ -6,8 +6,9 @@
         xmlns:NwControls="clr-namespace:Autodesk.Navisworks.Api.Controls;assembly=Autodesk.Navisworks.Controls"
         xmlns:local="clr-namespace:Clash_Management_System_Navisworks_Addin.Views"
         mc:Ignorable="d"
+        x:ClassModifier="public"
         Title="MainWindow" Height="494.3" Width="800">
-    <Grid Name="WindowGrid">
+    <Grid x:Name="WindowGrid" x:FieldModifier="public">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="80"/>
@@ -48,6 +49,7 @@
             VerticalAlignment="Stretch" 
             Background="LightSeaGreen">
             <Expander Name="LoginExpander"
+                      
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
                       Header="Login"
@@ -56,12 +58,12 @@
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
-                      Height="200" 
+                      Height="25" 
                       IsExpanded="False" 
                       Background="MintCream"
                       Foreground="LightSlateGray"
                       FontFamily="Century Gothic, Courier New"
-                      PreviewMouseUp="LoginExpander_PreviewMouseUp">
+                      PreviewMouseUp="Expander_PreviewMouseUp">
                 <StackPanel>
                     <TextBlock Text="User Name"
                                Margin="5,5,5,5"/>
@@ -84,7 +86,8 @@
 
                 </StackPanel>
             </Expander>
-            <Expander Name="SelectProjectExpander"
+            <Expander x:Name="SelectProjectExpander"
+                      x:FieldModifier="public"
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
                       Header="Project"
@@ -98,7 +101,8 @@
                       Background="MintCream"
                       Foreground="LightSlateGray"
                       FontFamily="Century Gothic, Courier New"
-                      IsEnabled="False">
+                      IsEnabled="False"
+                      PreviewMouseUp="Expander_PreviewMouseUp">
                 <StackPanel>
                     <TextBlock Text="Select a Project"
                                Margin="5,25,5,5"/>
@@ -124,7 +128,8 @@
                       Background="MintCream"
                       Foreground="LightSlateGray"
                       FontFamily="Century Gothic, Courier New"
-                      IsEnabled="False">
+                      IsEnabled="False"
+                      PreviewMouseUp="Expander_PreviewMouseUp">
                 <StackPanel>
                     <TextBlock Text="Select a Clash Matrix"
                                Margin="5,25,5,5"/>
@@ -150,7 +155,8 @@
                       Background="MintCream"
                       Foreground="LightSlateGray"
                       FontFamily="Century Gothic, Courier New"
-                      IsEnabled="False">
+                      IsEnabled="False"
+                      PreviewMouseUp="Expander_PreviewMouseUp">
                 <StackPanel>
                     <TextBlock Text="Select a Function"
                                Margin="5,25,5,5"/>
