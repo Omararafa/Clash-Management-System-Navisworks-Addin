@@ -81,17 +81,13 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         public static List<SelectionSet> GetDocumentSearchSets(DocumentSelectionSets documentSelectionSets)
         {
-            SavedItemCollection searchSelectionSets = documentSelectionSets.RootItem.Children;
+            SavedItemCollection searchSelectionSets = documentSelectionSets.Value;
             List<SelectionSet> documentSearchSets = new List<SelectionSet>();
 
 
             foreach (SavedItem item in searchSelectionSets)
             {
-                SelectionSet searchSet = item as SelectionSet;
-                if (searchSet != null && searchSet.HasSearch)
-                {
-                    documentSearchSets.Add(searchSet);
-                }
+                GetAllAndNestedSearchSets(item, documentSearchSets);
             }
 
             return documentSearchSets;
@@ -116,6 +112,25 @@ namespace Clash_Management_System_Navisworks_Addin.NW
                                                    ViewsHandler.CurrentUser.Name, ViewsHandler.CurrentAClashMatrix, true);
 
             return aSearchSet;
+        }
+
+        public static void GetAllAndNestedSearchSets (SavedItem item, List<SelectionSet> documentSearchSets)
+        {
+            if (item.IsGroup)
+            {
+                foreach (SavedItem childItem in ((GroupItem)item).Children)
+                {
+                    GetAllAndNestedSearchSets(childItem, documentSearchSets);
+                }
+            }
+            else
+            {
+                SelectionSet searchItem = item as SelectionSet;
+                if (searchItem != null && searchItem.HasSearch)
+                {
+                    documentSearchSets.Add(searchItem);
+                }
+            }
         }
 
         #endregion
