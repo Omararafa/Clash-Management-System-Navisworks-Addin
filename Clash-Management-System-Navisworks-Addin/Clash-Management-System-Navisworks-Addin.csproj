@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash Management\</OutputPath>
+    <OutputPath>C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,6 +55,7 @@
     </Reference>
     <Reference Include="Autodesk.Navisworks.Controls">
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Controls.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="navisworks.gui.roamer">
       <HintPath>C:\Program Files\Autodesk\Navisworks Manage 2020\navisworks.gui.roamer.dll</HintPath>
@@ -106,6 +107,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="NW\Clash-Management-System-Navisworks-Addin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -119,7 +124,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>set path=D:\Work\Freelancing\ClashManagmentAddin\Clash-Management-System-Navisworks-Addin\Clash-Management-System-Navisworks-Addin\NW\Clash-Management-System-Navisworks-Addin.xaml
+
+set addinPath=C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin
+set addinPath1=C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\en-US\
+
+mkdir "%25addinPath1%25"
+
+copy /Y "%25path%25" "%25addinPath%25" 
+copy /Y "%25path%25" "%25addinPath1%25"</PostBuildEvent>
   </PropertyGroup>
 </Project>

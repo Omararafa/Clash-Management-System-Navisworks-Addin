@@ -11,19 +11,30 @@
     xmlns:local="clr-namespace:Autodesk.Navisworks.Gui.Roamer.AIRLook;assembly=navisworks.gui.roamer">
     <!-- END STANDARD SECTION DO NOT EDIT -->
 
+
+
     <RibbonTab Id="ID_CustomTab_1" KeyTip="T1">
         <RibbonPanel x:Uid="RibbonPane1_1">
-            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" KeyTip="C1" Title="Tools">
-
-                <local:NWRibbonButton x:Uid="ID_Button_1" Id="ID_Button_1"
-                            Size="Large"
-                            KeyTip="B1"
-                            ShowText="True"
-                            Text="Button_1"
-                            Orientation="Vertical"/>
-
+            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" KeyTip="C1" Title="Backecd Panel Test">
+                <local:NWRibbonButton x:Uid="BE" Id="BE"
+                                    Size="Large"
+                                    KeyTip="B1"
+                                    ShowText="True"   
+                                    Text="Backend"
+                                    Orientation="Vertical"/>
             </RibbonPanelSource>
         </RibbonPanel>
-    </RibbonTab>
 
+        <RibbonPanel x:Uid="RibbonPane1_2">
+            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_2" KeyTip="C2" Title="UI Panel Test">
+                <local:NWRibbonButton x:Uid="WPFUI" Id="WPFUI"
+                                    Size="Large"
+                                    KeyTip="B2"
+                                    ShowText="True"   
+                                    Text="WPF UI"
+                                    Orientation="Vertical"/>
+            </RibbonPanelSource>
+        </RibbonPanel>
+        
+    </RibbonTab>
 </RibbonControl>
