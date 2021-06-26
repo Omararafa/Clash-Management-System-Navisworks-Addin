@@ -27,24 +27,55 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         public Brush expanderNormalForeground = (Brush)ColorConverter.ConvertFromString("LightSlateGray");
         public Brush expanderHighlightBackground = (Brush)ColorConverter.ConvertFromString("MintCream");
         public Brush expanderHighlightForeground = (Brush)ColorConverter.ConvertFromString("LightSlateGray");
+        List<Expander> SidebarExpanders = new List<Expander>();
+
         public MainWindow()
         {
             InitializeComponent();
+            SidebarExpanders.AddRange(new List<Expander> 
+            { 
+                LoginExpander,
+                SelectProjectExpander,
+                SelectClashMatrixExpander,
+                SelectFunctionExpander
+            });
+
+
+            //Set initial values for expanders
+            InitialLoginLoadState();
         }
 
-        List<Expander> SidebarExpanders = new List<Expander> { };
-        
 
-        private void LoginExpander_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+
+        private void InitialLoginLoadState()
+        {
+            Expander expander = LoginExpander;
+            ActivateExpander(expander);
+            List<Expander> expandersToDeactivate = new List<Expander>();
+            expandersToDeactivate.AddRange(SidebarExpanders);
+            expandersToDeactivate.Remove(expander);
+            foreach (var ex in expandersToDeactivate)
+            {
+                DeactivateExpander(ex);
+            }
+        }
+
+        private void Expander_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             Expander expander = sender as Expander;
             FrameworkElement frameworkElement = e.OriginalSource as FrameworkElement;
             if (frameworkElement is ToggleButton && frameworkElement.Name == "HeaderSite")
             {
                 Trace.WriteLine("Clicked in expander header");
-                expander.IsEnabled = true;
-                expander.IsExpanded = true;
-                expander.Height = expandedTrueHeight;
+                ActivateExpander(expander);
+                List<Expander> expandersToDeactivate = new List<Expander>();
+                expandersToDeactivate.AddRange(SidebarExpanders);
+                expandersToDeactivate.Remove(expander);
+                foreach (var ex in expandersToDeactivate)
+                {
+                    DeactivateExpander(ex);
+                }
+
             }
         }
 
@@ -78,7 +109,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             expander.IsEnabled = true;
             expander.IsExpanded = true;
-            expander.Height = 200;
+            expander.Height = expandedTrueHeight;
             expander.Background = expanderHighlightBackground;
             expander.Foreground = expanderHighlightForeground;
             return true;
@@ -88,7 +119,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             expander.IsEnabled = false;
             expander.IsExpanded = false;
-            expander.Height = 25;
+            expander.Height = expandedfalseHeight;
             expander.Background = expanderNormalBackground;
             expander.Foreground = expanderNormalForeground;
             return true;
@@ -114,36 +145,36 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
 
 
-             /*
-             * This method shall be used for the Handle the event of project selection as follows;
-             * 1-DB: Get associated clash matrices with this project
-             * 2-Assembly: Create and store Project Class
-             * 3-UI: Handle the process of activate Clash Matrices expander
-             * 4-UI: Handle the process of deactivate project expander
-             */
+        /*
+        * This method shall be used for the Handle the event of project selection as follows;
+        * 1-DB: Get associated clash matrices with this project
+        * 2-Assembly: Create and store Project Class
+        * 3-UI: Handle the process of activate Clash Matrices expander
+        * 4-UI: Handle the process of deactivate project expander
+        */
         private bool ProjectSelectedHandler(Button button)
         {
             throw new Exception("Method ProjectSelectedHandler: Work in progress");
             return false;
         }
 
-            /*
-            * This method shall be used for the Handle the event of clash matrix selection as follows;
-            * 1-DB: Get associated clash tests with this clash matrix
-            * 2-Assembly: Create and store clash matrix Class
-            * 3-UI: Handle the process of activate select function expander
-            * 4-UI: Handle the process of deactivate Clash Matrices expander
-            */
+        /*
+        * This method shall be used for the Handle the event of clash matrix selection as follows;
+        * 1-DB: Get associated clash tests with this clash matrix
+        * 2-Assembly: Create and store clash matrix Class
+        * 3-UI: Handle the process of activate select function expander
+        * 4-UI: Handle the process of deactivate Clash Matrices expander
+        */
         private bool ClashMatrixSelectedHandler(Button button)
         {
             throw new Exception("Method ClashMatrixSelectedHandler: Work in progress");
             return false;
         }
 
-            /*
-            * This method shall be used for the Handle the event of function selection as follows;
-            * 
-            */
+        /*
+        * This method shall be used for the Handle the event of function selection as follows;
+        * 
+        */
         private bool FunctionSelectedHandler(Button button)
         {
             throw new Exception("Method FunctionSelectedHandler: Work in progress");

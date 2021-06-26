@@ -27,8 +27,9 @@ namespace Clash_Management_System_Navisworks_Addin
                     break;
 
                 case "WPFUI":
-                    MainWindow mainMenu = new MainWindow();
-                    mainMenu.Show();
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    
                     break;
             }
 
