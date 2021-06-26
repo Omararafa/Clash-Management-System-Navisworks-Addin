@@ -15,15 +15,26 @@
 
     <RibbonTab Id="ID_CustomTab_1" KeyTip="T1">
         <RibbonPanel x:Uid="RibbonPane1_1">
-            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" KeyTip="C1" Title="Large Button">
-
-                <local:NWRibbonButton x:Uid="Clash-Management-System-Navisworks-Addin" Id="Clash-Management-System-Navisworks-Addin"
+            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" KeyTip="C1" Title="Backecd Panel Test">
+                <local:NWRibbonButton x:Uid="BE" Id="BE"
                                     Size="Large"
                                     KeyTip="B1"
                                     ShowText="True"   
-                                    Text="Button 1 in xaml"
+                                    Text="Backend"
                                     Orientation="Vertical"/>
             </RibbonPanelSource>
         </RibbonPanel>
+
+        <RibbonPanel x:Uid="RibbonPane1_2">
+            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_2" KeyTip="C2" Title="UI Panel Test">
+                <local:NWRibbonButton x:Uid="WPFUI" Id="WPFUI"
+                                    Size="Large"
+                                    KeyTip="B2"
+                                    ShowText="True"   
+                                    Text="WPF UI"
+                                    Orientation="Vertical"/>
+            </RibbonPanelSource>
+        </RibbonPanel>
+        
     </RibbonTab>
 </RibbonControl>
