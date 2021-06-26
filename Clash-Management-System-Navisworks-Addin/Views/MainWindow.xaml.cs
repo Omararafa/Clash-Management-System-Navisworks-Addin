@@ -23,21 +23,29 @@ namespace Clash_Management_System_Navisworks_Addin.Views
     {
         public int expandedTrueHeight = 200;
         public int expandedfalseHeight = 25;
+        /*
         public Brush expanderNormalBackground = (Brush)ColorConverter.ConvertFromString("MintCream");
         public Brush expanderNormalForeground = (Brush)ColorConverter.ConvertFromString("LightSlateGray");
         public Brush expanderHighlightBackground = (Brush)ColorConverter.ConvertFromString("MintCream");
         public Brush expanderHighlightForeground = (Brush)ColorConverter.ConvertFromString("LightSlateGray");
+        */
+        public Brush expanderNormalBackground=Brushes.MintCream;
+        public Brush expanderNormalForeground=Brushes.LightSlateGray;
+        public Brush expanderHighlightBackground= Brushes.MintCream;
+        public Brush expanderHighlightForeground = Brushes.LightSlateGray;
         List<Expander> SidebarExpanders = new List<Expander>();
 
         public MainWindow()
         {
             InitializeComponent();
-            SidebarExpanders.AddRange(new List<Expander> 
-            { 
+
+            SidebarExpanders.AddRange(new List<Expander>
+            {
                 LoginExpander,
                 SelectProjectExpander,
                 SelectClashMatrixExpander,
-                SelectFunctionExpander
+                SelectFunctionExpander,
+                TestExpander
             });
 
 
@@ -60,14 +68,16 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
         }
 
-        private void Expander_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        private void Expander_PreviewMouseUp(object sender, RoutedEventArgs e)
         {
             Expander expander = sender as Expander;
             FrameworkElement frameworkElement = e.OriginalSource as FrameworkElement;
-            if (frameworkElement is ToggleButton && frameworkElement.Name == "HeaderSite")
+            //Other condition to be added: && frameworkElement.Name == "HeaderSite"
+            //frameworkElement is ToggleButton 
+            if (true)
             {
                 Trace.WriteLine("Clicked in expander header");
-                ActivateExpander(expander);
+                //ActivateExpander(expander);
                 List<Expander> expandersToDeactivate = new List<Expander>();
                 expandersToDeactivate.AddRange(SidebarExpanders);
                 expandersToDeactivate.Remove(expander);
@@ -75,7 +85,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 {
                     DeactivateExpander(ex);
                 }
-
             }
         }
 
@@ -109,7 +118,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             expander.IsEnabled = true;
             expander.IsExpanded = true;
-            expander.Height = expandedTrueHeight;
+            //expander.Height = expandedTrueHeight;
             expander.Background = expanderHighlightBackground;
             expander.Foreground = expanderHighlightForeground;
             return true;
@@ -117,9 +126,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private bool DeactivateExpander(Expander expander)
         {
-            expander.IsEnabled = false;
+            expander.IsEnabled = true;
             expander.IsExpanded = false;
-            expander.Height = expandedfalseHeight;
+            //expander.Height = expandedfalseHeight;
             expander.Background = expanderNormalBackground;
             expander.Foreground = expanderNormalForeground;
             return true;

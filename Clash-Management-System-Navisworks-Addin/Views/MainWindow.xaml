@@ -47,9 +47,26 @@
             Grid.Row="3" 
             Grid.RowSpan="7" 
             VerticalAlignment="Stretch" 
-            Background="LightSeaGreen">
+            Background="DimGray">
+            <Expander Name="TestExpander"
+                      Grid.ColumnSpan="5" 
+                      Grid.Column="0" 
+                      Header="test"
+                      HorizontalAlignment="Stretch"
+                      Margin="1,1,1,0"
+                      Grid.Row="4" 
+                      Grid.RowSpan="3"
+                      VerticalAlignment="Top"
+                      FontFamily="Century Gothic, Courier New"
+                      Expanded="Expander_PreviewMouseUp">
+                <StackPanel Margin="10,4,0,0">
+                    <CheckBox Margin="4" Content="Option 1" />
+                    <CheckBox Margin="4" Content="Option 2" />
+                    <CheckBox Margin="4" Content="Option 3" />
+                </StackPanel>
+
+            </Expander>
             <Expander Name="LoginExpander"
-                      
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
                       Header="Login"
@@ -58,33 +75,36 @@
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
-                      Height="25" 
-                      IsExpanded="False" 
-                      Background="MintCream"
-                      Foreground="LightSlateGray"
                       FontFamily="Century Gothic, Courier New"
-                      PreviewMouseUp="Expander_PreviewMouseUp">
-                <StackPanel>
-                    <TextBlock Text="User Name"
+                      Expanded="Expander_PreviewMouseUp">
+                <DockPanel
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+
+                    <StackPanel>
+                        <TextBlock Text="User Name"
                                Margin="5,5,5,5"/>
-                    <TextBox Name="UserNameTxt"
+                        <TextBox Name="UserNameTxt"
                              Margin="5,5,5,5"
                              Text="Enter User Name.."
                              Foreground="DimGray"/>
-                    <TextBlock Text="Password"
+                        <TextBlock Text="Password"
                                Margin="5,5,5,5"/>
-                    <PasswordBox Name="PasswordTxt"
+                        <PasswordBox Name="PasswordTxt"
                              Margin="5,5,5,5"
                              Foreground="DimGray"/>
-                    <Button Name="LoginBtn" 
+                        <Button Name="LoginBtn" 
                             Content="Login"
                             Margin="65,15,15,5"/>
-                    <TextBlock Name="LoginFeedbackTxt"
+                        <TextBlock Name="LoginFeedbackTxt"
                             Text="Log in Status"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Center"/>
 
-                </StackPanel>
+                    </StackPanel>
+
+                </DockPanel>
+                
             </Expander>
             <Expander x:Name="SelectProjectExpander"
                       x:FieldModifier="public"
@@ -96,13 +116,8 @@
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
-                      Height="25"
-                      IsExpanded="False" 
-                      Background="MintCream"
-                      Foreground="LightSlateGray"
                       FontFamily="Century Gothic, Courier New"
-                      IsEnabled="False"
-                      PreviewMouseUp="Expander_PreviewMouseUp">
+                      Expanded="Expander_PreviewMouseUp">
                 <StackPanel>
                     <TextBlock Text="Select a Project"
                                Margin="5,25,5,5"/>
@@ -123,13 +138,8 @@
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
-                      Height="25"
-                      IsExpanded="False" 
-                      Background="MintCream"
-                      Foreground="LightSlateGray"
                       FontFamily="Century Gothic, Courier New"
-                      IsEnabled="False"
-                      PreviewMouseUp="Expander_PreviewMouseUp">
+                      Expanded="Expander_PreviewMouseUp">
                 <StackPanel>
                     <TextBlock Text="Select a Clash Matrix"
                                Margin="5,25,5,5"/>
@@ -150,13 +160,8 @@
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
-                      Height="200"
-                      IsExpanded="False" 
-                      Background="MintCream"
-                      Foreground="LightSlateGray"
                       FontFamily="Century Gothic, Courier New"
-                      IsEnabled="False"
-                      PreviewMouseUp="Expander_PreviewMouseUp">
+                      Expanded="Expander_PreviewMouseUp">
                 <StackPanel>
                     <TextBlock Text="Select a Function"
                                Margin="5,25,5,5"/>
