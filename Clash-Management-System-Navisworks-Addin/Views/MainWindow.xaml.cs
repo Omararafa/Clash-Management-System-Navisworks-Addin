@@ -32,6 +32,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             InitializeComponent();
         }
 
+        List<Expander> SidebarExpanders = new List<Expander> { };
+        
+
         private void LoginExpander_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             Expander expander = sender as Expander;
@@ -55,22 +58,40 @@ namespace Clash_Management_System_Navisworks_Addin.Views
              * Change this expander height to 200
              * set other Expanders height to 25
              * Highlight this expander header
-             * 
+             * Normalize other expanders header
              */
+
+            expander.IsEnabled = true;
+            expander.Height = 200;
+
+            //Disable rest of expanders
+            //Set other Expanders height to 25
+
+
+
+
             throw new Exception("Method ExpanderHeaderClicked: Work in progress");
             return null;
         }
 
         private bool ActivateExpander(Expander expander)
         {
-            throw new Exception("Method ActivateExpander: Work in progress");
-            return false;
+            expander.IsEnabled = true;
+            expander.IsExpanded = true;
+            expander.Height = 200;
+            expander.Background = expanderHighlightBackground;
+            expander.Foreground = expanderHighlightForeground;
+            return true;
         }
 
         private bool DeactivateExpander(Expander expander)
         {
-            throw new Exception("Method DeactivateExpander: Work in progress");
-            return false;
+            expander.IsEnabled = false;
+            expander.IsExpanded = false;
+            expander.Height = 25;
+            expander.Background = expanderNormalBackground;
+            expander.Foreground = expanderNormalForeground;
+            return true;
         }
 
         private bool LoginProcedure(Button Btn)
