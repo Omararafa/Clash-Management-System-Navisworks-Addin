@@ -8,12 +8,13 @@ using System.Collections.Generic;
 using Autodesk.Navisworks.Api.DocumentParts;
 using App = Autodesk.Navisworks.Api.Application;
 using Clash_Management_System_Navisworks_Addin.NW;
+using Clash_Management_System_Navisworks_Addin.ViewModels;
 
 namespace Clash_Management_System_Navisworks_Addin.Testing
 {
     public static class SearchSetClassTests
     {
-            // >> the mothod has been tested and set private in the NWHandler
+        // >> the mothod has been tested and set private in the NWHandler
         //public static void SearchSetTest()
         //{
         //    return;
@@ -33,6 +34,17 @@ namespace Clash_Management_System_Navisworks_Addin.Testing
         //    MessageBox.Show(data);
         //}
 
+        public static void ASearchSetComparisonTest()
+        {
+            List<ASearchSet> combinedASearchSets = NWHandler.CompareNWDBASearchSet();
 
+            string data = string.Empty;
+            foreach (var searchSet in combinedASearchSets)
+            {
+                data += "Search set name: " + searchSet.SearchSetName + " Status: " + searchSet.Status + Environment.NewLine;
+            }
+
+            MessageBox.Show(data);
+        }
     }
 }
