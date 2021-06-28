@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
 
-using Project = Clash_Management_System_Navisworks_Addin.ViewModels.Project;
 
 namespace Clash_Management_System_Navisworks_Addin.DB
 {
@@ -14,18 +13,57 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         #region Static Members
 
 
-        static bool GetProjects(User user)
+        static bool GetProjects(User user, ref List<Project>userProjects)
         {
             string userDomain = user.Domain;
             
             string userName = user.Name;
 
+            userProjects = new List<Project>();
+
             WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient()
             .GetProjects(userDomain, userName);
+
+
+
 
             switch (serviceResponse.State)
             {
                 case WebService.ResponseState.SUCCESS:
+
+                    WebService.ProjectsResults projectsResults = new WebService.ProjectsResults();
+
+                    List<Project> projects = new List<Project>();
+
+                    string projectName;
+                    string projectCode;
+                    List<AClashMatrix> projectClashMatrcies;
+
+
+                    foreach (var dbProject in projectsResults.Projects)
+                    {
+                        projectName = "";
+                        projectCode = "";
+                        projectClashMatrcies = new List<AClashMatrix>();
+                        Project project = new Project();
+
+                        projectName = dbProject.Name;
+                        projectCode = dbProject.Code;
+
+                        foreach (var dbClashMatrix in dbProject.Matrices)
+                        {
+                            AClashMatrix clashMatrix = new AClashMatrix
+                            {
+                                Name = dbClashMatrix.Name,
+                                Id = dbClashMatrix.Id,
+                                Project = project
+                            };
+                            projectClashMatrcies.Add(clashMatrix);
+                        }
+                        project.ClashMatrices = projectClashMatrcies;
+                    }
+
+                    userProjects = projects;
                     return true;
                 case WebService.ResponseState.FAILD:
                     return false;
