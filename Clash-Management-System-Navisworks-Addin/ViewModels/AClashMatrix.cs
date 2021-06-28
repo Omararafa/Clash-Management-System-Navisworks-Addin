@@ -10,5 +10,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
     {
         public string Name { get; set; }
         public List<AClashTest> ClashTests { get; set; }
+
+        public int Id { get; set; }
     }
 }

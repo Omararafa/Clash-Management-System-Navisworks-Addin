@@ -239,5 +239,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 PresentSearchSetsOnDataGrid(PresenterDataGrid, ViewsHandler.SearchSetsFromNW);
             }
         }
+
+        //TODO: Delete lines below
+
+        
+
+
     }
 }
