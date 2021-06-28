@@ -24,9 +24,6 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient()
             .GetProjects(userDomain, userName);
 
-
-
-
             switch (serviceResponse.State)
             {
                 case WebService.ResponseState.SUCCESS:
@@ -71,6 +68,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                     return false;
             }
         }
+
+
 
 
 
