@@ -94,17 +94,34 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
         }
 
-
-
         #endregion
 
         #region Database Handler Methods
+        public static List<ASearchSet> GenerateASearchSet(List<ASearchSet> nwASearchSets)
+        {
+            List<ASearchSet> dbSearchSets = new List<ASearchSet>(nwASearchSets);
+
+            int n = dbSearchSets.Count / 2;
+
+            for (int i = 0; i < n; i++)
+            {
+                dbSearchSets.RemoveAt(i);
+            }
+
+            foreach (ASearchSet searchSet in dbSearchSets)
+            {
+                searchSet.IsFromNavis = false;
+            }
+
+            dbSearchSets.Add(new ASearchSet(12, "FF_Spinklers", 22,  new Project(), "WYH", false));
+            dbSearchSets.Add(new ASearchSet(13, "ME_Ducts", 23,  new Project(), "WYH", false));
+            dbSearchSets.Add(new ASearchSet(14, "PL_Site", 24,  new Project(), "WYH", false));
 
 
+            return dbSearchSets;
+        }
 
         #endregion
-
-
 
         #region User Introduction  Methods
 
@@ -172,9 +189,6 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             return null;
         }
         #endregion
-
-
-
 
     }
 }
