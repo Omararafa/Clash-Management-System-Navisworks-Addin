@@ -86,9 +86,14 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\WebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="DBModels\dummy.cs" />
     <Compile Include="DB\AssemblyResourcesHandler.cs" />
-    <Compile Include="DB\dummy.cs" />
+    <Compile Include="DB\DBHandler.cs" />
     <Compile Include="Doc\Draft.cs" />
     <Compile Include="Logging\dummy.cs" />
     <Compile Include="NW\NWCmd.cs" />
@@ -130,6 +135,35 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Connected Services\WebService\clashservice.wsdl" />
+    <None Include="Connected Services\WebService\Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\WebService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService\clashservice.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\WebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
