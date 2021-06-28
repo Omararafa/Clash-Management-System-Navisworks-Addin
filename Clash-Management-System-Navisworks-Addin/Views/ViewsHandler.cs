@@ -14,15 +14,15 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         public static User CurrentUser { get; set; }
         public static Project CurrentProject { get; set; }
         public static AClashMatrix CurrentAClashMatrix { get; set; }
-        public  static List<Project> CurrentUserProjects { get; set; }
+        public static List<Project> CurrentUserProjects { get; set; }
         public static List<AClashMatrix> CurrentProjectClashMatrix { get; set; }
         #endregion
 
 
-        
-        
+
+
         #region Static Methods
-        static bool WriteCredentialsToAssembly(string name,string password)
+        static bool WriteCredentialsToAssembly(string name, string password)
         {
             throw new Exception("Method WriteCredentialsToAssembly: Work in progress");
             return false;

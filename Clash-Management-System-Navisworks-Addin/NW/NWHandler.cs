@@ -10,6 +10,7 @@ using Autodesk.Navisworks.Api.DocumentParts;
 using App = Autodesk.Navisworks.Api.Application;
 using Clash_Management_System_Navisworks_Addin.Views;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
+using Clash_Management_System_Navisworks_Addin.DB;
 
 namespace Clash_Management_System_Navisworks_Addin.NW
 
@@ -71,10 +72,46 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         #region SearchSetMethods
 
-        static ASearchSet CreateSearchSet()
+        public static List<ASearchSet> CompareNWDBASearchSet()
         {
-            throw new Exception("Method CreateSearchSet: Work in progress");
-            return null;
+            // 1. Create a dictionary for the DB search set
+            // 2. Iterate over the NW search set list
+            // 3. Check if the item exist in the DB dict:
+            //       >> true: Status = NotModified    
+            //                Delete this item from the dictionary                         
+            //       >> false: Status = New
+            // 4. Iterate over the dbDic and set Status property to Deleted
+            // 5. Create combined list = dbDic + nwLst
+
+
+            List<ASearchSet> nwASearchSets = GetSearchSet(document);
+            List<ASearchSet> dbASearchSets = DBHandler.GenerateASearchSet(nwASearchSets);
+            List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
+
+            Dictionary<string, ASearchSet> dbASearchSetsDic = dbASearchSets.ToDictionary(x => x.SearchSetName);
+
+            foreach (ASearchSet nwSearchSet in nwASearchSets)
+            {
+                if (dbASearchSetsDic.ContainsKey(nwSearchSet.SearchSetName))
+                {
+                    nwSearchSet.Status = EntityComparisonResult.NotEdited;
+                    dbASearchSetsDic.Remove(nwSearchSet.SearchSetName);
+                }
+                else
+                {
+                    nwSearchSet.Status = EntityComparisonResult.New;
+                }
+            }
+
+            foreach (string searchSetName in dbASearchSetsDic.Keys)
+            {
+                dbASearchSetsDic[searchSetName].Status = EntityComparisonResult.Deleted;
+            }
+
+            combinedASearchSets.AddRange(nwASearchSets);
+            combinedASearchSets.AddRange(dbASearchSetsDic.Values.ToList());
+
+            return combinedASearchSets;
         }
 
         public static List<ASearchSet> GetSearchSet(Document document)
@@ -154,17 +191,5 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
 
         #endregion
-
-        //TODO:delete or check method below
-        static void dummy(List<ASearchSet> NWSS, List<ASearchSet> DBSS)
-        {
-            List<ASearchSet> combined = new List<ASearchSet>();
-
-            combined.AddRange(NWSS);
-            combined.AddRange(DBSS);
-
-
-
-        }
     }
 }

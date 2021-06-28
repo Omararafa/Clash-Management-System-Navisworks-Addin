@@ -10,6 +10,7 @@ using Autodesk.Navisworks.Api.DocumentParts;
 using Clash_Management_System_Navisworks_Addin.NW;
 using Clash_Management_System_Navisworks_Addin.Views;
 using Clash_Management_System_Navisworks_Addin.Testing;
+using Clash_Management_System_Navisworks_Addin.ViewModels;
 
 namespace Clash_Management_System_Navisworks_Addin
 {
@@ -27,12 +28,13 @@ namespace Clash_Management_System_Navisworks_Addin
             switch (commandId)
             {
                 case "BE":
+                    SearchSetClassTests.ASearchSetComparisonTest();
                     break;
 
                 case "WPFUI":
                     MainWindow mainWindow = new MainWindow();
                     mainWindow.Show();
-                    
+
                     break;
             }
 
