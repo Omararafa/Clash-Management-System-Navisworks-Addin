@@ -19,7 +19,12 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public SelectionSet selectionSet { get; set; }
         public EntityComparisonResult Status { get; set; }
 
-        // Database intiation constructor
+        public ASearchSet()
+        {
+
+        }
+
+        // Database initiation constructor
         public ASearchSet(int pk, string searchSet, int tradeId, Project project, string modefiedBy, bool isFromNavis)
         {
             this.Pk = pk;
