@@ -2,4 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/Clash-Management-System-Navisworks-Addin
+.vs
+Clash-Management-System-Navisworks-Addin/vs
+Clash-Management-System-Navisworks-Addin/bin
+Clash-Management-System-Navisworks-Addin/obj
