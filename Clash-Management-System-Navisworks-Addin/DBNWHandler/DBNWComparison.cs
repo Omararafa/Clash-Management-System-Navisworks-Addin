@@ -12,6 +12,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
     public static class DBNWComparison
     {
         #region Static Members
+
         private static List<ASearchSet> _aSearchSetsComparisonList;
         public static List<ASearchSet> ASearchSetsComparisonList
         {
@@ -31,6 +32,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
                 return _aClashTestComparisonList;
             }
         }
+
         #endregion
 
         #region Naniswork & Database Comparison Methods
@@ -46,13 +48,12 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             // 5. Create combined list = dbDic + nwLst
 
 
-            List<ASearchSet> nwASearchSets = NWHandler.GetSearchSet(NWHandler.Document);
-            List<ASearchSet> dbASearchSets = DBHandler.GenerateASearchSet(nwASearchSets);
+            List<ASearchSet> dbASearchSets = DBHandler.GenerateASearchSet(NWHandler.NWASearchSets);
             List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
 
             Dictionary<string, ASearchSet> dbASearchSetsDic = dbASearchSets.ToDictionary(x => x.SearchSetName);
 
-            foreach (ASearchSet nwSearchSet in nwASearchSets)
+            foreach (ASearchSet nwSearchSet in NWHandler.NWASearchSets)
             {
                 if (dbASearchSetsDic.ContainsKey(nwSearchSet.SearchSetName))
                 {
@@ -70,7 +71,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
                 dbASearchSetsDic[searchSetName].Status = EntityComparisonResult.Deleted;
             }
 
-            combinedASearchSets.AddRange(nwASearchSets);
+            combinedASearchSets.AddRange(NWHandler.NWASearchSets);
             combinedASearchSets.AddRange(dbASearchSetsDic.Values.ToList());
 
             return combinedASearchSets;

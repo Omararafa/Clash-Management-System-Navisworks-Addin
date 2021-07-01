@@ -18,6 +18,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
     public static class NWHandler
     {
         #region Static Members
+
         private static Document _document;
         public static Document Document
         {
@@ -25,6 +26,36 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             {
                 _document = App.ActiveDocument;
                 return _document;
+            }
+        }
+
+        private static List<ASearchSet> _nwASearchSets;
+        public static List<ASearchSet> NWASearchSets
+        {
+            get
+            {
+                _nwASearchSets = GetSearchSets(Document);
+                return _nwASearchSets;
+            }
+        }
+
+        private static List<AClashTest> _nwAClashTests;
+        public static List<AClashTest> NWAClashTests
+        {
+            get
+            {
+                _nwAClashTests = GetClashTests(NWHandler.Document);
+                return _nwAClashTests;
+            }
+        }
+
+        private static List<AClashTestResult> _nwAClashResults;
+        public static List<AClashTestResult> NWAClashResults
+        {
+            get
+            {
+                _nwAClashResults = GetClashTestResults();
+                return _nwAClashResults;
             }
         }
         #endregion
@@ -62,7 +93,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         }
 
 
-        static AClashTest GetClashTest(Document currentDocument)
+        static List<AClashTest> GetClashTests(Document currentDocument)
         {
             throw new Exception("Method GetClashTest: Work in progress");
             return null;
@@ -76,7 +107,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
 
 
-        public static List<ASearchSet> GetSearchSet(Document document)
+        public static List<ASearchSet> GetSearchSets(Document document)
         {
             DocumentSelectionSets selectionSearchSets = document.SelectionSets;
             List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSearchSets);
@@ -144,9 +175,9 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         #region ClashResultMethods
 
-        static AClashTestResult GetClashTestResult()
+        static List<AClashTestResult> GetClashTestResults()
         {
-            throw new Exception("Method GetClashTestResult: Work in progress");
+            throw new Exception("Method GetClashTestResults: Work in progress");
             return null;
         }
 
