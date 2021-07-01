@@ -37,6 +37,10 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
 
         public ASearchSet SearchSet2 { get; set; }
 
+        public AClashTest()
+        {
+
+        }
 
         public AClashTest(string name,
          EntityComparisonResult status,
