@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Clash_Management_System_Navisworks_Addin.NW;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
 using Clash_Management_System_Navisworks_Addin.Views;
 
@@ -27,6 +28,38 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 if (GetProjects(ViewsHandler.CurrentUser, ref _projects))
                 {
                     return _projects;
+                }
+
+                return null;
+            }
+        }
+
+        private static List<ASearchSet> _dbASearchSets;
+        public static List<ASearchSet> DBASearchSets
+        {
+            get
+            {
+                bool isSucceed = SyncSearchSetsWithDB(ViewsHandler.CurrentUser, ViewsHandler.CurrentAClashMatrix, ref _dbASearchSets, NWHandler.NWASearchSets);
+
+                if (isSucceed)
+                {
+                    return _dbASearchSets;
+                }
+
+                return null;
+            }
+        }
+
+        private static List<AClashTest> _dbAClashTests;
+        public static List<AClashTest> DBAClashTests
+        {
+            get
+            {
+                bool isSucceed = SyncClashTest(ViewsHandler.CurrentAClashMatrix, ref _dbAClashTests);
+
+                if (isSucceed)
+                {
+                    return _dbAClashTests;
                 }
 
                 return null;
