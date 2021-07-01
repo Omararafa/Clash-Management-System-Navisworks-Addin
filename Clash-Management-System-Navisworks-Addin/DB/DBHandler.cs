@@ -17,7 +17,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             get
             {
-                if (_projects!=null && _projects.Count>0)
+                if (_projects != null && _projects.Count > 0)
                 {
                     return _projects;
                 }
