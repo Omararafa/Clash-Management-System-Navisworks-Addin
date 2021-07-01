@@ -142,12 +142,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Connected Services\WebService\clashservice.wsdl" />
     <None Include="Connected Services\WebService\Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\WebService\" />
