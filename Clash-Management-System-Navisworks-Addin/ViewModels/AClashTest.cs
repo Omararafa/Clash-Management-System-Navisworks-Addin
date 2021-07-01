@@ -42,6 +42,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
 
         }
 
+
         public AClashTest(string name,
          EntityComparisonResult status,
          int id,
