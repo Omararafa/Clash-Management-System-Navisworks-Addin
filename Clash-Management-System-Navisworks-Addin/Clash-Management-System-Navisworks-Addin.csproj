@@ -108,6 +108,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Reporting\ReportHandler.cs" />
     <Compile Include="Resouces\dummy.cs" />
     <Compile Include="Testing\SearchSetClassTests.cs" />
     <Compile Include="ViewModels\AClashMatrix.cs" />
