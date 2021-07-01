@@ -48,8 +48,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 LoginExpander,
                 SelectProjectExpander,
                 SelectClashMatrixExpander,
-                SelectFunctionExpander,
-                TestExpander
+                SelectFunctionExpander
             });
 
 
