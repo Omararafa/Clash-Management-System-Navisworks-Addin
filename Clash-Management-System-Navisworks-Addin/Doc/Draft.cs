@@ -33,5 +33,7 @@ namespace Clash_Management_System_Navisworks_Addin.Doc
     public class DraftClass
 
     {
+
+
     }
 }

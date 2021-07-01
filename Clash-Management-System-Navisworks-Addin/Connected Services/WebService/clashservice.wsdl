@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="Dar" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="Dar" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="Dar">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:element name="DEBUG_CheckDatabaseConnection">
+        <s:complexType />
+      </s:element>
+      <s:element name="DEBUG_CheckDatabaseConnectionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DEBUG_CheckDatabaseConnectionResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjects">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="user" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProjectsResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ServiceResponse" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="State" type="tns:ResponseState" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ResponseState">
+        <s:restriction base="s:string">
+          <s:enumeration value="SUCCESS" />
+          <s:enumeration value="FAILD" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Error">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ServiceResponse">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Meesage" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="Success">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ServiceResponse" />
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ClashTestsResults">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Success">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="ClashTests" type="tns:ArrayOfClashTest" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfClashTest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ClashTest" nillable="true" type="tns:ClashTest" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ClashTest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UniqueName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Type" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TypeName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MatrixId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="TradeId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TradeCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="AddDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="LastRunDate" nillable="true" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="AddedBy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProjectCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Priority" type="tns:Priority" />
+          <s:element minOccurs="0" maxOccurs="1" name="SearchSet1" type="tns:SearchSetInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="SearchSet2" type="tns:SearchSetInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Priority">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SearchSetInfo">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TradeId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TradeAbbr" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SyncSearchSetsResults">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Success">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Reports" type="tns:ArrayOfSearchSetReport" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfSearchSetReport">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SearchSetReport" nillable="true" type="tns:SearchSetReport" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SearchSetReport">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MatrixId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReportType" type="tns:ReportType" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ReportType">
+        <s:restriction base="s:string">
+          <s:enumeration value="ADD" />
+          <s:enumeration value="REMOVE" />
+          <s:enumeration value="UPDATE" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ProjectsResults">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:Success">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Projects" type="tns:ArrayOfProject" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfProject">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Project" nillable="true" type="tns:Project" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Project">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Matrices" type="tns:ArrayOfClashMatrix" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfClashMatrix">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ClashMatrix" nillable="true" type="tns:ClashMatrix" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ClashMatrix">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ProjectCode" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TemplateId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="TemplateName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AddBy" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SyncSearchSets">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userTradeAbbr" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="clashMatrixId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="definedSearchSets" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SyncSearchSetsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SyncSearchSetsResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClashTests">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="clashMatrixId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetClashTestsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetClashTestsResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SyncClashResults">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="clashMatrixId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="updateRequests" type="tns:ArrayOfClashResultSyncRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfClashResultSyncRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ClashResultSyncRequest" nillable="true" type="tns:ClashResultSyncRequest" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ClashResultSyncRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ClashTest" type="tns:ClashTest" />
+          <s:element minOccurs="0" maxOccurs="1" name="NewResults" type="tns:ArrayOfClashResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfClashResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ClashResult" nillable="true" type="tns:ClashResult" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ClashResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Guid" type="s1:guid" />
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApprovedBy" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ApprovedTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AssignedTo" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CreatedTime" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Distance" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClashPoint" type="tns:ClashPoint" />
+          <s:element minOccurs="0" maxOccurs="1" name="Item1Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Item1SourceFile" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Item2Name" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Item2SourceFile" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ClashPoint">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="X" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Y" type="s:float" />
+          <s:element minOccurs="1" maxOccurs="1" name="Z" type="s:float" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="SyncClashResultsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SyncClashResultsResult" type="tns:ServiceResponse" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="DEBUG_CheckDatabaseConnectionSoapIn">
+    <wsdl:part name="parameters" element="tns:DEBUG_CheckDatabaseConnection" />
+  </wsdl:message>
+  <wsdl:message name="DEBUG_CheckDatabaseConnectionSoapOut">
+    <wsdl:part name="parameters" element="tns:DEBUG_CheckDatabaseConnectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjects" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SyncSearchSetsSoapIn">
+    <wsdl:part name="parameters" element="tns:SyncSearchSets" />
+  </wsdl:message>
+  <wsdl:message name="SyncSearchSetsSoapOut">
+    <wsdl:part name="parameters" element="tns:SyncSearchSetsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetClashTestsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetClashTests" />
+  </wsdl:message>
+  <wsdl:message name="GetClashTestsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetClashTestsResponse" />
+  </wsdl:message>
+  <wsdl:message name="SyncClashResultsSoapIn">
+    <wsdl:part name="parameters" element="tns:SyncClashResults" />
+  </wsdl:message>
+  <wsdl:message name="SyncClashResultsSoapOut">
+    <wsdl:part name="parameters" element="tns:SyncClashResultsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ClashServiceSoap">
+    <wsdl:operation name="DEBUG_CheckDatabaseConnection">
+      <wsdl:input message="tns:DEBUG_CheckDatabaseConnectionSoapIn" />
+      <wsdl:output message="tns:DEBUG_CheckDatabaseConnectionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjects">
+      <wsdl:input message="tns:GetProjectsSoapIn" />
+      <wsdl:output message="tns:GetProjectsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SyncSearchSets">
+      <wsdl:input message="tns:SyncSearchSetsSoapIn" />
+      <wsdl:output message="tns:SyncSearchSetsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClashTests">
+      <wsdl:input message="tns:GetClashTestsSoapIn" />
+      <wsdl:output message="tns:GetClashTestsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SyncClashResults">
+      <wsdl:input message="tns:SyncClashResultsSoapIn" />
+      <wsdl:output message="tns:SyncClashResultsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ClashServiceSoap" type="tns:ClashServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DEBUG_CheckDatabaseConnection">
+      <soap:operation soapAction="Dar/DEBUG_CheckDatabaseConnection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjects">
+      <soap:operation soapAction="Dar/GetProjects" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SyncSearchSets">
+      <soap:operation soapAction="Dar/SyncSearchSets" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClashTests">
+      <soap:operation soapAction="Dar/GetClashTests" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SyncClashResults">
+      <soap:operation soapAction="Dar/SyncClashResults" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ClashServiceSoap12" type="tns:ClashServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DEBUG_CheckDatabaseConnection">
+      <soap12:operation soapAction="Dar/DEBUG_CheckDatabaseConnection" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjects">
+      <soap12:operation soapAction="Dar/GetProjects" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SyncSearchSets">
+      <soap12:operation soapAction="Dar/SyncSearchSets" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetClashTests">
+      <soap12:operation soapAction="Dar/GetClashTests" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SyncClashResults">
+      <soap12:operation soapAction="Dar/SyncClashResults" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ClashService">
+    <wsdl:port name="ClashServiceSoap" binding="tns:ClashServiceSoap">
+      <soap:address location="http://localhost:9090/clashservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ClashServiceSoap12" binding="tns:ClashServiceSoap12">
+      <soap12:address location="http://localhost:9090/clashservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
