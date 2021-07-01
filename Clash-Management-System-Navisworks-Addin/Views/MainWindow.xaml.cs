@@ -37,7 +37,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         public Brush expanderHighlightForeground = Brushes.LightSlateGray;
         List<Expander> SidebarExpanders = new List<Expander>();
 
-        
+
 
         public MainWindow()
         {
@@ -77,7 +77,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         public void PresentSearchSetsOnDataGrid(DataGrid datagrid, List<ASearchSet> data)
         {
             DataTable dataTable = new DataTable("Search Sets");
-            
+
             dataTable.Columns.Add("Name");
             dataTable.Columns.Add("Project");
             dataTable.Columns.Add("Clash Matrix");
@@ -94,12 +94,12 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     searchSet.TradeId.ToString(),
                     searchSet.ModifiedBy.ToString(),
                     searchSet.Status.ToString()
-                    ) ;
+                    );
             }
             datagrid.ItemsSource = dataTable.DefaultView;
-            
 
-            
+
+
 
 
 
@@ -234,15 +234,37 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (FunctionSearchSetsRBtn.IsChecked==true)
+            if (FunctionSearchSetsRBtn.IsChecked == true)
             {
                 PresentSearchSetsOnDataGrid(PresenterDataGrid, ViewsHandler.SearchSetsFromNW);
             }
         }
 
+        private void LoginBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string userName = UserNameTxt.Text.Trim();
+            string userDomain = UserDomainTxt.Text.Trim();
+
+            if (userName != string.Empty && userDomain != string.Empty)
+            {
+                ViewsHandler.CurrentUser = new User(userName, userDomain);
+
+                if (ViewsHandler.CurrentUser.Projects==null||ViewsHandler.CurrentUser.Projects.Count<1)
+                {
+                    LoginFeedbackTxt.Text = "Invalid User Input";
+                }
+
+                ProjectCbx.ItemsSource = ViewsHandler.CurrentUser.Projects.Select(x=>x.Name+": " +x.Code);
+
+                ActivateExpander(SelectProjectExpander);
+            }
+
+            LoginFeedbackTxt.Text = "Invalid User Input";
+        }
+
         //TODO: Delete lines below
 
-        
+
 
 
     }

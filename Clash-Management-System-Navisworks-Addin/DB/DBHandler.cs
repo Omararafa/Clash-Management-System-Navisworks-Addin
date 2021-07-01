@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
+using Clash_Management_System_Navisworks_Addin.Views;
 
 
 namespace Clash_Management_System_Navisworks_Addin.DB
@@ -11,7 +12,68 @@ namespace Clash_Management_System_Navisworks_Addin.DB
     public static class DBHandler
     {
         #region Static Members
+        private static List<Project> _projects;
+        public static List<Project> Projects
+        {
+            get
+            {
+                if (_projects!=null && _projects.Count>0)
+                {
+                    return _projects;
+                }
 
+                _projects = new List<Project>();
+
+                if (GetProjects(ViewsHandler.CurrentUser, ref _projects))
+                {
+                    return _projects;
+                }
+
+                return null;
+            }
+        }
+
+        public static string TradeAbb;
+
+
+        #endregion
+
+
+        #region Database Handler Methods
+
+        public static List<ASearchSet> GenerateASearchSet(List<ASearchSet> nwASearchSets)
+        {
+            // this method generate a random search set to compare with the one on the navis
+            // --------------> || THIS IS A TEST FUNCTION || <--------------
+
+            List<ASearchSet> dbASearchSets = nwASearchSets.ToList();
+
+            int n = dbASearchSets.Count / 3;
+
+            for (int i = 0; i < n; i++)
+            {
+                dbASearchSets.RemoveAt(i);
+            }
+
+            dbASearchSets.ForEach(aSearhSet => aSearhSet.IsFromNavis = false);
+
+            dbASearchSets.Add(new ASearchSet(12, "M_Ducts", 33, new Project(), "WYH", false));
+            dbASearchSets.Add(new ASearchSet(13, "FF_Spinklers", 34, new Project(), "WYH", false));
+            dbASearchSets.Add(new ASearchSet(14, "EL_Conduits", 32, new Project(), "WYH", false));
+
+            return dbASearchSets;
+        }
+
+        #endregion
+
+        #region User Introduction  Methods
+
+        public static bool GetLoginAuthentication(Credentials userCredentials)
+        {
+            throw new Exception("Method UserAutorized: Work in progress");
+
+            return false;
+        }
 
         static bool GetProjects(User user, ref List<Project> userProjects)
         {
@@ -23,6 +85,11 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
             WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient()
             .GetProjects(userDomain, userName);
+
+            if (serviceResponse is WebService.Error)
+            {
+                return false;
+            }
 
             switch (serviceResponse.State)
             {
@@ -70,21 +137,29 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         }
 
 
+        #endregion
 
-
-
-        static bool SyncSearchSetsWithDB(User user, AClashMatrix clashMatrix, List<ASearchSet> searchSets)
+        #region SearchSetsHandlers
+        static bool SyncSearchSetsWithDB(User user, AClashMatrix clashMatrix, ref List<ASearchSet> searchSetsFromDB,
+            List<ASearchSet> searchSetsFromNW)
         {
             string userTradeAbb = user.TradeAbb;
             int clashMatrixId = clashMatrix.Id;
-            string[] SearchSetsNames = searchSets.Select(x => x.SearchSetName).ToArray();
+            string[] SearchSetsNames = searchSetsFromNW.Select(x => x.SearchSetName).ToArray();
 
             WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient()
             .SyncSearchSets(userTradeAbb, clashMatrixId, SearchSetsNames);
 
+            if (serviceResponse is WebService.Error)
+            {
+                return false;
+            }
             switch (serviceResponse.State)
             {
                 case WebService.ResponseState.SUCCESS:
+
+                    //TODO: add a loop to map the SearchSetsResult
+
                     return true;
                 case WebService.ResponseState.FAILD:
                     return false;
@@ -92,7 +167,9 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                     return false;
             }
         }
+        #endregion
 
+        #region ClashTestsHandlers
         static bool SyncClashTest(AClashMatrix clashMatrix, ref List<AClashTest> clashTests)
         {
             int clashMatrixId = clashMatrix.Id;
@@ -168,91 +245,6 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         }
 
 
-        #endregion
-
-
-        #region Database Handler Methods
-
-        public static List<ASearchSet> GenerateASearchSet(List<ASearchSet> nwASearchSets)
-        {
-            // this method generate a random search set to compare with the one on the navis
-            // --------------> || THIS IS A TEST FUNCTION || <--------------
-
-            List<ASearchSet> dbASearchSets = nwASearchSets.ToList();
-
-            int n = dbASearchSets.Count / 3;
-
-            for (int i = 0; i < n; i++)
-            {
-                dbASearchSets.RemoveAt(i);
-            }
-
-            dbASearchSets.ForEach(aSearhSet => aSearhSet.IsFromNavis = false);
-
-            dbASearchSets.Add(new ASearchSet(12, "M_Ducts", 33, new Project(), "WYH", false));
-            dbASearchSets.Add(new ASearchSet(13, "FF_Spinklers", 34, new Project(), "WYH", false));
-            dbASearchSets.Add(new ASearchSet(14, "EL_Conduits", 32, new Project(), "WYH", false));
-
-            return dbASearchSets;
-        }
-
-        #endregion
-
-
-        #region User Introduction  Methods
-
-        public static bool GetLoginAuthentication(Credentials userCredentials)
-        {
-            throw new Exception("Method UserAutorized: Work in progress");
-
-            return false;
-        }
-
-        public static List<Project> GetUserProjects(User user)
-        {
-            throw new Exception("Method GetUserProjects: Work in progress");
-
-            return null;
-        }
-
-        public static List<AClashMatrix> GetProjectClashMatrices(Project project)
-        {
-            throw new Exception("Method GetProjectClashMatrices: Work in progress");
-
-            return null;
-        }
-        #endregion
-
-        #region SearchSetsHandlers
-        public static List<string> GetSearchSetsFromDB(AClashMatrix clashMatrix)
-        {
-            throw new Exception("Method GetSearchSetsFromDB: Work in progress");
-
-            return null;
-        }
-
-        public static List<List<string>> SettSearchSetsToDB()
-        {
-            throw new Exception("Method SetSearchSetsToDB: Work in progress");
-
-            return null;
-        }
-        #endregion
-
-        #region ClashTestsHandlers
-        public static List<string> GetClashTestsFromDB()
-        {
-            throw new Exception("Method GetClashTestsFromDB: Work in progress");
-
-            return null;
-        }
-
-        public static List<List<string>> SetClashTestsToDB()
-        {
-            throw new Exception("Method SetClashTestsToDB: Work in progress");
-
-            return null;
-        }
         #endregion
 
         #region ClashResultHandlers
