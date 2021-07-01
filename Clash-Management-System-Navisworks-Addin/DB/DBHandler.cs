@@ -93,8 +93,6 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
         }
 
-
-
         static bool SyncClashTest(AClashMatrix clashMatrix, ref List<AClashTest> clashTests)
         {
             int clashMatrixId = clashMatrix.Id;
@@ -158,97 +156,115 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                         clashTests = clashTestsFromDB;
 
 
-            }
+                    }
 
-            return true;
+                    return true;
                 case WebService.ResponseState.FAILD:
                     return false;
-            default:
+                default:
                     return false;
+            }
+
         }
 
+
+        #endregion
+
+
+        #region Database Handler Methods
+
+        public static List<ASearchSet> GenerateASearchSet(List<ASearchSet> nwASearchSets)
+        {
+            // this method generate a random search set to compare with the one on the navis
+            // --------------> || THIS IS A TEST FUNCTION || <--------------
+
+            List<ASearchSet> dbASearchSets = nwASearchSets.ToList();
+
+            int n = dbASearchSets.Count / 3;
+
+            for (int i = 0; i < n; i++)
+            {
+                dbASearchSets.RemoveAt(i);
+            }
+
+            dbASearchSets.ForEach(aSearhSet => aSearhSet.IsFromNavis = false);
+
+            dbASearchSets.Add(new ASearchSet(12, "M_Ducts", 33, new Project(), "WYH", false));
+            dbASearchSets.Add(new ASearchSet(13, "FF_Spinklers", 34, new Project(), "WYH", false));
+            dbASearchSets.Add(new ASearchSet(14, "EL_Conduits", 32, new Project(), "WYH", false));
+
+            return dbASearchSets;
+        }
+
+        #endregion
+
+
+        #region User Introduction  Methods
+
+        public static bool GetLoginAuthentication(Credentials userCredentials)
+        {
+            throw new Exception("Method UserAutorized: Work in progress");
+
+            return false;
+        }
+
+        public static List<Project> GetUserProjects(User user)
+        {
+            throw new Exception("Method GetUserProjects: Work in progress");
+
+            return null;
+        }
+
+        public static List<AClashMatrix> GetProjectClashMatrices(Project project)
+        {
+            throw new Exception("Method GetProjectClashMatrices: Work in progress");
+
+            return null;
+        }
+        #endregion
+
+        #region SearchSetsHandlers
+        public static List<string> GetSearchSetsFromDB(AClashMatrix clashMatrix)
+        {
+            throw new Exception("Method GetSearchSetsFromDB: Work in progress");
+
+            return null;
+        }
+
+        public static List<List<string>> SettSearchSetsToDB()
+        {
+            throw new Exception("Method SetSearchSetsToDB: Work in progress");
+
+            return null;
+        }
+        #endregion
+
+        #region ClashTestsHandlers
+        public static List<string> GetClashTestsFromDB()
+        {
+            throw new Exception("Method GetClashTestsFromDB: Work in progress");
+
+            return null;
+        }
+
+        public static List<List<string>> SetClashTestsToDB()
+        {
+            throw new Exception("Method SetClashTestsToDB: Work in progress");
+
+            return null;
+        }
+        #endregion
+
+        #region ClashResultHandlers
+
+
+        public static List<List<string>> SetClashResultToDB()
+        {
+            throw new Exception("Method SetClashResultToDB: Work in progress");
+
+            return null;
+        }
+        #endregion
+
     }
-
-
-    #endregion
-
-    #region Database Handler Methods
-
-
-
-    #endregion
-
-
-
-    #region User Introduction  Methods
-
-    public static bool GetLoginAuthentication(Credentials userCredentials)
-    {
-        throw new Exception("Method UserAutorized: Work in progress");
-
-        return false;
-    }
-
-    public static List<Project> GetUserProjects(User user)
-    {
-        throw new Exception("Method GetUserProjects: Work in progress");
-
-        return null;
-    }
-
-    public static List<AClashMatrix> GetProjectClashMatrices(Project project)
-    {
-        throw new Exception("Method GetProjectClashMatrices: Work in progress");
-
-        return null;
-    }
-    #endregion
-
-    #region SearchSetsHandlers
-    public static List<string> GetSearchSetsFromDB(AClashMatrix clashMatrix)
-    {
-        throw new Exception("Method GetSearchSetsFromDB: Work in progress");
-
-        return null;
-    }
-
-    public static List<List<string>> SettSearchSetsToDB()
-    {
-        throw new Exception("Method SetSearchSetsToDB: Work in progress");
-
-        return null;
-    }
-    #endregion
-
-    #region ClashTestsHandlers
-    public static List<string> GetClashTestsFromDB()
-    {
-        throw new Exception("Method GetClashTestsFromDB: Work in progress");
-
-        return null;
-    }
-
-    public static List<List<string>> SetClashTestsToDB()
-    {
-        throw new Exception("Method SetClashTestsToDB: Work in progress");
-
-        return null;
-    }
-    #endregion
-
-    #region ClashResultHandlers
-
-
-    public static List<List<string>> SetClashResultToDB()
-    {
-        throw new Exception("Method SetClashResultToDB: Work in progress");
-
-        return null;
-    }
-    #endregion
-
-
-
-
-}
 }
