@@ -80,6 +80,7 @@
                             Margin="65,15,15,5" Click="LoginBtn_Click"/>
                         <TextBlock Name="LoginFeedbackTxt"
                             Text="Log in Status"
+                            Visibility="Hidden"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Center"/>
 
@@ -108,7 +109,13 @@
                               Margin="5,5,5,5"/>
                     <Button Name="SelectProjectBtn" 
                             Content="Ok"
-                            Margin="65,15,15,5"/>
+                            Margin="65,15,15,5" 
+                            Click="SelectProjectBtn_Click"/>
+                    <TextBlock Name="ProjectsFeedbackTxt"
+                            Text="Project Status"
+                            Visibility="Hidden"
+                            Margin="5,5,5,5"
+                            HorizontalAlignment="Center"/>
                 </StackPanel>
             </Expander>
             <Expander Name="SelectClashMatrixExpander"
@@ -131,13 +138,18 @@
                               Margin="5,5,5,5"/>
                     <Button Name="SelectClashMatrixBtn" 
                             Content="Ok"
-                            Margin="65,15,15,5"/>
+                            Margin="65,15,15,5" Click="SelectClashMatrixBtn_Click"/>
+                    <TextBlock Name="ClashMatrixFeedbackTxt"
+                            Text="Clash Matrix Status"
+                            Visibility="Hidden"
+                            Margin="5,5,5,5"
+                            HorizontalAlignment="Center"/>
                 </StackPanel>
             </Expander>
             <Expander Name="SelectFunctionExpander"
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
-                      Header="Select Function"
+                      Header="Function"
                       HorizontalAlignment="Stretch"
                       Margin="1,0,1,0"
                       Grid.Row="4" 
@@ -148,19 +160,24 @@
                 <StackPanel>
                     <TextBlock Text="Select a Function"
                                Margin="5,25,5,5"/>
-                    <RadioButton Name="FunctionClashTestsRBtn"
-                                 Content="Get Clash Tests"
-                                 Margin="5,5,5,5"/>
                     <RadioButton Name="FunctionSearchSetsRBtn"
                                  Content="Sync Search Sets"
+                                 Margin="5,5,5,5"/>
+                    <RadioButton Name="FunctionClashTestsRBtn"
+                                 Content="Get Clash Tests"
                                  Margin="5,5,5,5"/>
                     <RadioButton Name="FunctionClashResultsRBtn"
                                  Content="Sync Clash Results"
                                  Margin="5,5,5,5"/>
                     <Button Name="SelectFunctionBtn" 
-                            Content="Execute"
+                            Content="Update"
                             Margin="65,15,15,5"
                             Click="SelectFunctionBtn_Click"/>
+                    <TextBlock Name="FunctionFeedbackTxt"
+                            Text="Function Status"
+                            Visibility="Hidden"
+                            Margin="5,5,5,5"
+                            HorizontalAlignment="Center"/>
                 </StackPanel>
             </Expander>
         </StackPanel>

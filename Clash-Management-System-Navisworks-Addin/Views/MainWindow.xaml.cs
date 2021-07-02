@@ -73,7 +73,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         }
 
 
-        public void PresentSearchSetsOnDataGrid(DataGrid datagrid, List<ASearchSet> data)
+        public bool PresentSearchSetsOnDataGrid(DataGrid datagrid, List<ASearchSet> data)
         {
             DataTable dataTable = new DataTable("Search Sets");
 
@@ -97,11 +97,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             datagrid.ItemsSource = dataTable.DefaultView;
 
-
-
-
-
-
+            return true;
         }
 
         private void Expander_PreviewMouseUp(object sender, RoutedEventArgs e)
@@ -169,24 +165,56 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             expander.Foreground = expanderNormalForeground;
             return true;
         }
+        private void UpdateFeedbackTextBlock(TextBlock feedbackTextBlock, bool isSuccess)
+        {
+            feedbackTextBlock.Visibility = Visibility.Visible;
+            if (isSuccess)
+            {
+                feedbackTextBlock.Text = "Success!";
+                feedbackTextBlock.Background = Brushes.Green;
+                return;
+            }
 
+            feedbackTextBlock.Text = "Invalid User Input!";
+            feedbackTextBlock.Background = Brushes.Red;
+            return;
+        }
         private bool LoginProcedure(Button Btn)
         {
             /*
              * This method shall be used for the login procedure as follows;
              * 1-DB: Send user name and password to database
-             * 2-Return login credentials feedback
+             * 2-[Obsolete]Return login credentials feedback
              * 3-UI: If not matching: report to user via the text block :LoginFeedbackTxt, Credentials.IsAuthorized=False
-             * 4-UI: If yes, set static members of credentials, CurrentUserName, CurrentUserPassword, Credentials.IsAuthorized=True
+             * 4-UI: If yes, set static members of CurrentUser
              * 5-Assembly: Set the variables in step #4 to assembly resources
              * 6-UI: handle the process of activate project expander
              * 7-UI: handle the process of deactivate login expander [or hide it entirely]
              * 8-UI: study to present the username into a text block within the header/footer
              * 9-DB: Get list of projects assigned to the user from the database
              */
-            throw new Exception("Method LoginProcedure: Work in progress");
+
+            //TODO: Bary, update data to be written into the Assembly
+            string userName = UserNameTxt.Text.Trim();
+            string userDomain = UserDomainTxt.Text.Trim();
+
+            if (userName != string.Empty && userDomain != string.Empty)
+            {
+                ViewsHandler.CurrentUser = new User(userName, userDomain);
+
+                if (ViewsHandler.CurrentUser.Projects != null || ViewsHandler.CurrentUser.Projects.Count > 0)
+                {
+                    ActivateExpander(SelectProjectExpander);
+                    DeactivateExpander(LoginExpander);
+                    ProjectCbx.ItemsSource = ViewsHandler.CurrentUser.Projects.Select(x => x.Name + ": " + x.Code);
+                    return true;
+                }
+            }
+
             return false;
         }
+
+
 
 
 
@@ -197,9 +225,26 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         * 3-UI: Handle the process of activate Clash Matrices expander
         * 4-UI: Handle the process of deactivate project expander
         */
-        private bool ProjectSelectedHandler(Button button)
+        private bool ProjectSelectedProcedure(Button button)
         {
-            throw new Exception("Method ProjectSelectedHandler: Work in progress");
+            //TODO: Bary Assembly: Create and store Project Class
+            int currentProjectIndex = ProjectCbx.SelectedIndex;
+
+            if (ViewsHandler.CurrentUserProjects.Count > currentProjectIndex && currentProjectIndex >= 0)
+            {
+                ViewsHandler.CurrentProject = ViewsHandler.CurrentUser.Projects.ElementAt(currentProjectIndex);
+                if (ViewsHandler.CurrentProject != null && ViewsHandler.CurrentProjectClashMatrices != null)
+                {
+                    if (ViewsHandler.CurrentProjectClashMatrices.Count > 0)
+                    {
+                        ActivateExpander(SelectClashMatrixExpander);
+                        DeactivateExpander(SelectProjectExpander);
+
+                        ClashMatrixCbx.ItemsSource = ViewsHandler.CurrentProjectClashMatrices.Select(x => x.Name + ": " + x.Id.ToString());
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
@@ -210,9 +255,27 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         * 3-UI: Handle the process of activate select function expander
         * 4-UI: Handle the process of deactivate Clash Matrices expander
         */
-        private bool ClashMatrixSelectedHandler(Button button)
+        private bool ClashMatrixSelectedProcedure(Button button)
         {
-            throw new Exception("Method ClashMatrixSelectedHandler: Work in progress");
+            int currentClashMatrixIndex = ClashMatrixCbx.SelectedIndex;
+
+            if (ViewsHandler.CurrentProjectClashMatrices.Count > currentClashMatrixIndex && currentClashMatrixIndex >= 0)
+            {
+
+
+                ViewsHandler.CurrentAClashMatrix = ViewsHandler.CurrentProjectClashMatrices.ElementAt(currentClashMatrixIndex);
+
+                if (ViewsHandler.CurrentAClashMatrix != null && ViewsHandler.CurrentAClashMatrix.ClashTests != null)
+                {
+                    if (ViewsHandler.CurrentAClashMatrix.ClashTests.Count > 0)
+                    {
+                        ActivateExpander(SelectFunctionExpander);
+                        DeactivateExpander(SelectClashMatrixExpander);
+                        return true;
+                    }
+                }
+            }
+
             return false;
         }
 
@@ -220,10 +283,14 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         * This method shall be used for the Handle the event of function selection as follows;
         * 
         */
-        private bool FunctionSelectedHandler(Button button)
+        private bool FunctionSelectedProcedure(Button button)
         {
-            throw new Exception("Method FunctionSelectedHandler: Work in progress");
+            if (FunctionSearchSetsRBtn.IsChecked == true)
+            {
+                return PresentSearchSetsOnDataGrid(PresenterDataGrid, ViewsHandler.SearchSetsFromNW);
+            }
             return false;
+
         }
 
 
@@ -231,40 +298,35 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         #endregion
 
-        private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (FunctionSearchSetsRBtn.IsChecked == true)
-            {
-                PresentSearchSetsOnDataGrid(PresenterDataGrid, ViewsHandler.SearchSetsFromNW);
-            }
-        }
 
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
-            string userName = UserNameTxt.Text.Trim();
-            string userDomain = UserDomainTxt.Text.Trim();
-
-            if (userName != string.Empty && userDomain != string.Empty)
-            {
-                ViewsHandler.CurrentUser = new User(userName, userDomain);
-
-                if (ViewsHandler.CurrentUser.Projects==null||ViewsHandler.CurrentUser.Projects.Count<1)
-                {
-                    LoginFeedbackTxt.Text = "Invalid User Input";
-                }
-
-                ProjectCbx.ItemsSource = ViewsHandler.CurrentUser.Projects.Select(x=>x.Name+": " +x.Code);
-
-                ActivateExpander(SelectProjectExpander);
-            }
-
-            LoginFeedbackTxt.Text = "Invalid User Input";
+            bool loginStatus = LoginProcedure(sender as Button);
+            UpdateFeedbackTextBlock(LoginFeedbackTxt, loginStatus);
         }
 
-        //TODO: Delete lines below
+        private void SelectProjectBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            bool selectProjectStatus = ProjectSelectedProcedure(sender as Button);
+            UpdateFeedbackTextBlock(ProjectsFeedbackTxt, selectProjectStatus);
+            return;
+        }
+
+        private void SelectClashMatrixBtn_Click(object sender, RoutedEventArgs e)
+        {
+            bool selectClashMatrixStatus = ClashMatrixSelectedProcedure(sender as Button);
+            UpdateFeedbackTextBlock(ClashMatrixFeedbackTxt, selectClashMatrixStatus);
+            return;
+        }
 
 
+        private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
+            UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
+            return;
 
-
+        }
     }
 }

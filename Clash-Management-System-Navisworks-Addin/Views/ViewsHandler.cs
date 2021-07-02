@@ -12,10 +12,22 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         #region Static Properties
         public static Credentials CurrentCredentials { get; set; }
         public static User CurrentUser { get; set; }
+        public static List<Project> CurrentUserProjects
+        {
+            get
+            {
+                return CurrentUser.Projects;
+            }
+        }
         public static Project CurrentProject { get; set; }
         public static AClashMatrix CurrentAClashMatrix { get; set; }
-        public static List<Project> CurrentUserProjects { get; set; }
-        public static List<AClashMatrix> CurrentProjectClashMatrix { get; set; }
+        public static List<AClashMatrix> CurrentProjectClashMatrices
+        {
+            get
+            {
+                return ViewsHandler.CurrentProject.ClashMatrices;
+            }
+        }
 
 
         //TODO: to be transfered to NWHandeler
@@ -41,24 +53,24 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         #region Static Methods
         static bool WriteCredentialsToAssembly(string name, string password)
-    {
-        throw new Exception("Method WriteCredentialsToAssembly: Work in progress");
-        return false;
+        {
+            throw new Exception("Method WriteCredentialsToAssembly: Work in progress");
+            return false;
+        }
+
+        static bool WriteCurrentProjectNameToAssembly(string currentProjectName)
+        {
+            throw new Exception("Method WriteCurrentProjectNameToAssembly: Work in progress");
+            return false;
+        }
+
+        static bool WriteCurrentClashMatrixtNameToAssembly(string clashMatrixName)
+        {
+            throw new Exception("Method WriteCurrentClashMatrixtNameToAssembly: Work in progress");
+            return false;
+        }
+
+        #endregion
+
     }
-
-    static bool WriteCurrentProjectNameToAssembly(string currentProjectName)
-    {
-        throw new Exception("Method WriteCurrentProjectNameToAssembly: Work in progress");
-        return false;
-    }
-
-    static bool WriteCurrentClashMatrixtNameToAssembly(string clashMatrixName)
-    {
-        throw new Exception("Method WriteCurrentClashMatrixtNameToAssembly: Work in progress");
-        return false;
-    }
-
-    #endregion
-
-}
 }
