@@ -8,23 +8,56 @@ using System.Collections.Generic;
 using Autodesk.Navisworks.Api.Clash;
 using Autodesk.Navisworks.Api.DocumentParts;
 using App = Autodesk.Navisworks.Api.Application;
+using Clash_Management_System_Navisworks_Addin.DB;
 using Clash_Management_System_Navisworks_Addin.Views;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
-using Clash_Management_System_Navisworks_Addin.DB;
 
 namespace Clash_Management_System_Navisworks_Addin.NW
 
 {
-
-    //All "GET" below means get from NW
-    //All "Create" below means create object and may/may not create into NW
-
     public static class NWHandler
     {
-        #region StaticaMembers
+        #region Static Members
 
-        public static Document document = App.ActiveDocument;
+        private static Document _document;
+        public static Document Document
+        {
+            get
+            {
+                _document = App.ActiveDocument;
+                return _document;
+            }
+        }
 
+        private static List<ASearchSet> _nwASearchSets;
+        public static List<ASearchSet> NWASearchSets
+        {
+            get
+            {
+                _nwASearchSets = GetSearchSets(Document);
+                return _nwASearchSets;
+            }
+        }
+
+        private static List<AClashTest> _nwAClashTests;
+        public static List<AClashTest> NWAClashTests
+        {
+            get
+            {
+                _nwAClashTests = GetClashTests(NWHandler.Document);
+                return _nwAClashTests;
+            }
+        }
+
+        private static List<AClashTestResult> _nwAClashResults;
+        public static List<AClashTestResult> NWAClashResults
+        {
+            get
+            {
+                _nwAClashResults = GetClashTestResults();
+                return _nwAClashResults;
+            }
+        }
         #endregion
 
 
@@ -60,7 +93,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         }
 
 
-        static AClashTest GetClashTest(Document currentDocument)
+        static List<AClashTest> GetClashTests(Document currentDocument)
         {
             throw new Exception("Method GetClashTest: Work in progress");
             return null;
@@ -72,49 +105,9 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         #region SearchSetMethods
 
-        public static List<ASearchSet> CompareNWDBASearchSet()
-        {
-            // 1. Create a dictionary for the DB search set
-            // 2. Iterate over the NW search set list
-            // 3. Check if the item exist in the DB dict:
-            //       >> true: Status = NotModified    
-            //                Delete this item from the dictionary                         
-            //       >> false: Status = New
-            // 4. Iterate over the dbDic and set Status property to Deleted
-            // 5. Create combined list = dbDic + nwLst
 
 
-            List<ASearchSet> nwASearchSets = GetSearchSet(document);
-            List<ASearchSet> dbASearchSets = DBHandler.GenerateASearchSet(nwASearchSets);
-            List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
-
-            Dictionary<string, ASearchSet> dbASearchSetsDic = dbASearchSets.ToDictionary(x => x.SearchSetName);
-
-            foreach (ASearchSet nwSearchSet in nwASearchSets)
-            {
-                if (dbASearchSetsDic.ContainsKey(nwSearchSet.SearchSetName))
-                {
-                    nwSearchSet.Status = EntityComparisonResult.NotEdited;
-                    dbASearchSetsDic.Remove(nwSearchSet.SearchSetName);
-                }
-                else
-                {
-                    nwSearchSet.Status = EntityComparisonResult.New;
-                }
-            }
-
-            foreach (string searchSetName in dbASearchSetsDic.Keys)
-            {
-                dbASearchSetsDic[searchSetName].Status = EntityComparisonResult.Deleted;
-            }
-
-            combinedASearchSets.AddRange(nwASearchSets);
-            combinedASearchSets.AddRange(dbASearchSetsDic.Values.ToList());
-
-            return combinedASearchSets;
-        }
-
-        public static List<ASearchSet> GetSearchSet(Document document)
+        public static List<ASearchSet> GetSearchSets(Document document)
         {
             DocumentSelectionSets selectionSearchSets = document.SelectionSets;
             List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSearchSets);
@@ -153,13 +146,13 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         static ASearchSet GetASearchSet(SelectionSet searchSet)
         {
-            ASearchSet aSearchSet = new ASearchSet(searchSet, ViewsHandler.CurrentProject, 
+            ASearchSet aSearchSet = new ASearchSet(searchSet, ViewsHandler.CurrentProject,
                                                    ViewsHandler.CurrentUser.Name, ViewsHandler.CurrentAClashMatrix, true);
 
             return aSearchSet;
         }
 
-        static void GetAllAndNestedSearchSets (SavedItem item, List<SelectionSet> documentSearchSets)
+        static void GetAllAndNestedSearchSets(SavedItem item, List<SelectionSet> documentSearchSets)
         {
             if (item.IsGroup)
             {
@@ -182,9 +175,9 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         #region ClashResultMethods
 
-        static AClashTestResult GetClashTestResult()
+        static List<AClashTestResult> GetClashTestResults()
         {
-            throw new Exception("Method GetClashTestResult: Work in progress");
+            throw new Exception("Method GetClashTestResults: Work in progress");
             return null;
         }
 

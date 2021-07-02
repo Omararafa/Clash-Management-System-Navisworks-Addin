@@ -94,6 +94,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="DBModels\dummy.cs" />
+    <Compile Include="DBNWHandler\DBNWComparison.cs" />
     <Compile Include="DB\AssemblyResourcesHandler.cs" />
     <Compile Include="DB\DBHandler.cs" />
     <Compile Include="Doc\Draft.cs" />
@@ -107,6 +108,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Reporting\ReportHandler.cs" />
     <Compile Include="Resouces\dummy.cs" />
     <Compile Include="Testing\SearchSetClassTests.cs" />
     <Compile Include="ViewModels\AClashMatrix.cs" />
