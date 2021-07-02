@@ -10,12 +10,12 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
     public static class ReportHandler
     {
         #region Static Members
-        private static string _reportPath;
+        private static string _path;
 
-        public static string ReprortPath
+        public static string Path
         {
-            get { return _reportPath; }
-            set { _reportPath = value; }
+            get { return _path; }
+            set { _path = value; }
         }
 
 
@@ -26,7 +26,6 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
         // --------------> THIS METHOD IS STIL IN PROGRESS <--------------
         public static void WriteReport(List<Object> records, string reportPath)
         {
-
             try
             {
                 using (StreamWriter streamWriter = new StreamWriter(reportPath, false))
@@ -39,7 +38,6 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
                 System.Windows.Forms.MessageBox.Show("An error occurs, please retry!" + Environment.NewLine + ex.Message);
             }
         }
-
         #endregion
     }
 }

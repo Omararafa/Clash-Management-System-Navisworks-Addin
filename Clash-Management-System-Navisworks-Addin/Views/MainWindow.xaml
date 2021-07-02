@@ -67,12 +67,13 @@
                         <TextBlock Text="User Name"
                                Margin="5,5,5,5"/>
                         <TextBox Name="UserNameTxt"
-                             Margin="5,5,5,5"
-                             Text="Enter User Name.."
+                                 Text="Enter User Name.."
+                                 Margin="5,5,5,5"
                              Foreground="DimGray"/>
                         <TextBlock Text="User Domain"
                                Margin="5,5,5,5"/>
                         <TextBox Name="UserDomainTxt"
+                             Text="Enter User Domain.."
                              Margin="5,5,5,5"
                              Foreground="DimGray"/>
                         <Button Name="LoginBtn" 

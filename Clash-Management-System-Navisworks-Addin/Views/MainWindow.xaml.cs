@@ -328,5 +328,17 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             return;
 
         }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox)
+            {
+                TextBox textBox = sender as TextBox;
+                if (textBox.Text.ToLower().StartsWith("Enter"))
+                {
+                    textBox.Text = string.Empty;
+                }
+            }
+        }
     }
 }
