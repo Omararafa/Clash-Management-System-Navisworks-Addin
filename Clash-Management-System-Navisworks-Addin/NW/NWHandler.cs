@@ -99,13 +99,39 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return null;
         }
 
+        private static ClashTest CreateClashTest(AClashTest aClashTest)
+        {
+            ClashTest clashTest = new ClashTest();
+
+            clashTest.DisplayName = aClashTest.Name;
+            clashTest.CustomTestName = aClashTest.Name;
+            clashTest.TestType = GetClashTestType(aClashTest.TypeName);
+
+            return null;
+        }
+
+        // ---------> THIS MOTTHOD STILL IN PROGRESS <---------
+        private static ClashTestType GetClashTestType(string typeName)
+        {
+            switch (typeName.Trim().ToLower())
+            {
+                case "hard":
+                    return ClashTestType.Hard;
+                case "duplicate":
+                    return ClashTestType.Duplicate;
+                case "clearance":
+                    return ClashTestType.Clearance;
+                case "hardconservative":
+                    return ClashTestType.HardConservative;
+                default:
+                    return ClashTestType.Custom;
+            }
+        }
 
         #endregion
 
 
         #region SearchSetMethods
-
-
 
         public static List<ASearchSet> GetSearchSets(Document document)
         {
@@ -180,7 +206,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             throw new Exception("Method GetClashTestResults: Work in progress");
             return null;
         }
-
 
 
         #endregion
