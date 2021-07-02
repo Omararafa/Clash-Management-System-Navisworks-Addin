@@ -69,16 +69,19 @@
                         <TextBox Name="UserNameTxt"
                                  Text="Enter User Name.."
                                  Margin="5,5,5,5"
-                             Foreground="DimGray"/>
+                             Foreground="DimGray"
+                                 GotFocus="TextBox_GotFocus"/>
                         <TextBlock Text="User Domain"
                                Margin="5,5,5,5"/>
                         <TextBox Name="UserDomainTxt"
                              Text="Enter User Domain.."
                              Margin="5,5,5,5"
-                             Foreground="DimGray"/>
+                             Foreground="DimGray"
+                                 GotFocus="TextBox_GotFocus"/>
                         <Button Name="LoginBtn" 
                             Content="Login"
-                            Margin="65,15,15,5" Click="LoginBtn_Click"/>
+                            Margin="65,15,15,5" 
+                                Click="LoginBtn_Click"/>
                         <TextBlock Name="LoginFeedbackTxt"
                             Text="Log in Status"
                             Visibility="Hidden"

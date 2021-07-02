@@ -201,6 +201,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             if (userName != string.Empty && userDomain != string.Empty)
             {
                 ViewsHandler.CurrentUser = new User(userName, userDomain);
+                List<Project> projects = ViewsHandler.CurrentUser.Projects;
+                string tradeAbb = ViewsHandler.CurrentUser.TradeAbb;
+
 
                 if (ViewsHandler.CurrentUser.Projects != null || ViewsHandler.CurrentUser.Projects.Count > 0)
                 {
@@ -334,7 +337,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             if (sender is TextBox)
             {
                 TextBox textBox = sender as TextBox;
-                if (textBox.Text.ToLower().StartsWith("Enter"))
+                if (textBox.Text.ToLower().StartsWith("enter"))
                 {
                     textBox.Text = string.Empty;
                 }

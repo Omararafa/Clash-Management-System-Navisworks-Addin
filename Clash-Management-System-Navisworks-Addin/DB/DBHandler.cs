@@ -113,21 +113,66 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
         static bool GetProjects(User user, ref List<Project> userProjects)
         {
+            try
+            {
+
             string userDomain = user.Domain;
 
             string userName = user.Name;
 
             userProjects = new List<Project>();
 
-            WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient()
-            .GetProjects(userDomain, userName);
+
+
+            Task<WebService.ServiceResponse> serviceResponse = new WebService.ClashServiceSoapClient()
+            .GetProjectsAsync(userDomain, userName);
+
+               // await serviceResponse;
 
             if (serviceResponse is WebService.Error)
             {
                 return false;
             }
 
-            switch (serviceResponse.State)
+                serviceResponse.Wait();
+
+                WebService.ProjectsResults projectsResults = new WebService.ProjectsResults();
+
+                List<Project> projects = new List<Project>();
+
+                string projectName;
+                string projectCode;
+                List<AClashMatrix> projectClashMatrcies;
+
+
+                foreach (var dbProject in projectsResults.Projects)
+                {
+                    projectName = "";
+                    projectCode = "";
+                    projectClashMatrcies = new List<AClashMatrix>();
+                    Project project = new Project();
+
+                    projectName = dbProject.Name;
+                    projectCode = dbProject.Code;
+
+                    foreach (var dbClashMatrix in dbProject.Matrices)
+                    {
+                        AClashMatrix clashMatrix = new AClashMatrix
+                        {
+                            Name = dbClashMatrix.Name,
+                            Id = dbClashMatrix.Id,
+                            Project = project
+                        };
+                        projectClashMatrcies.Add(clashMatrix);
+                    }
+                    project.ClashMatrices = projectClashMatrcies;
+                }
+
+                userProjects = projects;
+
+                return true;
+                /*
+            switch (fakeStatus)
             {
                 case WebService.ResponseState.SUCCESS:
 
@@ -169,6 +214,14 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                     return false;
                 default:
                     return false;
+            }
+                */
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 

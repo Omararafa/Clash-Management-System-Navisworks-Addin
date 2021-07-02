@@ -11,6 +11,7 @@ using Clash_Management_System_Navisworks_Addin.NW;
 using Clash_Management_System_Navisworks_Addin.Views;
 using Clash_Management_System_Navisworks_Addin.Testing;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
+using System.Windows.Forms.Integration;
 
 namespace Clash_Management_System_Navisworks_Addin
 {
@@ -33,6 +34,8 @@ namespace Clash_Management_System_Navisworks_Addin
 
                 case "WPFUI":
                     MainWindow mainWindow = new MainWindow();
+                    ElementHost.EnableModelessKeyboardInterop(mainWindow);
+
                     mainWindow.Show();
 
                     break;
