@@ -14,9 +14,11 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public Project Project { get; set; }
         public bool IsFromNavis { get; set; }
         public string ModifiedBy { get; set; }
-        public string SearchSetName { get; set; }
-        public AClashMatrix clashMatrix { get; set; }
-        public SelectionSet selectionSet { get; set; }
+        public string Name { get; set; }
+        public string DBMessage { get; set; }
+        public int ClashMatrixId { get; set; }
+        public AClashMatrix ClashMatrix { get; set; }
+        public SelectionSet SelectionSet { get; set; }
         public EntityComparisonResult Status { get; set; }
 
         public ASearchSet()
@@ -25,27 +27,26 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         }
 
         // Database initiation constructor
-        public ASearchSet(int pk, string searchSet, int tradeId, Project project, string modefiedBy, bool isFromNavis)
+        public ASearchSet(string name, int clashMatrixId, string dbMessage, EntityComparisonResult status, bool isFromNavis)
         {
-            this.Pk = pk;
-            this.TradeId = tradeId;
-            this.Project = project;
-            this.ModifiedBy = modefiedBy;
+            this.Name = name;
+            this.ClashMatrixId = clashMatrixId;
+            this.DBMessage = dbMessage;
+            this.Status = status;
             this.IsFromNavis = isFromNavis;
-            this.SearchSetName = searchSet;
         }
 
-        // Navisworks objects intiation constructor
-        public ASearchSet(SelectionSet selectionSet, Project project, string modefiedBy, AClashMatrix aClashMatrix, bool isFromNavis)
-        {
-            this.Project = project;
-            this.ModifiedBy = modefiedBy;
-            this.IsFromNavis = isFromNavis;
-            this.clashMatrix = aClashMatrix;
-            this.selectionSet = selectionSet;
-            this.SearchSetName = selectionSet.DisplayName;
-            this.Status = EntityComparisonResult.NotChecked;
-        }
-
+    // Navisworks objects initiation constructor
+    public ASearchSet(SelectionSet selectionSet, Project project, string modefiedBy, AClashMatrix aClashMatrix, bool isFromNavis)
+    {
+        this.Project = project;
+        this.ModifiedBy = modefiedBy;
+        this.IsFromNavis = isFromNavis;
+        this.ClashMatrix = aClashMatrix;
+        this.SelectionSet = selectionSet;
+        this.Name = selectionSet.DisplayName;
+        this.Status = EntityComparisonResult.NotChecked;
     }
+
+}
 }

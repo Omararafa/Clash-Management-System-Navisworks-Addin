@@ -51,14 +51,14 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             List<ASearchSet> dbASearchSets = DBHandler.GenerateASearchSet(NWHandler.NWASearchSets);
             List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
 
-            Dictionary<string, ASearchSet> dbASearchSetsDic = dbASearchSets.ToDictionary(x => x.SearchSetName);
+            Dictionary<string, ASearchSet> dbASearchSetsDic = dbASearchSets.ToDictionary(x => x.Name);
 
             foreach (ASearchSet nwSearchSet in NWHandler.NWASearchSets)
             {
-                if (dbASearchSetsDic.ContainsKey(nwSearchSet.SearchSetName))
+                if (dbASearchSetsDic.ContainsKey(nwSearchSet.Name))
                 {
                     nwSearchSet.Status = EntityComparisonResult.NotEdited;
-                    dbASearchSetsDic.Remove(nwSearchSet.SearchSetName);
+                    dbASearchSetsDic.Remove(nwSearchSet.Name);
                 }
                 else
                 {

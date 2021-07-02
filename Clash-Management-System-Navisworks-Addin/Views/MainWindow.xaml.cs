@@ -87,9 +87,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             foreach (var searchSet in data)
             {
                 dataTable.Rows.Add(
-                    searchSet.SearchSetName,
+                    searchSet.Name,
                     searchSet.Project.Name,
-                    searchSet.clashMatrix.Name,
+                    searchSet.ClashMatrix.Name,
                     searchSet.TradeId.ToString(),
                     searchSet.ModifiedBy.ToString(),
                     searchSet.Status.ToString()
@@ -287,7 +287,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             if (FunctionSearchSetsRBtn.IsChecked == true)
             {
-                return PresentSearchSetsOnDataGrid(PresenterDataGrid, ViewsHandler.SearchSetsFromNW);
+                return PresentSearchSetsOnDataGrid(PresenterDataGrid, DBNWHandler.DBNWComparison.ASearchSetsComparisonList);
             }
             return false;
 

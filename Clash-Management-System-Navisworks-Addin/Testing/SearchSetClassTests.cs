@@ -36,15 +36,17 @@ namespace Clash_Management_System_Navisworks_Addin.Testing
 
         public static void ASearchSetComparisonTest()
         {
-            List<ASearchSet> combinedASearchSets = NWHandler.CompareNWDBASearchSet();
+
+            List<ASearchSet> combinedASearchSets = DBNWHandler.DBNWComparison.ASearchSetsComparisonList;
 
             string data = string.Empty;
             foreach (var searchSet in combinedASearchSets)
             {
-                data += "Search set name: " + searchSet.SearchSetName + " Status: " + searchSet.Status + Environment.NewLine;
+                data += "Search set name: " + searchSet.Name + " Status: " + searchSet.Status + Environment.NewLine;
             }
 
             MessageBox.Show(data);
+            
         }
     }
 }

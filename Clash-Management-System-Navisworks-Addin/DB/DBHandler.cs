@@ -83,16 +83,19 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
             int n = dbASearchSets.Count / 3;
 
+            int currentClashMatrixId = Views.ViewsHandler.CurrentAClashMatrix.Id;
+
             for (int i = 0; i < n; i++)
             {
                 dbASearchSets.RemoveAt(i);
             }
 
+
             dbASearchSets.ForEach(aSearhSet => aSearhSet.IsFromNavis = false);
 
-            dbASearchSets.Add(new ASearchSet(12, "M_Ducts", 33, new Project(), "WYH", false));
-            dbASearchSets.Add(new ASearchSet(13, "FF_Spinklers", 34, new Project(), "WYH", false));
-            dbASearchSets.Add(new ASearchSet(14, "EL_Conduits", 32, new Project(), "WYH", false));
+            dbASearchSets.Add(new ASearchSet("M_Ducts", currentClashMatrixId, "Test", EntityComparisonResult.NotChecked, false));
+            dbASearchSets.Add(new ASearchSet("FF_Spinklers", currentClashMatrixId, "Test", EntityComparisonResult.NotChecked, false));
+            dbASearchSets.Add(new ASearchSet("EL_Conduits", currentClashMatrixId, "Test", EntityComparisonResult.NotChecked, false));
 
             return dbASearchSets;
         }
@@ -178,7 +181,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             string userTradeAbb = user.TradeAbb;
             int clashMatrixId = clashMatrix.Id;
-            string[] SearchSetsNames = searchSetsFromNW.Select(x => x.SearchSetName).ToArray();
+            searchSetsFromDB = new List<ASearchSet>();
+            string[] SearchSetsNames = searchSetsFromNW.Select(x => x.Name).ToArray();
 
             WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient()
             .SyncSearchSets(userTradeAbb, clashMatrixId, SearchSetsNames);
@@ -191,7 +195,36 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             {
                 case WebService.ResponseState.SUCCESS:
 
-                    //TODO: add a loop to map the SearchSetsResult
+                    WebService.SyncSearchSetsResults syncSearchSetsResults = serviceResponse as WebService.SyncSearchSetsResults;
+                    string name = "";
+                    int matrixId = -1;
+                    string dbMessage = "";
+                    EntityComparisonResult status = EntityComparisonResult.NotChecked;
+
+                    foreach (var result in syncSearchSetsResults.Reports)
+                    {
+                        name = result.Name;
+                        matrixId = result.MatrixId;
+                        dbMessage = result.Message;
+
+                        switch (result.ReportType)
+                        {
+                            case WebService.ReportType.ADD:
+                                status = EntityComparisonResult.New;
+                                break;
+                            case WebService.ReportType.REMOVE:
+                                status = EntityComparisonResult.Deleted;
+                                break;
+                            case WebService.ReportType.UPDATE:
+                                status = EntityComparisonResult.Edited;
+                                break;
+                            default:
+                                break;
+                        }
+
+                        ASearchSet searchSet = new ASearchSet(name, matrixId, dbMessage, status, false);
+                        searchSetsFromDB.Add(searchSet);
+                    }
 
                     return true;
                 case WebService.ResponseState.FAILD:
@@ -242,7 +275,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                             {
 
                                 Pk = -1,
-                                SearchSetName = dbClashTest.SearchSet1.Name,
+                                Name = dbClashTest.SearchSet1.Name,
                                 TradeId = dbClashTest.SearchSet1.TradeId,
                                 Project = new Project(),
                                 ModifiedBy = "",
@@ -252,7 +285,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                             {
 
                                 Pk = -1,
-                                SearchSetName = dbClashTest.SearchSet2.Name,
+                                Name = dbClashTest.SearchSet2.Name,
                                 TradeId = dbClashTest.SearchSet2.TradeId,
                                 Project = new Project(),
                                 ModifiedBy = "",
