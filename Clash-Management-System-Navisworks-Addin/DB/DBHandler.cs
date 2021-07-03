@@ -278,6 +278,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                             UniqueName = dbClashTest.UniqueName,
                             Type = dbClashTest.Type,
                             TypeName = dbClashTest.TypeName,
+                            Tolerance = dbClashTest.Tolerance,
                             ClashMatrixId = dbClashTest.MatrixId,
                             TradeId = dbClashTest.TradeId,
                             TradeCode = dbClashTest.TradeCode,

@@ -12,32 +12,19 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public EntityComparisonResult Status { get; set; }
 
         public int Id { get; set; }
-        public double Tolerance { get; set; }
-
         public string UniqueName { get; set; }
-
         public int Type { get; set; }
-
         public string TypeName { get; set; }
-
+        public double Tolerance { get; set; }
         public int ClashMatrixId { get; set; }
-
         public int TradeId { get; set; }
-
         public string TradeCode { get; set; }
-
         public DateTime? AddedDate { get; set; }
-
         public DateTime? LastRunDate { get; set; }
-
         public string AddedBy { get; set; }
-
         public string ProjectCode { get; set; }
-
         public ASearchSet SearchSet1 { get; set; }
-
         public ASearchSet SearchSet2 { get; set; }
-
         public AClashTest()
         {
 
@@ -50,6 +37,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
          string uniqueName,
          int type,
          string typeName,
+         double tolerance,
          int clashMatrixId,
          int tradeId,
          string tradeCode,
@@ -66,6 +54,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             this.UniqueName = uniqueName;
             this.Type = type;
             this.TypeName = typeName;
+            this.Tolerance = tolerance;
             this.ClashMatrixId = clashMatrixId;
             this.TradeId = tradeId;
             this.TradeCode = tradeCode;
