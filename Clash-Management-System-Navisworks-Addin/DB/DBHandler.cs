@@ -122,10 +122,9 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
             userProjects = new List<Project>();
 
-
-
-            Task<WebService.ServiceResponse> serviceResponse = new WebService.ClashServiceSoapClient()
-            .GetProjectsAsync(userDomain, userName);
+                //new WebService.ClashServiceSoapClient().Endpoint.Binding.SendTimeout = new TimeSpan(0, 0, 0, 1);
+            WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient("ClashServiceSoap")
+            .GetProjectsAsync(userDomain, userName).Result;
 
                // await serviceResponse;
 
@@ -134,45 +133,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 return false;
             }
 
-                serviceResponse.Wait();
 
-                WebService.ProjectsResults projectsResults = new WebService.ProjectsResults();
-
-                List<Project> projects = new List<Project>();
-
-                string projectName;
-                string projectCode;
-                List<AClashMatrix> projectClashMatrcies;
-
-
-                foreach (var dbProject in projectsResults.Projects)
-                {
-                    projectName = "";
-                    projectCode = "";
-                    projectClashMatrcies = new List<AClashMatrix>();
-                    Project project = new Project();
-
-                    projectName = dbProject.Name;
-                    projectCode = dbProject.Code;
-
-                    foreach (var dbClashMatrix in dbProject.Matrices)
-                    {
-                        AClashMatrix clashMatrix = new AClashMatrix
-                        {
-                            Name = dbClashMatrix.Name,
-                            Id = dbClashMatrix.Id,
-                            Project = project
-                        };
-                        projectClashMatrcies.Add(clashMatrix);
-                    }
-                    project.ClashMatrices = projectClashMatrcies;
-                }
-
-                userProjects = projects;
-
-                return true;
-                /*
-            switch (fakeStatus)
+            switch (serviceResponse.State)
             {
                 case WebService.ResponseState.SUCCESS:
 
@@ -215,7 +177,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 default:
                     return false;
             }
-                */
+                
 
             }
             catch (Exception)
