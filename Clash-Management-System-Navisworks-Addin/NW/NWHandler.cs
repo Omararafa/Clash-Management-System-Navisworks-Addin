@@ -112,7 +112,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return null;
         }
 
-        // ---------> THIS METHOD IS STILL IN PROGRESS (MISSIGN TOLERANCE FROM DB) <---------
         private static ClashTest CreateNewClashTest(AClashTest aClashTest)
         {
             ClashTest clashTest = new ClashTest();
@@ -120,6 +119,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             clashTest.DisplayName = aClashTest.Name;
             clashTest.CustomTestName = aClashTest.Name;
             clashTest.TestType = GetClashTestType(aClashTest.TypeName);
+            clashTest.Tolerance = aClashTest.Tolerance;
             
 
             SelectionSet searchSetA = aClashTest.SearchSet1.SelectionSet;
@@ -139,13 +139,17 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return clashTest;
         }
 
-        private static ClashTest CreateNewClashTest(AClashTest aClashTest, ClashTest oldClashTest)
+        private static ClashTest ModifyClashTest(AClashTest aClashTest, ClashTest targetClashTest)
         {
-            ClashTest clashTest = new ClashTest();
+            // targetClashTest: The ClashTest to edit
+            // sourceClashTest: The ClashTest to copy properties from.
 
-            clashTest.DisplayName = oldClashTest.DisplayName;
-            clashTest.CustomTestName = oldClashTest.CustomTestName;
-            clashTest.TestType = GetClashTestType(aClashTest.TypeName);
+            ClashTest sourceClashTest = new ClashTest();
+
+            sourceClashTest.DisplayName = targetClashTest.DisplayName;
+            sourceClashTest.CustomTestName = targetClashTest.CustomTestName;
+            sourceClashTest.TestType = GetClashTestType(aClashTest.TypeName);
+            sourceClashTest.Tolerance = aClashTest.Tolerance;
 
 
             SelectionSet searchSetA = aClashTest.SearchSet1.SelectionSet;
@@ -158,14 +162,24 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             selectionSourceCollectionA.Add(selectionSourceA);
             selectionSourceCollectionB.Add(selectionSourceB);
 
-            clashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
-            clashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
+            sourceClashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
+            sourceClashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
 
-            DocumentClash.TestsData.TestsAddCopy(clashTest);
-            return clashTest;
+            DocumentClash.TestsData.TestsEditTestFromCopy(targetClashTest, sourceClashTest);
+            return targetClashTest;
         }
 
-        // ---------> THIS MOTTHOD STILL IN PROGRESS <---------
+        private static ClashTest RemoveClashTest(AClashTest aClashTest)
+        {
+            DocumentClashTests documentClashTests = DocumentClash.TestsData;
+            ClashTest targetClashTest = documentClashTests.Tests.
+                FirstOrDefault(clashTest => clashTest.DisplayName == aClashTest.Name) as ClashTest;
+
+
+            DocumentClash.TestsData.TestsRemove(targetClashTest);
+            return targetClashTest;
+        }
+
         private static ClashTestType GetClashTestType(string typeName)
         {
             switch (typeName.Trim().ToLower())

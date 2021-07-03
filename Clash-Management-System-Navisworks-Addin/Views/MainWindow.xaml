@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Clash_Management_System_Navisworks_Addin.Views"
         mc:Ignorable="d"
         x:ClassModifier="public"
-        Title="MainWindow" Height="494.3" Width="800">
+        Title="MainWindow" Height="494.3" Width="800" WindowStartupLocation="CenterScreen">
     <Grid x:Name="WindowGrid" x:FieldModifier="public">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
