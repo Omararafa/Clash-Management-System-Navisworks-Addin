@@ -58,6 +58,19 @@ namespace Clash_Management_System_Navisworks_Addin.NW
                 return _nwAClashResults;
             }
         }
+
+        private static DocumentClash _documentClash;
+
+        public static DocumentClash DocumentClash
+        {
+            get
+            {
+                _documentClash = Document.Clash as DocumentClash;
+                return _documentClash;
+            }
+
+        }
+
         #endregion
 
 
@@ -99,15 +112,57 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return null;
         }
 
-        private static ClashTest CreateClashTest(AClashTest aClashTest)
+        // ---------> THIS METHOD IS STILL IN PROGRESS (MISSIGN TOLERANCE FROM DB) <---------
+        private static ClashTest CreateNewClashTest(AClashTest aClashTest)
         {
             ClashTest clashTest = new ClashTest();
 
             clashTest.DisplayName = aClashTest.Name;
             clashTest.CustomTestName = aClashTest.Name;
             clashTest.TestType = GetClashTestType(aClashTest.TypeName);
+            
 
-            return null;
+            SelectionSet searchSetA = aClashTest.SearchSet1.SelectionSet;
+            SelectionSet searchSetB = aClashTest.SearchSet2.SelectionSet;
+
+            SelectionSource selectionSourceA = Document.SelectionSets.CreateSelectionSource(searchSetA);
+            SelectionSource selectionSourceB = Document.SelectionSets.CreateSelectionSource(searchSetB);
+            SelectionSourceCollection selectionSourceCollectionA = new SelectionSourceCollection();
+            SelectionSourceCollection selectionSourceCollectionB = new SelectionSourceCollection();
+            selectionSourceCollectionA.Add(selectionSourceA);
+            selectionSourceCollectionB.Add(selectionSourceB);
+
+            clashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
+            clashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
+
+            DocumentClash.TestsData.TestsAddCopy(clashTest);
+            return clashTest;
+        }
+
+        private static ClashTest CreateNewClashTest(AClashTest aClashTest, ClashTest oldClashTest)
+        {
+            ClashTest clashTest = new ClashTest();
+
+            clashTest.DisplayName = oldClashTest.DisplayName;
+            clashTest.CustomTestName = oldClashTest.CustomTestName;
+            clashTest.TestType = GetClashTestType(aClashTest.TypeName);
+
+
+            SelectionSet searchSetA = aClashTest.SearchSet1.SelectionSet;
+            SelectionSet searchSetB = aClashTest.SearchSet2.SelectionSet;
+
+            SelectionSource selectionSourceA = Document.SelectionSets.CreateSelectionSource(searchSetA);
+            SelectionSource selectionSourceB = Document.SelectionSets.CreateSelectionSource(searchSetB);
+            SelectionSourceCollection selectionSourceCollectionA = new SelectionSourceCollection();
+            SelectionSourceCollection selectionSourceCollectionB = new SelectionSourceCollection();
+            selectionSourceCollectionA.Add(selectionSourceA);
+            selectionSourceCollectionB.Add(selectionSourceB);
+
+            clashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
+            clashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
+
+            DocumentClash.TestsData.TestsAddCopy(clashTest);
+            return clashTest;
         }
 
         // ---------> THIS MOTTHOD STILL IN PROGRESS <---------

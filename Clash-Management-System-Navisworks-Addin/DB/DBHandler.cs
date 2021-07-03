@@ -4,8 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Clash_Management_System_Navisworks_Addin.NW;
-using Clash_Management_System_Navisworks_Addin.ViewModels;
 using Clash_Management_System_Navisworks_Addin.Views;
+using Clash_Management_System_Navisworks_Addin.ViewModels;
 
 
 namespace Clash_Management_System_Navisworks_Addin.DB
@@ -115,75 +115,77 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             try
             {
+                string userDomain = user.Domain;
+                string userName = user.Name;
 
-            string userDomain = user.Domain;
+                userProjects = new List<Project>();
 
-            string userName = user.Name;
+                //new ClashServiceSoapClient().Endpoint.Binding.SendTimeout = new TimeSpan(0, 0, 0, 1);
+                //var serviceTask = new WebService.ClashServiceSoapClient("ClashServiceSoap").GetProjectsAsync(userDomain, userName);
+                //serviceTask.Wait();
+                //
+                //var serviceResponse = serviceTask.Result;
 
-            userProjects = new List<Project>();
-
-                //new WebService.ClashServiceSoapClient().Endpoint.Binding.SendTimeout = new TimeSpan(0, 0, 0, 1);
-            WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient("ClashServiceSoap")
-            .GetProjectsAsync(userDomain, userName).Result;
-
-               // await serviceResponse;
-
-            if (serviceResponse is WebService.Error)
-            {
-                return false;
-            }
+                var service = new WebService.ClashServiceSoapClient();
 
 
-            switch (serviceResponse.State)
-            {
-                case WebService.ResponseState.SUCCESS:
+                var serviceResponse = service.GetProjects(userDomain, userName);
 
-                    WebService.ProjectsResults projectsResults = new WebService.ProjectsResults();
-
-                    List<Project> projects = new List<Project>();
-
-                    string projectName;
-                    string projectCode;
-                    List<AClashMatrix> projectClashMatrcies;
+                // await serviceResponse;
 
 
-                    foreach (var dbProject in projectsResults.Projects)
-                    {
-                        projectName = "";
-                        projectCode = "";
-                        projectClashMatrcies = new List<AClashMatrix>();
-                        Project project = new Project();
+                switch (serviceResponse.State)
+                {
+                    case WebService.ResponseState.SUCCESS:
 
-                        projectName = dbProject.Name;
-                        projectCode = dbProject.Code;
+                        
+                        var projectsResults = serviceResponse as WebService.ProjectsResults;
+                        System.Windows.Forms.MessageBox.Show(String.Concat(projectsResults.Projects.Select(p => p.Name + " , ")));
+                        
+                        List<Project> projects = new List<Project>();
 
-                        foreach (var dbClashMatrix in dbProject.Matrices)
+                        string projectName;
+                        string projectCode;
+                        List<AClashMatrix> projectClashMatrcies;
+
+
+                        foreach (var dbProject in projectsResults.Projects)
                         {
-                            AClashMatrix clashMatrix = new AClashMatrix
+                            projectName = "";
+                            projectCode = "";
+                            projectClashMatrcies = new List<AClashMatrix>();
+                            Project project = new Project();
+
+                            projectName = dbProject.Name;
+                            projectCode = dbProject.Code;
+
+                            foreach (var dbClashMatrix in dbProject.Matrices)
                             {
-                                Name = dbClashMatrix.Name,
-                                Id = dbClashMatrix.Id,
-                                Project = project
-                            };
-                            projectClashMatrcies.Add(clashMatrix);
+                                AClashMatrix clashMatrix = new AClashMatrix
+                                {
+                                    Name = dbClashMatrix.Name,
+                                    Id = dbClashMatrix.Id,
+                                    Project = project
+                                };
+                                projectClashMatrcies.Add(clashMatrix);
+                            }
+                            project.ClashMatrices = projectClashMatrcies;
                         }
-                        project.ClashMatrices = projectClashMatrcies;
-                    }
 
-                    userProjects = projects;
-                    return true;
-                case WebService.ResponseState.FAILD:
-                    return false;
-                default:
-                    return false;
-            }
-                
+                        userProjects = projects;
+                        return true;
+
+                    case WebService.ResponseState.FAILD:
+                    default:
+                        return false;
+                }
+
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                System.Windows.Forms.MessageBox.Show(e.Message);
+                return false;
             }
         }
 
@@ -202,10 +204,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient()
             .SyncSearchSets(userTradeAbb, clashMatrixId, SearchSetsNames);
 
-            if (serviceResponse is WebService.Error)
-            {
-                return false;
-            }
+
             switch (serviceResponse.State)
             {
                 case WebService.ResponseState.SUCCESS:
@@ -262,7 +261,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             {
                 case WebService.ResponseState.SUCCESS:
 
-                    WebService.ClashTestsResults clashTestsResults = new WebService.ClashTestsResults();
+                    WebService.ClashTestsResults clashTestsResults = serviceResponse as WebService.ClashTestsResults;
 
                     List<AClashTest> clashTestsFromDB = new List<AClashTest>();
 

@@ -22,7 +22,7 @@ namespace Clash_Management_System_Navisworks_Addin
     [Command("WPFUI", CanToggle = true, DisplayName = "Button2")]
 
 
-    class Clash_Management_System_Navisworks_Addin : CommandHandlerPlugin
+    class NWCmd : CommandHandlerPlugin
     {
         public override int ExecuteCommand(string commandId, params string[] parameters)
         {

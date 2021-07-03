@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebService {
+namespace Clash_Management_System_Navisworks_Addin.WebService {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -24,31 +24,31 @@ namespace WebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/GetProjects", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        WebService.ServiceResponse GetProjects(string domain, string user);
+        Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string domain, string user);
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/GetProjects", ReplyAction="*")]
-        System.Threading.Tasks.Task<WebService.ServiceResponse> GetProjectsAsync(string domain, string user);
+        System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> GetProjectsAsync(string domain, string user);
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/SyncSearchSets", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        WebService.ServiceResponse SyncSearchSets(string userTradeAbbr, int clashMatrixId, string[] definedSearchSets);
+        Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse SyncSearchSets(string userTradeAbbr, int clashMatrixId, string[] definedSearchSets);
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/SyncSearchSets", ReplyAction="*")]
-        System.Threading.Tasks.Task<WebService.ServiceResponse> SyncSearchSetsAsync(string userTradeAbbr, int clashMatrixId, string[] definedSearchSets);
+        System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> SyncSearchSetsAsync(string userTradeAbbr, int clashMatrixId, string[] definedSearchSets);
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/GetClashTests", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        WebService.ServiceResponse GetClashTests(int clashMatrixId);
+        Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetClashTests(int clashMatrixId);
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/GetClashTests", ReplyAction="*")]
-        System.Threading.Tasks.Task<WebService.ServiceResponse> GetClashTestsAsync(int clashMatrixId);
+        System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> GetClashTestsAsync(int clashMatrixId);
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/SyncClashResults", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        WebService.ServiceResponse SyncClashResults(int clashMatrixId, WebService.ClashResultSyncRequest[] updateRequests);
+        Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse SyncClashResults(int clashMatrixId, Clash_Management_System_Navisworks_Addin.WebService.ClashResultSyncRequest[] updateRequests);
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/SyncClashResults", ReplyAction="*")]
-        System.Threading.Tasks.Task<WebService.ServiceResponse> SyncClashResultsAsync(int clashMatrixId, WebService.ClashResultSyncRequest[] updateRequests);
+        System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> SyncClashResultsAsync(int clashMatrixId, Clash_Management_System_Navisworks_Addin.WebService.ClashResultSyncRequest[] updateRequests);
     }
     
     /// <remarks/>
@@ -459,6 +459,8 @@ namespace WebService {
         
         private string tradeCodeField;
         
+        private double toleranceField;
+        
         private System.Nullable<System.DateTime> addDateField;
         
         private System.Nullable<System.DateTime> lastRunDateField;
@@ -570,7 +572,19 @@ namespace WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public double Tolerance {
+            get {
+                return this.toleranceField;
+            }
+            set {
+                this.toleranceField = value;
+                this.RaisePropertyChanged("Tolerance");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
         public System.Nullable<System.DateTime> AddDate {
             get {
                 return this.addDateField;
@@ -582,7 +596,7 @@ namespace WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=10)]
         public System.Nullable<System.DateTime> LastRunDate {
             get {
                 return this.lastRunDateField;
@@ -594,7 +608,7 @@ namespace WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
         public string AddedBy {
             get {
                 return this.addedByField;
@@ -606,7 +620,7 @@ namespace WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public string ProjectCode {
             get {
                 return this.projectCodeField;
@@ -618,7 +632,7 @@ namespace WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public Priority Priority {
             get {
                 return this.priorityField;
@@ -630,7 +644,7 @@ namespace WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
         public SearchSetInfo SearchSet1 {
             get {
                 return this.searchSet1Field;
@@ -642,7 +656,7 @@ namespace WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
         public SearchSetInfo SearchSet2 {
             get {
                 return this.searchSet2Field;
@@ -1154,12 +1168,12 @@ namespace WebService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ClashServiceSoapChannel : WebService.ClashServiceSoap, System.ServiceModel.IClientChannel {
+    public interface ClashServiceSoapChannel : Clash_Management_System_Navisworks_Addin.WebService.ClashServiceSoap, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ClashServiceSoapClient : System.ServiceModel.ClientBase<WebService.ClashServiceSoap>, WebService.ClashServiceSoap {
+    public partial class ClashServiceSoapClient : System.ServiceModel.ClientBase<Clash_Management_System_Navisworks_Addin.WebService.ClashServiceSoap>, Clash_Management_System_Navisworks_Addin.WebService.ClashServiceSoap {
         
         public ClashServiceSoapClient() {
         }
@@ -1188,35 +1202,35 @@ namespace WebService {
             return base.Channel.DEBUG_CheckDatabaseConnectionAsync();
         }
         
-        public WebService.ServiceResponse GetProjects(string domain, string user) {
+        public Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string domain, string user) {
             return base.Channel.GetProjects(domain, user);
         }
         
-        public System.Threading.Tasks.Task<WebService.ServiceResponse> GetProjectsAsync(string domain, string user) {
+        public System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> GetProjectsAsync(string domain, string user) {
             return base.Channel.GetProjectsAsync(domain, user);
         }
         
-        public WebService.ServiceResponse SyncSearchSets(string userTradeAbbr, int clashMatrixId, string[] definedSearchSets) {
+        public Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse SyncSearchSets(string userTradeAbbr, int clashMatrixId, string[] definedSearchSets) {
             return base.Channel.SyncSearchSets(userTradeAbbr, clashMatrixId, definedSearchSets);
         }
         
-        public System.Threading.Tasks.Task<WebService.ServiceResponse> SyncSearchSetsAsync(string userTradeAbbr, int clashMatrixId, string[] definedSearchSets) {
+        public System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> SyncSearchSetsAsync(string userTradeAbbr, int clashMatrixId, string[] definedSearchSets) {
             return base.Channel.SyncSearchSetsAsync(userTradeAbbr, clashMatrixId, definedSearchSets);
         }
         
-        public WebService.ServiceResponse GetClashTests(int clashMatrixId) {
+        public Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetClashTests(int clashMatrixId) {
             return base.Channel.GetClashTests(clashMatrixId);
         }
         
-        public System.Threading.Tasks.Task<WebService.ServiceResponse> GetClashTestsAsync(int clashMatrixId) {
+        public System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> GetClashTestsAsync(int clashMatrixId) {
             return base.Channel.GetClashTestsAsync(clashMatrixId);
         }
         
-        public WebService.ServiceResponse SyncClashResults(int clashMatrixId, WebService.ClashResultSyncRequest[] updateRequests) {
+        public Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse SyncClashResults(int clashMatrixId, Clash_Management_System_Navisworks_Addin.WebService.ClashResultSyncRequest[] updateRequests) {
             return base.Channel.SyncClashResults(clashMatrixId, updateRequests);
         }
         
-        public System.Threading.Tasks.Task<WebService.ServiceResponse> SyncClashResultsAsync(int clashMatrixId, WebService.ClashResultSyncRequest[] updateRequests) {
+        public System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> SyncClashResultsAsync(int clashMatrixId, Clash_Management_System_Navisworks_Addin.WebService.ClashResultSyncRequest[] updateRequests) {
             return base.Channel.SyncClashResultsAsync(clashMatrixId, updateRequests);
         }
     }

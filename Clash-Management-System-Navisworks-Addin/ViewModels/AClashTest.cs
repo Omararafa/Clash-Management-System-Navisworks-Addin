@@ -12,6 +12,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public EntityComparisonResult Status { get; set; }
 
         public int Id { get; set; }
+        public double Tolerance { get; set; }
 
         public string UniqueName { get; set; }
 

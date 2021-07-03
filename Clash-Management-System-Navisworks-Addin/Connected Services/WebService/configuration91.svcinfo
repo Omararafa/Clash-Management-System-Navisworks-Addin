@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="3vZpmqeWgnjXcoWfSPSghIlYRMkqDwRcBD5G4rpwGL4=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="OYUfuKmkHwhu3leEEoSnC7efiQTotHKzaJ4VkxgIId8=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="ClashServiceSoap">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="ClashServiceSoap" contract="WebService.ClashServiceSoap" bindingType="basicHttpBinding" address="http://localhost:9090/clashservice.asmx" bindingConfiguration="ClashServiceSoap">
+    <endpoint name="ClashServiceSoap" contract="WebService.ClashServiceSoap" bindingType="basicHttpBinding" address="http://localhost:9090/ClashService.asmx" bindingConfiguration="ClashServiceSoap">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:9090/clashservice.asmx</serializedValue>
+          <serializedValue>http://localhost:9090/ClashService.asmx</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
