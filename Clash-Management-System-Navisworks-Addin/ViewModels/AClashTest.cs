@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autodesk.Navisworks.Api.Clash;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,6 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
     {
         public string Name { get; set; }
         public EntityComparisonResult Status { get; set; }
-
         public int Id { get; set; }
         public string UniqueName { get; set; }
         public int Type { get; set; }
@@ -25,11 +25,12 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public string ProjectCode { get; set; }
         public ASearchSet SearchSet1 { get; set; }
         public ASearchSet SearchSet2 { get; set; }
+        public ClashTest ClashTest { get; set; }
+        public bool IsFromNavis { get; set; }
         public AClashTest()
         {
 
         }
-
 
         public AClashTest(string name,
          EntityComparisonResult status,
@@ -65,5 +66,28 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             this.SearchSet1 = searchSet1;
             this.SearchSet2 = searchSet2;
         }
+        public AClashTest(string name,
+         EntityComparisonResult status,
+         string typeName,
+         double tolerance,
+         int clashMatrixId,
+         string projectCode,
+         bool isFromNavis,
+         ClashTest clashTest,
+         ASearchSet searchSet1,
+         ASearchSet searchSet2)
+        {
+            this.Name = name;
+            this.Status = status;
+            this.TypeName = typeName;
+            this.Tolerance = tolerance;
+            this.ClashMatrixId = clashMatrixId;
+            this.ProjectCode = projectCode;
+            this.ClashTest = clashTest;
+            this.SearchSet1 = searchSet1;
+            this.SearchSet2 = searchSet2;
+            this.IsFromNavis = isFromNavis;
+        }
+
     }
 }

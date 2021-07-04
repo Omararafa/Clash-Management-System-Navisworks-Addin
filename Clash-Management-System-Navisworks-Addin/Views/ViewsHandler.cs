@@ -35,7 +35,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         public static List<ASearchSet> SearchSetsFromNW
         {
-            get { return NW.NWHandler.GetSearchSets(NW.NWHandler.Document); }
+            get { return NW.NWHandler.GetSearchSets(); }
             set { _SearchSetsFromNW = value; }
         }
 
