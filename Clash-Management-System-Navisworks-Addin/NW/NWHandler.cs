@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 using Autodesk.Navisworks.Api;
 using System.Collections.Generic;
@@ -90,10 +91,26 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         public static List<ASearchSet> GetSearchSets()
         {
             DocumentSelectionSets selectionSearchSets = Document.SelectionSets;
-            List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSearchSets);
-            List<ASearchSet> aSearchSets = GetASearchSetsList(documentSearchSets);
 
-            return aSearchSets;
+            if (selectionSearchSets != null && selectionSearchSets.Value.Count > 0)
+            {
+                List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSearchSets);
+
+                if (documentSearchSets != null && documentSearchSets.Count > 0)
+                {
+                    List<ASearchSet> aSearchSets = GetASearchSetsList(documentSearchSets);
+                    return aSearchSets;
+                }
+                else
+                {
+                    MessageBox.Show("Error, No search sets defined in the document!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return null;
+                }
+
+            }
+
+            MessageBox.Show("Error, No search sets defined in the document!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return null;
         }
 
         static List<SelectionSet> GetDocumentSearchSets(DocumentSelectionSets documentSelectionSets)
@@ -125,9 +142,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         static ASearchSet GetASearchSet(SelectionSet searchSet)
         {
-            ASearchSet aSearchSet = new ASearchSet(searchSet, ViewsHandler.CurrentProject,
-                                                   ViewsHandler.CurrentUser.Name, ViewsHandler.CurrentAClashMatrix, true);
-
+            ASearchSet aSearchSet = new ASearchSet(searchSet, true);
             return aSearchSet;
         }
 
@@ -204,7 +219,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return DocumentClash.TestsData.Tests.Cast<ClashTest>().ToList();
         }
 
-        private static ClashTest CreateNewClashTest(AClashTest aClashTest)
+        public static ClashTest CreateNewClashTest(AClashTest aClashTest)
         {
             ClashTest clashTest = new ClashTest();
 

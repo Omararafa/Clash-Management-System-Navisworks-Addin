@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autodesk.Navisworks.Api;
 using System.Collections.Generic;
+using Clash_Management_System_Navisworks_Addin.Views;
 
 namespace Clash_Management_System_Navisworks_Addin.ViewModels
 {
@@ -37,15 +38,15 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         }
 
     // Navisworks objects initiation constructor
-    public ASearchSet(SelectionSet selectionSet, Project project, string modefiedBy, AClashMatrix aClashMatrix, bool isFromNavis)
+    public ASearchSet(SelectionSet selectionSet, bool isFromNavis)
     {
-        this.Project = project;
-        this.ModifiedBy = modefiedBy;
         this.IsFromNavis = isFromNavis;
-        this.ClashMatrix = aClashMatrix;
         this.SelectionSet = selectionSet;
         this.Name = selectionSet.DisplayName;
         this.Status = EntityComparisonResult.NotChecked;
+        this.Project = ViewsHandler.CurrentProject;
+        this.ClashMatrix = ViewsHandler.CurrentAClashMatrix;
+        this.ModifiedBy = ViewsHandler.CurrentUser.Name;
     }
 
 }
