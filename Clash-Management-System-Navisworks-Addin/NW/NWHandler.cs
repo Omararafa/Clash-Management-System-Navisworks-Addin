@@ -231,21 +231,21 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return clashTest;
         }
 
-        private static ClashTest ModifyClashTest(AClashTest aClashTest, ClashTest targetClashTest)
+        public static AClashTest ModifyClashTest(AClashTest sourceAClashTest, AClashTest targetAClashTest)
         {
+            // sourceClashTest: The ClashTest to copy properties from
             // targetClashTest: The ClashTest to edit
-            // sourceClashTest: The ClashTest to copy properties from.
 
-            ClashTest sourceClashTest = new ClashTest();
+            ClashTest tempClashTest = new ClashTest();
 
-            sourceClashTest.DisplayName = targetClashTest.DisplayName;
-            sourceClashTest.CustomTestName = targetClashTest.CustomTestName;
-            sourceClashTest.TestType = GetClashTestType(aClashTest.TypeName);
-            sourceClashTest.Tolerance = aClashTest.Tolerance;
+            tempClashTest.DisplayName = sourceAClashTest.ClashTest.DisplayName;
+            tempClashTest.CustomTestName = sourceAClashTest.ClashTest.CustomTestName;
+            tempClashTest.TestType = sourceAClashTest.ClashTest.TestType;
+            tempClashTest.Tolerance = sourceAClashTest.ClashTest.Tolerance;
 
 
-            SelectionSet searchSetA = aClashTest.SearchSet1.SelectionSet;
-            SelectionSet searchSetB = aClashTest.SearchSet2.SelectionSet;
+            SelectionSet searchSetA = sourceAClashTest.SearchSet1.SelectionSet;
+            SelectionSet searchSetB = sourceAClashTest.SearchSet2.SelectionSet;
 
             SelectionSource selectionSourceA = Document.SelectionSets.CreateSelectionSource(searchSetA);
             SelectionSource selectionSourceB = Document.SelectionSets.CreateSelectionSource(searchSetB);
@@ -254,11 +254,11 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             selectionSourceCollectionA.Add(selectionSourceA);
             selectionSourceCollectionB.Add(selectionSourceB);
 
-            sourceClashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
-            sourceClashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
+            tempClashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
+            tempClashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
 
-            DocumentClash.TestsData.TestsEditTestFromCopy(targetClashTest, sourceClashTest);
-            return targetClashTest;
+            DocumentClash.TestsData.TestsEditTestFromCopy(targetAClashTest.ClashTest, tempClashTest);
+            return targetAClashTest;
         }
 
         private static ClashTest RemoveClashTest(AClashTest aClashTest)

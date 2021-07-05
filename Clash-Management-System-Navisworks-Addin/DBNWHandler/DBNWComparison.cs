@@ -48,7 +48,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             // 5. Create combined list = dbDic + nwLst
 
 
-            List<ASearchSet> dbASearchSets = DBHandler.GenerateASearchSet(NWHandler.NWASearchSets);
+            List<ASearchSet> dbASearchSets = DBHandler.DBASearchSets;
             List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
 
             Dictionary<string, ASearchSet> dbASearchSetsDic = dbASearchSets.ToDictionary(x => x.Name);
@@ -77,12 +77,73 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             return combinedASearchSets;
         }
 
-
         private static List<AClashTest> CompareNWDBAClashTests()
         {
-            throw new NotImplementedException("Method CompareNWDBAClashTests: Work in progress");
+            // 1. Create a dictionary for the NW clash Tests
+            // 2. Iterate over the DB clash tests list
+            // 3. Check if the item exist in the NW dict (comparing by the name of the clash test):
+            //       >> true:   IF NW == DB (comparing all other preperties):
+            //                      - Status = NotModified
+            //                      - Delete this item from the dictionary                         
+            //                  IF NW != DB (comparing all other preperties):
+            //                      - Status = Edited
+            //                      - Make NW == DB
+            //                      - Delete this item from the dictionary                         
+            //       >> false:  Status = New
+            //                  Create the clash test in NW
+            // 4. Iterate over the NWDic and set Status property to Deleted
+            // 5. Create combined list = dbLst + nwLst
 
-            return null;
+
+            List<AClashTest> nwClashTests = NWHandler.NWAClashTests;
+            List<AClashTest> combinedAClashTests = new List<AClashTest>();
+
+            Dictionary<string, AClashTest> nwAClashTestsDic = nwClashTests.ToDictionary(x => x.Name);
+
+            foreach (AClashTest dbAClashTest in DBHandler.DBAClashTests)
+            {
+                if (nwAClashTestsDic.ContainsKey(dbAClashTest.Name))
+                {
+                    if (IsAClashTestsEqual(nwAClashTestsDic[dbAClashTest.Name], dbAClashTest))
+                    {
+                        dbAClashTest.Status = EntityComparisonResult.NotEdited;
+                        nwAClashTestsDic.Remove(dbAClashTest.Name);
+                    } else
+                    {
+                        dbAClashTest.Status = EntityComparisonResult.Edited;
+                        NWHandler.ModifyClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
+                        nwAClashTestsDic.Remove(dbAClashTest.Name);
+                    }
+                }
+                else
+                {
+                    NWHandler.CreateNewClashTest(dbAClashTest);
+                    dbAClashTest.Status = EntityComparisonResult.New;
+                }
+            }
+
+            foreach (string clashTestName in nwAClashTestsDic.Keys)
+            {
+                nwAClashTestsDic[clashTestName].Status = EntityComparisonResult.Deleted;
+            }
+
+            combinedAClashTests.AddRange(DBHandler.DBAClashTests);
+            combinedAClashTests.AddRange(nwAClashTestsDic.Values.ToList());
+
+            return combinedAClashTests;
+        }
+
+        private static bool IsAClashTestsEqual(AClashTest nwAClashTest, AClashTest dbAClashTest)
+        {
+            if (nwAClashTest.Tolerance == dbAClashTest.Tolerance &&
+                nwAClashTest.TypeName == dbAClashTest.TypeName &&
+                nwAClashTest.SearchSet1.Name == dbAClashTest.SearchSet1.Name &&
+                nwAClashTest.SearchSet2.Name == dbAClashTest.SearchSet2.Name)
+            {
+                return true;
+            }
+
+            return false;
         }
         #endregion
     }
