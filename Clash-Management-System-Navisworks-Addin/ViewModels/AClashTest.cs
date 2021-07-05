@@ -1,9 +1,10 @@
-﻿using Autodesk.Navisworks.Api.Clash;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Autodesk.Navisworks.Api.Clash;
+using Clash_Management_System_Navisworks_Addin.Views;
 
 namespace Clash_Management_System_Navisworks_Addin.ViewModels
 {
@@ -70,8 +71,6 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
          EntityComparisonResult status,
          string typeName,
          double tolerance,
-         int clashMatrixId,
-         string projectCode,
          bool isFromNavis,
          ClashTest clashTest,
          ASearchSet searchSet1,
@@ -81,8 +80,8 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             this.Status = status;
             this.TypeName = typeName;
             this.Tolerance = tolerance;
-            this.ClashMatrixId = clashMatrixId;
-            this.ProjectCode = projectCode;
+            this.ClashMatrixId = ViewsHandler.CurrentAClashMatrix.Id;
+            this.ProjectCode = ViewsHandler.CurrentProject.Code;
             this.ClashTest = clashTest;
             this.SearchSet1 = searchSet1;
             this.SearchSet2 = searchSet2;

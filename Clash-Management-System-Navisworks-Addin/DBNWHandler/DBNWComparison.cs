@@ -124,6 +124,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
 
             foreach (string clashTestName in nwAClashTestsDic.Keys)
             {
+                NWHandler.RemoveClashTest(nwAClashTestsDic[clashTestName]);
                 nwAClashTestsDic[clashTestName].Status = EntityComparisonResult.Deleted;
             }
 

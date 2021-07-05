@@ -142,7 +142,10 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         static ASearchSet GetASearchSet(SelectionSet searchSet)
         {
-            ASearchSet aSearchSet = new ASearchSet(searchSet, true);
+            ASearchSet aSearchSet = new ASearchSet(
+                selectionSet: searchSet,
+                isFromNavis: true);
+
             return aSearchSet;
         }
 
@@ -171,52 +174,54 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         private static List<AClashTest> GetClashTests()
         {
             List<ClashTest> documentClashTests = GetDocumentClashTests();
-            List<AClashTest> aClashTests = GetAClashTestList(documentClashTests);
 
-            return aClashTests;
+            if (documentClashTests != null && documentClashTests.Count > 0)
+            {
+                List<AClashTest> aClashTests = GetAClashTestList(documentClashTests);
+                return aClashTests; 
+            }
+
+            return null;
+        }
+
+        private static List<ClashTest> GetDocumentClashTests()
+        {
+            return DocumentClash.TestsData.Tests.Cast<ClashTest>().ToList();
         }
 
         private static List<AClashTest> GetAClashTestList(List<ClashTest> ClashTests)
         {
             List<AClashTest> aClashTests = new List<AClashTest>();
+            List<ASearchSet> nwASearchSets = NWASearchSets;
 
             foreach (ClashTest clashTest in ClashTests)
             {
-                AClashTest aClashTest = GetAClashTest(clashTest);
+                AClashTest aClashTest = GetAClashTest(clashTest, nwASearchSets);
                 aClashTests.Add(aClashTest);
             }
 
             return aClashTests;
         }
 
-        private static AClashTest GetAClashTest(ClashTest clashTest)
+        private static AClashTest GetAClashTest(ClashTest clashTest, List<ASearchSet> nwASearchSets)
         {
-            ASearchSet aSearhSetA = NWHandler.NWASearchSets.Find(set =>
+            ASearchSet aSearhSetA = nwASearchSets.Find(set =>
                 set.Name == GetSelectionSetFromSelectionSource(clashTest.SelectionA.Selection.SelectionSources.FirstOrDefault()).DisplayName);
 
-            ASearchSet aSearhSetB = NWHandler.NWASearchSets.Find(set =>
+            ASearchSet aSearhSetB = nwASearchSets.Find(set =>
                 set.Name == GetSelectionSetFromSelectionSource(clashTest.SelectionB.Selection.SelectionSources.FirstOrDefault()).DisplayName);
 
-            AClashTest aClashTest = new AClashTest
-            {
-                Name = clashTest.DisplayName,
-                Status = EntityComparisonResult.NotChecked,
-                TypeName = GetClashTestType(clashTest.TestType),
-                Tolerance = clashTest.Tolerance,
-                ClashMatrixId = ViewsHandler.CurrentAClashMatrix.Id,
-                ProjectCode = ViewsHandler.CurrentProject.Code,
-                IsFromNavis = true,
-                ClashTest = clashTest,
-                SearchSet1 = aSearhSetA,
-                SearchSet2 = aSearhSetB,
-            };
+            AClashTest aClashTest = new AClashTest(
+                name: clashTest.DisplayName,
+                status: EntityComparisonResult.NotChecked,
+                typeName: GetClashTestType(clashTest.TestType),
+                tolerance: clashTest.Tolerance,
+                isFromNavis: true,
+                clashTest: clashTest,
+                searchSet1: aSearhSetA,
+                searchSet2: aSearhSetB);
 
             return aClashTest;
-        }
-
-        private static List<ClashTest> GetDocumentClashTests()
-        {
-            return DocumentClash.TestsData.Tests.Cast<ClashTest>().ToList();
         }
 
         public static ClashTest CreateNewClashTest(AClashTest aClashTest)
@@ -276,7 +281,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return targetAClashTest;
         }
 
-        private static ClashTest RemoveClashTest(AClashTest aClashTest)
+        public static ClashTest RemoveClashTest(AClashTest aClashTest)
         {
             DocumentClashTests documentClashTests = DocumentClash.TestsData;
             ClashTest targetClashTest = documentClashTests.Tests.
