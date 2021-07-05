@@ -341,7 +341,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return null;
         }
 
-
         #endregion
     }
 }
