@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Clash_Management_System_Navisworks_Addin.NW;
 using Clash_Management_System_Navisworks_Addin.Views;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
-
 
 namespace Clash_Management_System_Navisworks_Addin.DB
 {
@@ -120,19 +120,15 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 userProjects = new List<Project>();
 
-                //new ClashServiceSoapClient().Endpoint.Binding.SendTimeout = new TimeSpan(0, 0, 0, 1);
-                //var serviceTask = new WebService.ClashServiceSoapClient("ClashServiceSoap").GetProjectsAsync(userDomain, userName);
-                //serviceTask.Wait();
-                //
-                //var serviceResponse = serviceTask.Result;
-
-                var service = new WebService.ClashServiceSoapClient();
+                EndpointAddress address = new EndpointAddress("http://localhost:9090/ClashService.asmx");
+                var service = new WebService.ClashServiceSoapClient(new BasicHttpBinding
+                {
+                    Name = "ClashServiceSoap",
+                    Security = new BasicHttpSecurity { Mode = BasicHttpSecurityMode.None },
+                }, address);
 
 
                 var serviceResponse = service.GetProjects(userDomain, userName);
-
-                // await serviceResponse;
-
 
                 switch (serviceResponse.State)
                 {
