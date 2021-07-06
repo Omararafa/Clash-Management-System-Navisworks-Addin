@@ -23,14 +23,13 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                     return _projects;
                 }
 
-                _projects = new List<Project>();
-
                 if (GetProjects(ViewsHandler.CurrentUser, ref _projects))
                 {
                     return _projects;
                 }
 
                 return null;
+
             }
         }
 
@@ -66,8 +65,20 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
         }
 
-        public static string TradeAbb;
+        //TODO:Remap TradeAbb
+        public static string TradeAbb
+        { get
+            { return "AG";
+            }
+        }
 
+        static EndpointAddress address = new EndpointAddress("http://localhost:9090/ClashService.asmx");
+        static WebService.ClashServiceSoapClient service = new WebService.ClashServiceSoapClient(new BasicHttpBinding
+        {
+            Name = "ClashServiceSoap",
+            Security = new BasicHttpSecurity { Mode = BasicHttpSecurityMode.None },
+        },
+        address);
 
         #endregion
 
@@ -120,25 +131,14 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 userProjects = new List<Project>();
 
-                EndpointAddress address = new EndpointAddress("http://localhost:9090/ClashService.asmx");
-                var service = new WebService.ClashServiceSoapClient(new BasicHttpBinding
-                {
-                    Name = "ClashServiceSoap",
-                    Security = new BasicHttpSecurity { Mode = BasicHttpSecurityMode.None },
-                }, address);
-
-
                 var serviceResponse = service.GetProjects(userDomain, userName);
 
                 switch (serviceResponse.State)
                 {
                     case WebService.ResponseState.SUCCESS:
 
-                        
                         var projectsResults = serviceResponse as WebService.ProjectsResults;
-                        System.Windows.Forms.MessageBox.Show(String.Concat(projectsResults.Projects.Select(p => p.Name + " , ")));
-                        
-                        List<Project> projects = new List<Project>();
+
 
                         string projectName;
                         string projectCode;
@@ -147,8 +147,6 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                         foreach (var dbProject in projectsResults.Projects)
                         {
-                            projectName = "";
-                            projectCode = "";
                             projectClashMatrcies = new List<AClashMatrix>();
                             Project project = new Project();
 
@@ -165,18 +163,18 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                                 };
                                 projectClashMatrcies.Add(clashMatrix);
                             }
+                            project.Name = projectName;
+                            project.Code = projectCode;
                             project.ClashMatrices = projectClashMatrcies;
+                            userProjects.Add(project);
                         }
 
-                        userProjects = projects;
                         return true;
 
                     case WebService.ResponseState.FAILD:
                     default:
                         return false;
                 }
-
-
             }
             catch (Exception e)
             {
@@ -189,15 +187,15 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         #endregion
 
         #region SearchSetsHandlers
-        static bool SyncSearchSetsWithDB(User user, AClashMatrix clashMatrix, ref List<ASearchSet> searchSetsFromDB,
+        public static bool SyncSearchSetsWithDB(User user, AClashMatrix clashMatrix, ref List<ASearchSet> searchSetsFromDB,
             List<ASearchSet> searchSetsFromNW)
         {
-            string userTradeAbb = user.TradeAbb;
+            string userTradeAbb = DBHandler.TradeAbb;
             int clashMatrixId = clashMatrix.Id;
             searchSetsFromDB = new List<ASearchSet>();
             string[] SearchSetsNames = searchSetsFromNW.Select(x => x.Name).ToArray();
 
-            WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient()
+            WebService.ServiceResponse serviceResponse = service
             .SyncSearchSets(userTradeAbb, clashMatrixId, SearchSetsNames);
 
 
@@ -246,11 +244,10 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         #endregion
 
         #region ClashTestsHandlers
-        static bool SyncClashTest(AClashMatrix clashMatrix, ref List<AClashTest> clashTests)
+        public static bool SyncClashTest(AClashMatrix clashMatrix, ref List<AClashTest> clashTests)
         {
             int clashMatrixId = clashMatrix.Id;
-            WebService.ServiceResponse serviceResponse = new WebService.ClashServiceSoapClient()
-
+            WebService.ServiceResponse serviceResponse = service
             .GetClashTests(clashMatrixId);
 
             switch (serviceResponse.State)
@@ -327,11 +324,66 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         #region ClashResultHandlers
 
 
-        public static List<List<string>> SetClashResultToDB()
+        //TODO: Method below needs update after ClashResult class update in ViewModels
+        public static bool SetClashResultToDB(AClashMatrix clashMatrix, List<AClashTestResult> clashTestsResultsFromNW)
         {
-            throw new Exception("Method SetClashResultToDB: Work in progress");
+            int clashMatrixId = clashMatrix.Id;
 
-            return null;
+            //Build up ClashResultSyncRequest[]
+            List<WebService.ClashResultSyncRequest> clashResultSyncRequests = new List<WebService.ClashResultSyncRequest>();
+            foreach (AClashTestResult clashTestResult in clashTestsResultsFromNW)
+            {
+                WebService.ClashResultSyncRequest clashResultSyncRequest = new WebService.ClashResultSyncRequest();
+
+                AClashTest nwClashTest = clashTestResult.ClashTest;
+                WebService.ClashTest dbClashTest = new WebService.ClashTest();
+
+                dbClashTest.AddDate = nwClashTest.AddedDate;
+                dbClashTest.AddedBy = nwClashTest.AddedBy;
+                dbClashTest.Id = nwClashTest.Id;
+                dbClashTest.LastRunDate = nwClashTest.LastRunDate;
+                dbClashTest.MatrixId = nwClashTest.ClashMatrixId;
+                dbClashTest.Name = nwClashTest.Name;
+                dbClashTest.ProjectCode = nwClashTest.ProjectCode;
+                dbClashTest.SearchSet1 = new WebService.SearchSetInfo
+                {
+                    Name = nwClashTest.SearchSet1.Name,
+                    TradeId = nwClashTest.SearchSet1.TradeId
+                };
+                dbClashTest.SearchSet2 = new WebService.SearchSetInfo
+                {
+                    Name = nwClashTest.SearchSet2.Name,
+                    TradeId = nwClashTest.SearchSet2.TradeId
+                };
+                dbClashTest.Tolerance = nwClashTest.Tolerance;
+                dbClashTest.TradeCode = nwClashTest.TradeCode;
+                dbClashTest.Type = nwClashTest.Type;
+                dbClashTest.TypeName = nwClashTest.TypeName;
+                dbClashTest.UniqueName = nwClashTest.UniqueName;
+
+                clashResultSyncRequest.ClashTest = dbClashTest;
+
+                //TODO: Create, populate ClashResult classes after update of ClashResult class in View Models.
+                clashResultSyncRequest.NewResults = new WebService.ClashResult[0];
+
+                clashResultSyncRequests.Add(clashResultSyncRequest);
+
+            }
+
+            WebService.ServiceResponse serviceResponse = service
+            .SyncClashResults(clashMatrixId, clashResultSyncRequests.ToArray());
+
+
+
+            switch (serviceResponse.State)
+            {
+                case WebService.ResponseState.SUCCESS:
+                    return true;
+                case WebService.ResponseState.FAILD:
+                    return false;
+                default:
+                    return false;
+            }
         }
         #endregion
 

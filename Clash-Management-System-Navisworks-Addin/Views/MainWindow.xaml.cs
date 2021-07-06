@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -209,7 +210,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 {
                     ActivateExpander(SelectProjectExpander);
                     DeactivateExpander(LoginExpander);
-                    ProjectCbx.ItemsSource = ViewsHandler.CurrentUser.Projects.Select(x => x.Name + ": " + x.Code);
+                    ObservableCollection<string> projectCbxDataSource = new ObservableCollection<string>
+                        ( ViewsHandler.CurrentUser.Projects.Select(x => x.Name + ": " + x.Code).ToList());
+                    ProjectCbx.ItemsSource = projectCbxDataSource;
                     return true;
                 }
             }
@@ -268,14 +271,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
                 ViewsHandler.CurrentAClashMatrix = ViewsHandler.CurrentProjectClashMatrices.ElementAt(currentClashMatrixIndex);
 
-                if (ViewsHandler.CurrentAClashMatrix != null && ViewsHandler.CurrentAClashMatrix.ClashTests != null)
+                if (ViewsHandler.CurrentAClashMatrix != null )
                 {
-                    if (ViewsHandler.CurrentAClashMatrix.ClashTests.Count > 0)
-                    {
-                        ActivateExpander(SelectFunctionExpander);
-                        DeactivateExpander(SelectClashMatrixExpander);
-                        return true;
-                    }
+                    ActivateExpander(SelectFunctionExpander);
+                    DeactivateExpander(SelectClashMatrixExpander);
+                    return true;
                 }
             }
 
@@ -290,7 +290,21 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             if (FunctionSearchSetsRBtn.IsChecked == true)
             {
-                return PresentSearchSetsOnDataGrid(PresenterDataGrid, DBNWHandler.DBNWComparison.ASearchSetsComparisonList);
+                List<ASearchSet> nwSearchSets = NW.NWHandler.GetSearchSets();
+                List<ASearchSet> dbSearchSets=new List<ASearchSet>();
+                if (nwSearchSets.Count>0)
+                {
+                    DB.DBHandler.SyncSearchSetsWithDB(
+                        ViewsHandler.CurrentUser,
+                        ViewsHandler.CurrentAClashMatrix,
+                        ref dbSearchSets,
+                        nwSearchSets
+                        );
+                    if (dbSearchSets.Count>0)
+                    {
+                        return PresentSearchSetsOnDataGrid(PresenterDataGrid, DBNWHandler.DBNWComparison.ASearchSetsComparisonList);
+                    }
+                }
             }
             return false;
 

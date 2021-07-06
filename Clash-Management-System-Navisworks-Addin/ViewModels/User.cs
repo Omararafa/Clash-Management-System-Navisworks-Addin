@@ -18,12 +18,17 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
                 return DB.DBHandler.TradeAbb;
             }
         }
-
-        public List<Project> Projects 
+        private List<Project> _projects;
+        public List<Project> Projects
         {
             get
             {
-                return DB.DBHandler.Projects;
+                if (this._projects == null||this._projects.Count<=0)
+                {
+                    return _projects = DB.DBHandler.Projects;
+                    
+                }
+                return this._projects;
             }
         }
 

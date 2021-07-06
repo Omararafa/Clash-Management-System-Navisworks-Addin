@@ -110,7 +110,7 @@
                                Margin="5,25,5,5"/>
                     <ComboBox Name="ProjectCbx" 
                               Text="Select a Project"
-                              Margin="5,5,5,5"/>
+                              Margin="5,5,5,5" />
                     <Button Name="SelectProjectBtn" 
                             Content="Ok"
                             Margin="65,15,15,5" 
