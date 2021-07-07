@@ -213,7 +213,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
             AClashTest aClashTest = new AClashTest(
                 name: clashTest.DisplayName,
-                status: EntityComparisonResult.NotChecked,
+                condition: EntityComparisonResult.NotChecked,
                 typeName: GetClashTestType(clashTest.TestType),
                 tolerance: clashTest.Tolerance,
                 isFromNavis: true,

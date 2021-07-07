@@ -42,7 +42,7 @@ namespace Clash_Management_System_Navisworks_Addin.Testing
             string data = string.Empty;
             foreach (var searchSet in combinedASearchSets)
             {
-                data += "Search set name: " + searchSet.Name + " Status: " + searchSet.Status + Environment.NewLine;
+                data += "Search set name: " + searchSet.Name + " Status: " + searchSet.Conditon + Environment.NewLine;
             }
 
             MessageBox.Show(data);

@@ -57,18 +57,18 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             {
                 if (dbASearchSetsDic.ContainsKey(nwSearchSet.Name))
                 {
-                    nwSearchSet.Status = EntityComparisonResult.NotEdited;
+                    nwSearchSet.Conditon = EntityComparisonResult.NotEdited;
                     dbASearchSetsDic.Remove(nwSearchSet.Name);
                 }
                 else
                 {
-                    nwSearchSet.Status = EntityComparisonResult.New;
+                    nwSearchSet.Conditon = EntityComparisonResult.New;
                 }
             }
 
             foreach (string searchSetName in dbASearchSetsDic.Keys)
             {
-                dbASearchSetsDic[searchSetName].Status = EntityComparisonResult.Deleted;
+                dbASearchSetsDic[searchSetName].Conditon = EntityComparisonResult.Deleted;
             }
 
             combinedASearchSets.AddRange(NWHandler.NWASearchSets);
@@ -106,11 +106,11 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
                 {
                     if (IsAClashTestsEqual(nwAClashTestsDic[dbAClashTest.Name], dbAClashTest))
                     {
-                        dbAClashTest.Status = EntityComparisonResult.NotEdited;
+                        dbAClashTest.Condition = EntityComparisonResult.NotEdited;
                         nwAClashTestsDic.Remove(dbAClashTest.Name);
                     } else
                     {
-                        dbAClashTest.Status = EntityComparisonResult.Edited;
+                        dbAClashTest.Condition = EntityComparisonResult.Edited;
                         NWHandler.ModifyClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
                         nwAClashTestsDic.Remove(dbAClashTest.Name);
                     }
@@ -118,14 +118,14 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
                 else
                 {
                     NWHandler.CreateNewClashTest(dbAClashTest);
-                    dbAClashTest.Status = EntityComparisonResult.New;
+                    dbAClashTest.Condition = EntityComparisonResult.New;
                 }
             }
 
             foreach (string clashTestName in nwAClashTestsDic.Keys)
             {
                 NWHandler.RemoveClashTest(nwAClashTestsDic[clashTestName]);
-                nwAClashTestsDic[clashTestName].Status = EntityComparisonResult.Deleted;
+                nwAClashTestsDic[clashTestName].Condition = EntityComparisonResult.Deleted;
             }
 
             combinedAClashTests.AddRange(DBHandler.DBAClashTests);

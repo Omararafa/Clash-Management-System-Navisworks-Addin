@@ -93,7 +93,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     searchSet.ClashMatrix.Name,
                     searchSet.TradeId.ToString(),
                     searchSet.ModifiedBy.ToString(),
-                    searchSet.Status.ToString()
+                    searchSet.Conditon.ToString()
                     );
             }
             datagrid.ItemsSource = dataTable.DefaultView;

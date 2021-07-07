@@ -11,7 +11,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
     public class AClashTest
     {
         public string Name { get; set; }
-        public EntityComparisonResult Status { get; set; }
+        public EntityComparisonResult Condition { get; set; }
         public int Id { get; set; }
         public string UniqueName { get; set; }
         public int Type { get; set; }
@@ -34,7 +34,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         }
 
         public AClashTest(string name,
-         EntityComparisonResult status,
+         EntityComparisonResult condition,
          int id,
          string uniqueName,
          int type,
@@ -51,7 +51,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
          ASearchSet searchSet2)
         {
             this.Name = name;
-            this.Status = status;
+            this.Condition = condition;
             this.Id = id;
             this.UniqueName = uniqueName;
             this.Type = type;
@@ -68,7 +68,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             this.SearchSet2 = searchSet2;
         }
         public AClashTest(string name,
-         EntityComparisonResult status,
+         EntityComparisonResult condition,
          string typeName,
          double tolerance,
          bool isFromNavis,
@@ -77,7 +77,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
          ASearchSet searchSet2)
         {
             this.Name = name;
-            this.Status = status;
+            this.Condition = condition;
             this.TypeName = typeName;
             this.Tolerance = tolerance;
             this.ClashMatrixId = ViewsHandler.CurrentAClashMatrix.Id;

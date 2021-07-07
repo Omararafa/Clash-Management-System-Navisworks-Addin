@@ -20,7 +20,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public int ClashMatrixId { get; set; }
         public AClashMatrix ClashMatrix { get; set; }
         public SelectionSet SelectionSet { get; set; }
-        public EntityComparisonResult Status { get; set; }
+        public EntityComparisonResult Conditon { get; set; }
 
         public ASearchSet()
         {
@@ -28,26 +28,26 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         }
 
         // Database initiation constructor
-        public ASearchSet(string name, int clashMatrixId, string dbMessage, EntityComparisonResult status, bool isFromNavis)
+        public ASearchSet(string name, int clashMatrixId, string dbMessage, EntityComparisonResult condition, bool isFromNavis)
         {
             this.Name = name;
             this.ClashMatrixId = clashMatrixId;
             this.DBMessage = dbMessage;
-            this.Status = status;
+            this.Conditon = condition;
             this.IsFromNavis = isFromNavis;
         }
 
-    // Navisworks objects initiation constructor
-    public ASearchSet(SelectionSet selectionSet, bool isFromNavis)
-    {
-        this.IsFromNavis = isFromNavis;
-        this.SelectionSet = selectionSet;
-        this.Name = selectionSet.DisplayName;
-        this.Status = EntityComparisonResult.NotChecked;
-        this.Project = ViewsHandler.CurrentProject;
-        this.ClashMatrix = ViewsHandler.CurrentAClashMatrix;
-        this.ModifiedBy = ViewsHandler.CurrentUser.Name;
-    }
+        // Navisworks objects initiation constructor
+        public ASearchSet(SelectionSet selectionSet, bool isFromNavis)
+        {
+            this.IsFromNavis = isFromNavis;
+            this.SelectionSet = selectionSet;
+            this.Name = selectionSet.DisplayName;
+            this.Conditon = EntityComparisonResult.NotChecked;
+            this.Project = ViewsHandler.CurrentProject;
+            this.ClashMatrix = ViewsHandler.CurrentAClashMatrix;
+            this.ModifiedBy = ViewsHandler.CurrentUser.Name;
+        }
 
-}
+    }
 }

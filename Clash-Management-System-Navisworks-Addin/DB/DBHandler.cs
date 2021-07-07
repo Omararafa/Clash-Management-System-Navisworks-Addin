@@ -266,7 +266,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                         {
 
                             Name = dbClashTest.Name,
-                            Status = EntityComparisonResult.NotChecked,
+                            Condition = EntityComparisonResult.NotChecked,
                             Id = dbClashTest.Id,
                             UniqueName = dbClashTest.UniqueName,
                             Type = dbClashTest.Type,
