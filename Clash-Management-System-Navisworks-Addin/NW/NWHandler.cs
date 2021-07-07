@@ -88,7 +88,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         #region SearchSetMethods
 
-        public static List<ASearchSet> GetSearchSets()
+        private static List<ASearchSet> GetSearchSets()
         {
             DocumentSelectionSets selectionSearchSets = Document.SelectionSets;
 

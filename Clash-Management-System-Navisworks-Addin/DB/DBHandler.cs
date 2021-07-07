@@ -54,7 +54,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             get
             {
-                bool isSucceed = SyncClashTest(ViewsHandler.CurrentAClashMatrix, ref _dbAClashTests);
+                bool isSucceed = SyncClashTest(ViewsHandler.CurrentAClashMatrix, ref _dbAClashTests, ref _dbFailedClashTests);
 
                 if (isSucceed)
                 {
@@ -65,10 +65,28 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
         }
 
+        private static List<WebService.ClashTest> _dbFailedClashTests;
+        public static List<WebService.ClashTest> DBFailedClashTests
+        {
+            get
+            {
+                bool isSucceed = SyncClashTest(ViewsHandler.CurrentAClashMatrix, ref _dbAClashTests, ref _dbFailedClashTests);
+
+                if (isSucceed)
+                {
+                    return _dbFailedClashTests;
+                }
+
+                return null;
+            }
+        }
+
         //TODO:Remap TradeAbb
         public static string TradeAbb
-        { get
-            { return "AG";
+        {
+            get
+            {
+                return "AG";
             }
         }
 
@@ -244,11 +262,10 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         #endregion
 
         #region ClashTestsHandlers
-        public static bool SyncClashTest(AClashMatrix clashMatrix, ref List<AClashTest> clashTests)
+        public static bool SyncClashTest(AClashMatrix clashMatrix, ref List<AClashTest> clashTests, ref List<WebService.ClashTest> dbFailedClashTests)
         {
             int clashMatrixId = clashMatrix.Id;
-            WebService.ServiceResponse serviceResponse = service
-            .GetClashTests(clashMatrixId);
+            WebService.ServiceResponse serviceResponse = service.GetClashTests(clashMatrixId);
 
             switch (serviceResponse.State)
             {
@@ -257,56 +274,57 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                     WebService.ClashTestsResults clashTestsResults = serviceResponse as WebService.ClashTestsResults;
 
                     List<AClashTest> clashTestsFromDB = new List<AClashTest>();
-
+                    List<ASearchSet> nwSearchSets = NWHandler.NWASearchSets;
 
                     foreach (var dbClashTest in clashTestsResults.ClashTests)
                     {
-
-                        AClashTest clashTest = new AClashTest
+                        if (IsSearchSetExistOnDB(dbClashTest, nwSearchSets))
                         {
-
-                            Name = dbClashTest.Name,
-                            Condition = EntityComparisonResult.NotChecked,
-                            Id = dbClashTest.Id,
-                            UniqueName = dbClashTest.UniqueName,
-                            Type = dbClashTest.Type,
-                            TypeName = dbClashTest.TypeName,
-                            Tolerance = dbClashTest.Tolerance,
-                            ClashMatrixId = dbClashTest.MatrixId,
-                            TradeId = dbClashTest.TradeId,
-                            TradeCode = dbClashTest.TradeCode,
-                            AddedDate = dbClashTest.AddDate,
-                            LastRunDate = dbClashTest.LastRunDate,
-                            AddedBy = dbClashTest.AddedBy,
-                            ProjectCode = dbClashTest.ProjectCode,
-                            SearchSet1 = new ASearchSet
+                            AClashTest clashTest = new AClashTest
                             {
+                                Name = dbClashTest.Name,
+                                Condition = EntityComparisonResult.NotChecked,
+                                Id = dbClashTest.Id,
+                                UniqueName = dbClashTest.UniqueName,
+                                Type = dbClashTest.Type,
+                                TypeName = dbClashTest.TypeName,
+                                Tolerance = dbClashTest.Tolerance,
+                                ClashMatrixId = dbClashTest.MatrixId,
+                                TradeId = dbClashTest.TradeId,
+                                TradeCode = dbClashTest.TradeCode,
+                                AddedDate = dbClashTest.AddDate,
+                                LastRunDate = dbClashTest.LastRunDate,
+                                AddedBy = dbClashTest.AddedBy,
+                                ProjectCode = dbClashTest.ProjectCode,
+                                SearchSet1 = new ASearchSet
+                                {
 
-                                Pk = -1,
-                                Name = dbClashTest.SearchSet1.Name,
-                                TradeId = dbClashTest.SearchSet1.TradeId,
-                                Project = new Project(),
-                                ModifiedBy = "",
-                                IsFromNavis = false
-                            },
-                            SearchSet2 = new ASearchSet
-                            {
+                                    Pk = -1,
+                                    Name = dbClashTest.SearchSet1.Name,
+                                    TradeId = dbClashTest.SearchSet1.TradeId,
+                                    Project = new Project(),
+                                    ModifiedBy = "",
+                                    IsFromNavis = false
+                                },
+                                SearchSet2 = new ASearchSet
+                                {
 
-                                Pk = -1,
-                                Name = dbClashTest.SearchSet2.Name,
-                                TradeId = dbClashTest.SearchSet2.TradeId,
-                                Project = new Project(),
-                                ModifiedBy = "",
-                                IsFromNavis = false
-                            }
+                                    Pk = -1,
+                                    Name = dbClashTest.SearchSet2.Name,
+                                    TradeId = dbClashTest.SearchSet2.TradeId,
+                                    Project = new Project(),
+                                    ModifiedBy = "",
+                                    IsFromNavis = false
+                                }
+                            };
 
-                        };
-
-                        clashTestsFromDB.Add(clashTest);
-
-                        clashTests = clashTestsFromDB;
-
-
+                            clashTestsFromDB.Add(clashTest);
+                            clashTests = clashTestsFromDB;
+                        }
+                        else
+                        {
+                            dbFailedClashTests.Add(dbClashTest);
+                        }
                     }
 
                     return true;
@@ -318,6 +336,18 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
         }
 
+        private static bool IsSearchSetExistOnDB(WebService.ClashTest dbClashTest, List<ASearchSet> nwASearchSets)
+        {
+            if (nwASearchSets.Exists(searchSet => searchSet.Name == dbClashTest.SearchSet1.Name) &&
+                nwASearchSets.Exists(searchSet => searchSet.Name == dbClashTest.SearchSet2.Name))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         #endregion
 
@@ -385,6 +415,9 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                     return false;
             }
         }
+
+
+
         #endregion
 
     }
