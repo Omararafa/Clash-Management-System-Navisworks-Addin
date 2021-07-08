@@ -114,6 +114,7 @@
     <Compile Include="ViewModels\AClashMatrix.cs" />
     <Compile Include="ViewModels\AClashTest.cs" />
     <Compile Include="ViewModels\AClashTestResult.cs" />
+    <Compile Include="ViewModels\ClashPoint.cs" />
     <Compile Include="ViewModels\Credentials.cs" />
     <Compile Include="ViewModels\EntityComparisonResult.cs" />
     <Compile Include="ViewModels\Project.cs" />
