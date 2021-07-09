@@ -101,6 +101,41 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             return true;
         }
 
+        public bool PresentClashTestsOnDataGrid(DataGrid datagrid, List<AClashTest> data)
+        {
+            DataTable dataTable = new DataTable("Clash Tests");
+
+            dataTable.Columns.Add("Name");
+            dataTable.Columns.Add("Condition");
+            dataTable.Columns.Add("Id");
+            dataTable.Columns.Add("Type Name");
+            dataTable.Columns.Add("Tolerance");
+            dataTable.Columns.Add("Trade Code");
+            dataTable.Columns.Add("Add Time");
+            dataTable.Columns.Add("Added By");
+            dataTable.Columns.Add("Search Set 1");
+            dataTable.Columns.Add("Search Set 2");
+
+            foreach (var test in data)
+            {
+                dataTable.Rows.Add(
+                    test.Name,
+                    test.Condition,
+                    test.Id,
+                    test.TypeName,
+                    test.Tolerance,
+                    test.TradeCode,
+                    test.AddedDate,
+                    test.AddedBy,
+                    test.SearchSet1.Name,
+                    test.SearchSet2.Name
+                    );
+            }
+            datagrid.ItemsSource = dataTable.DefaultView;
+
+            return true;
+        }
+
         private void Expander_PreviewMouseUp(object sender, RoutedEventArgs e)
         {
             Expander expander = sender as Expander;
@@ -290,9 +325,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             if (FunctionSearchSetsRBtn.IsChecked == true)
             {
-                List<ASearchSet> nwSearchSets = NW.NWHandler.GetSearchSets();
-                List<ASearchSet> dbSearchSets=new List<ASearchSet>();
-                if (nwSearchSets.Count>0)
+                List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
+                List<ASearchSet> dbSearchSets = new List<ASearchSet>();
+
+                if (nwSearchSets == null|| nwSearchSets.Count>0)
                 {
                     DB.DBHandler.SyncSearchSetsWithDB(
                         ViewsHandler.CurrentUser,
@@ -305,6 +341,31 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         return PresentSearchSetsOnDataGrid(PresenterDataGrid, DBNWHandler.DBNWComparison.ASearchSetsComparisonList);
                     }
                 }
+            }
+            if (FunctionSearchSetsRBtn.IsChecked == true)
+            {
+                List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
+                List<ASearchSet> dbSearchSets = new List<ASearchSet>();
+                //TODO: Delete line below // just for testing DataGrid
+                PresentSearchSetsOnDataGrid(PresenterDataGrid, nwSearchSets);
+                if (nwSearchSets==null|| nwSearchSets.Count > 0)
+                {
+                    DB.DBHandler.SyncSearchSetsWithDB(
+                        ViewsHandler.CurrentUser,
+                        ViewsHandler.CurrentAClashMatrix,
+                        ref dbSearchSets,
+                        nwSearchSets
+                        );
+                    if (dbSearchSets.Count > 0)
+                    {
+                        return PresentSearchSetsOnDataGrid(PresenterDataGrid, DBNWHandler.DBNWComparison.ASearchSetsComparisonList);
+                    }
+                }
+            }
+            if (FunctionClashTestsRBtn.IsChecked==true)
+            {
+                List<AClashTest> dbClashTests = DB.DBHandler.DBAClashTests;
+
             }
             return false;
 

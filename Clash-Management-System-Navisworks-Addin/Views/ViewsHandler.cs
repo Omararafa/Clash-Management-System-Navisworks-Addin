@@ -30,22 +30,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         }
 
 
-        //TODO: to be transfered to NWHandeler
-        private static List<ASearchSet> _SearchSetsFromNW;
-
-        public static List<ASearchSet> SearchSetsFromNW
-        {
-            get { return NW.NWHandler.GetSearchSets(); }
-            set { _SearchSetsFromNW = value; }
-        }
-
-        /*
-        public static List<ASearchSet> SearchSetsFromNW
-        {
-            get { NW.NWHandler.GetSearchSet(NW.NWHandler.document); };
-            set;
-    }
-        */
         #endregion
 
 

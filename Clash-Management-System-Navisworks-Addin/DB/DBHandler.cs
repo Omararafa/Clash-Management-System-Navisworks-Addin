@@ -65,6 +65,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
         }
 
+
+
         private static List<WebService.ClashTest> _dbFailedClashTests;
         public static List<WebService.ClashTest> DBFailedClashTests
         {
@@ -86,7 +88,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             get
             {
-                return "AG";
+                return "SC";
             }
         }
 
@@ -254,6 +256,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                     return true;
                 case WebService.ResponseState.FAILD:
+                    WebService.Error error = serviceResponse as WebService.Error;
+                    System.Windows.Forms.MessageBox.Show(error.Meesage);
                     return false;
                 default:
                     return false;
@@ -262,8 +266,23 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         #endregion
 
         #region ClashTestsHandlers
+
+        private static WebService.ClashTest ConvertToDBClashTest(AClashTest nwClashTest)
+        {
+            return new WebService.ClashTest();
+        }
         public static bool SyncClashTest(AClashMatrix clashMatrix, ref List<AClashTest> clashTests, ref List<WebService.ClashTest> dbFailedClashTests)
         {
+            if (clashTests==null)
+            {
+                clashTests = new List<AClashTest>();
+            }
+
+            if (dbFailedClashTests==null)
+            {
+                dbFailedClashTests = new List<WebService.ClashTest>();
+            }
+            
             int clashMatrixId = clashMatrix.Id;
             WebService.ServiceResponse serviceResponse = service.GetClashTests(clashMatrixId);
 
@@ -353,13 +372,39 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
         #region ClashResultHandlers
 
+        private static WebService.ClashResult GetDBClashResultFromNWClashResult(AClashTestResult nwResult)
+        {
+            WebService.ClashResult dbResult = new WebService.ClashResult()
+            {
+                Guid = nwResult.Guid,
+                Name = nwResult.Name,
+                State = nwResult.State,
+                ApprovedBy = nwResult.ApprovedBy,
+                ApprovedTime = nwResult.ApprovedTime.ToString(),
+                AssignedTo = nwResult.AssignedTo,
+                CreatedTime = nwResult.CreatedTime.ToString(),
+                Description = nwResult.Description,
+                Comments = nwResult.Comments,
+                Distance = nwResult.Distance.ToString(),
+                ClashPoint = new WebService.ClashPoint()
+                {
+                    X = nwResult.ClashPoint.X,
+                    Y = nwResult.ClashPoint.Y,
+                    Z = nwResult.ClashPoint.Z
+                },
+                Item1Name = nwResult.Item1Name,
+                Item1SourceFile = nwResult.Item1SourceFile,
+                Item2Name = nwResult.Item2Name,
+                Item2SourceFile = nwResult.Item2SourceFile
+            };
+            return dbResult;
+        }
 
         //TODO: Method below needs update after ClashResult class update in ViewModels
         public static bool SetClashResultToDB(AClashMatrix clashMatrix, List<AClashTestResult> clashTestsResultsFromNW)
         {
             int clashMatrixId = clashMatrix.Id;
 
-            //Build up ClashResultSyncRequest[]
             List<WebService.ClashResultSyncRequest> clashResultSyncRequests = new List<WebService.ClashResultSyncRequest>();
             foreach (AClashTestResult clashTestResult in clashTestsResultsFromNW)
             {
@@ -377,15 +422,22 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 dbClashTest.ProjectCode = nwClashTest.ProjectCode;
                 dbClashTest.SearchSet1 = new WebService.SearchSetInfo
                 {
+                    //TODO: Check Id property source from searchSet Id
+                    Id = nwClashTest.SearchSet1.TradeId,
                     Name = nwClashTest.SearchSet1.Name,
-                    TradeId = nwClashTest.SearchSet1.TradeId
+                    TradeId = nwClashTest.SearchSet1.TradeId,
+                    TradeAbbr = TradeAbb
                 };
                 dbClashTest.SearchSet2 = new WebService.SearchSetInfo
                 {
-                    Name = nwClashTest.SearchSet2.Name,
-                    TradeId = nwClashTest.SearchSet2.TradeId
+                    //TODO: Check Id property source from searchSet Id
+                    Id = nwClashTest.SearchSet1.TradeId,
+                    Name = nwClashTest.SearchSet1.Name,
+                    TradeId = nwClashTest.SearchSet1.TradeId,
+                    TradeAbbr = TradeAbb
                 };
                 dbClashTest.Tolerance = nwClashTest.Tolerance;
+                dbClashTest.TradeId = nwClashTest.TradeId;
                 dbClashTest.TradeCode = nwClashTest.TradeCode;
                 dbClashTest.Type = nwClashTest.Type;
                 dbClashTest.TypeName = nwClashTest.TypeName;
@@ -394,7 +446,18 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 clashResultSyncRequest.ClashTest = dbClashTest;
 
                 //TODO: Create, populate ClashResult classes after update of ClashResult class in View Models.
-                clashResultSyncRequest.NewResults = new WebService.ClashResult[0];
+                int ClashTestResultsCount = nwClashTest.ClashTestResults.Count;
+                WebService.ClashResult[] dbClashTestResults = new WebService.ClashResult[ClashTestResultsCount];
+
+                int i = 0;
+                foreach (var nwResult in nwClashTest.ClashTestResults)
+                {
+                    WebService.ClashResult dbResult = GetDBClashResultFromNWClashResult(nwResult);
+                    dbClashTestResults[i] = dbResult;
+                    i++;
+                }
+
+                clashResultSyncRequest.NewResults = dbClashTestResults;
 
                 clashResultSyncRequests.Add(clashResultSyncRequest);
 
