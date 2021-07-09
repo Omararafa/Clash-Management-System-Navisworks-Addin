@@ -97,7 +97,6 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             Name = "ClashServiceSoap",
             Security = new BasicHttpSecurity { Mode = BasicHttpSecurityMode.None },
-            MaxReceivedMessageSize = 10000000
         },
         address);
 

@@ -362,11 +362,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
                 List<AClashTest> dbClashTests = DB.DBHandler.DBAClashTests;
-                List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests;
 
-                bool hamada = DB.DBHandler.SetClashResultToDB(Views.ViewsHandler.CurrentAClashMatrix, nwClashTests);
-
-                return hamada;
             }
             return false;
 
