@@ -450,11 +450,11 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
 
                 //Build DB ClashResult[] object
-                int ClashTestResultsCount = nwClashTest.ClashTestResults.Count;
+                int ClashTestResultsCount = nwClashTest.AClashTestResults.Count;
                 WebService.ClashResult[] dbClashTestResults = new WebService.ClashResult[ClashTestResultsCount];
 
                 int i = 0;
-                foreach (var nwResult in nwClashTest.ClashTestResults)
+                foreach (var nwResult in nwClashTest.AClashTestResults)
                 {
                     WebService.ClashResult dbResult = GetDBClashResultFromNWClashResult(nwResult);
                     dbClashTestResults[i] = dbResult;
