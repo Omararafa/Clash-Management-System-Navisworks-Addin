@@ -4,12 +4,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Autodesk.Navisworks.Api.Clash;
+using Clash_Management_System_Navisworks_Addin.NW;
 using Clash_Management_System_Navisworks_Addin.Views;
 
 namespace Clash_Management_System_Navisworks_Addin.ViewModels
 {
     public class AClashTest
     {
+        public bool IsSelected { get; set; }
         public string Name { get; set; }
         public EntityComparisonResult Condition { get; set; }
         public int Id { get; set; }
@@ -28,7 +30,13 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public ASearchSet SearchSet2 { get; set; }
         public ClashTest ClashTest { get; set; }
         public bool IsFromNavis { get; set; }
-        public List<AClashTestResult> ClashTestResults{get;set;}
+        public List<AClashTestResult> AClashTestResults
+        {
+            get
+            {
+                return NWHandler.GetAClashTestResults(this);
+            }
+        }
         public AClashTest()
         {
 

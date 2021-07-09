@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Navisworks.Api;
+using System.Collections.Generic;
 using Autodesk.Navisworks.Api.Clash;
 using Clash_Management_System_Navisworks_Addin.Views;
 
@@ -11,7 +11,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
 {
     public class AClashTestResult
     {
-        public AClashTest ClashTest { get; set; }
+        public AClashTest AClashTest { get; set; }
         public Guid Guid { get; set; }
         public string Name { get; set; }
         public string State { get; set; }
@@ -32,7 +32,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
 
         public AClashTestResult(AClashTest aClashTest, ClashResult clashResult)
         {
-            this.ClashTest = aClashTest;
+            this.AClashTest = aClashTest;
             this.Guid = clashResult.Guid;
             this.Name = clashResult.DisplayName;
             this.State = GetState(clashResult.Status);

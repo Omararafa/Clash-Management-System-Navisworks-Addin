@@ -50,16 +50,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             }
         }
 
-        private static List<AClashTestResult> _nwAClashResults;
-        public static List<AClashTestResult> NWAClashResults
-        {
-            get
-            {
-                _nwAClashResults = GetClashTestResults();
-                return _nwAClashResults;
-            }
-        }
-
         private static DocumentClash _documentClash;
 
         public static DocumentClash DocumentClash
@@ -69,7 +59,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
                 _documentClash = Document.Clash as DocumentClash;
                 return _documentClash;
             }
-
         }
 
         #endregion
@@ -335,10 +324,27 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         #region ClashResultMethods
 
-        static List<AClashTestResult> GetClashTestResults()
+        public static List<AClashTestResult> GetAClashTestResults(AClashTest aClashTest)
         {
-            throw new Exception("Method GetClashTestResults: Work in progress");
-            return null;
+            DocumentClash.TestsData.TestsRunTest(aClashTest.ClashTest);
+
+            List<ClashResult> clashTestResultsLst = GetClashResults(aClashTest.ClashTest);
+            List<AClashTestResult> aClashTestResultsLst = new List<AClashTestResult>();
+
+            foreach (ClashResult clashResult in clashTestResultsLst)
+            {
+                AClashTestResult aClashTestResult = new AClashTestResult(aClashTest, clashResult); 
+                aClashTestResultsLst.Add(aClashTestResult);
+            }
+
+            return aClashTestResultsLst;
+        }
+
+        private static List<ClashResult> GetClashResults(ClashTest clashTest)
+        {
+            List<ClashResult> clashTestResultsLst = clashTest.Children.Cast<ClashResult>().ToList();
+
+            return clashTestResultsLst;
         }
 
         #endregion
