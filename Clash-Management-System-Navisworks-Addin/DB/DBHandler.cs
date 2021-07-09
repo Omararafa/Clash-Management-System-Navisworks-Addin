@@ -54,7 +54,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             get
             {
-                bool isSucceed = SyncClashTest(ViewsHandler.CurrentAClashMatrix, ref _dbAClashTests, ref _dbFailedClashTests);
+                bool isSucceed = SyncClashTests(ViewsHandler.CurrentAClashMatrix, ref _dbAClashTests, ref _dbFailedClashTests);
 
                 if (isSucceed)
                 {
@@ -72,7 +72,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             get
             {
-                bool isSucceed = SyncClashTest(ViewsHandler.CurrentAClashMatrix, ref _dbAClashTests, ref _dbFailedClashTests);
+                bool isSucceed = SyncClashTests(ViewsHandler.CurrentAClashMatrix, ref _dbAClashTests, ref _dbFailedClashTests);
 
                 if (isSucceed)
                 {
@@ -204,7 +204,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         }
 
 
-        #endregion
+        #endregion  
 
         #region SearchSetsHandlers
         public static bool SyncSearchSetsWithDB(User user, AClashMatrix clashMatrix, ref List<ASearchSet> searchSetsFromDB,
@@ -271,18 +271,18 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             return new WebService.ClashTest();
         }
-        public static bool SyncClashTest(AClashMatrix clashMatrix, ref List<AClashTest> clashTests, ref List<WebService.ClashTest> dbFailedClashTests)
+        public static bool SyncClashTests(AClashMatrix clashMatrix, ref List<AClashTest> clashTests, ref List<WebService.ClashTest> dbFailedClashTests)
         {
-            if (clashTests==null)
+            if (clashTests == null)
             {
                 clashTests = new List<AClashTest>();
             }
 
-            if (dbFailedClashTests==null)
+            if (dbFailedClashTests == null)
             {
                 dbFailedClashTests = new List<WebService.ClashTest>();
             }
-            
+
             int clashMatrixId = clashMatrix.Id;
             WebService.ServiceResponse serviceResponse = service.GetClashTests(clashMatrixId);
 
@@ -401,16 +401,19 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         }
 
         //TODO: Method below needs update after ClashResult class update in ViewModels
-        public static bool SetClashResultToDB(AClashMatrix clashMatrix, List<AClashTestResult> clashTestsResultsFromNW)
+        public static bool SetClashResultToDB(AClashMatrix clashMatrix, List<AClashTest> clashTestsFromNW)
         {
             int clashMatrixId = clashMatrix.Id;
+            int clashTestsCount = clashTestsFromNW.Count;
+            WebService.ClashResultSyncRequest[] clashResultSyncRequests = new WebService.ClashResultSyncRequest[clashTestsCount];
 
-            List<WebService.ClashResultSyncRequest> clashResultSyncRequests = new List<WebService.ClashResultSyncRequest>();
-            foreach (AClashTestResult clashTestResult in clashTestsResultsFromNW)
+            int j = 0;
+
+            foreach (AClashTest nwClashTest in clashTestsFromNW)
             {
                 WebService.ClashResultSyncRequest clashResultSyncRequest = new WebService.ClashResultSyncRequest();
 
-                AClashTest nwClashTest = clashTestResult.ClashTest;
+                //Build Clash Test DB Object
                 WebService.ClashTest dbClashTest = new WebService.ClashTest();
 
                 dbClashTest.AddDate = nwClashTest.AddedDate;
@@ -445,7 +448,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 clashResultSyncRequest.ClashTest = dbClashTest;
 
-                //TODO: Create, populate ClashResult classes after update of ClashResult class in View Models.
+
+                //Build DB ClashResult[] object
                 int ClashTestResultsCount = nwClashTest.ClashTestResults.Count;
                 WebService.ClashResult[] dbClashTestResults = new WebService.ClashResult[ClashTestResultsCount];
 
@@ -459,26 +463,24 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 clashResultSyncRequest.NewResults = dbClashTestResults;
 
-                clashResultSyncRequests.Add(clashResultSyncRequest);
+                clashResultSyncRequests[i] = clashResultSyncRequest;
 
+
+                j++;
             }
-
             WebService.ServiceResponse serviceResponse = service
-            .SyncClashResults(clashMatrixId, clashResultSyncRequests.ToArray());
-
-
+                .SyncClashResults(clashMatrixId, clashResultSyncRequests.ToArray());
 
             switch (serviceResponse.State)
             {
                 case WebService.ResponseState.SUCCESS:
                     return true;
                 case WebService.ResponseState.FAILD:
-                    return false;
                 default:
                     return false;
             }
-        }
 
+        }
 
 
         #endregion

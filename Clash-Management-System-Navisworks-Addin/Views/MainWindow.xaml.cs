@@ -87,7 +87,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             foreach (var searchSet in data)
             {
-                dataTable.Rows.Add(
+                DataRow row =dataTable.Rows.Add(
                     searchSet.Name,
                     searchSet.Project.Name,
                     searchSet.ClashMatrix.Name,
@@ -342,27 +342,20 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     }
                 }
             }
-            if (FunctionSearchSetsRBtn.IsChecked == true)
+            if (FunctionClashTestsRBtn.IsChecked == true)
             {
-                List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
-                List<ASearchSet> dbSearchSets = new List<ASearchSet>();
-                //TODO: Delete line below // just for testing DataGrid
-                PresentSearchSetsOnDataGrid(PresenterDataGrid, nwSearchSets);
-                if (nwSearchSets==null|| nwSearchSets.Count > 0)
-                {
-                    DB.DBHandler.SyncSearchSetsWithDB(
-                        ViewsHandler.CurrentUser,
-                        ViewsHandler.CurrentAClashMatrix,
-                        ref dbSearchSets,
-                        nwSearchSets
-                        );
-                    if (dbSearchSets.Count > 0)
-                    {
-                        return PresentSearchSetsOnDataGrid(PresenterDataGrid, DBNWHandler.DBNWComparison.ASearchSetsComparisonList);
-                    }
-                }
+                List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests;
+
+                PresentClashTestsOnDataGrid(this.PresenterDataGrid, nwClashTests);
+
+                List<AClashTest> dbClashTests = new List<AClashTest>();
+
+                dbClashTests = DB.DBHandler.DBAClashTests;
+
+                PresentClashTestsOnDataGrid(this.PresenterDataGrid, dbClashTests);
+
             }
-            if (FunctionClashTestsRBtn.IsChecked==true)
+            if (FunctionClashResultsRBtn.IsChecked==true)
             {
                 List<AClashTest> dbClashTests = DB.DBHandler.DBAClashTests;
 
