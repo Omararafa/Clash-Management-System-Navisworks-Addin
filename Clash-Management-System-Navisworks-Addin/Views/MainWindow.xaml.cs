@@ -87,7 +87,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             foreach (var searchSet in data)
             {
-                DataRow row =dataTable.Rows.Add(
+                DataRow row = dataTable.Rows.Add(
                     searchSet.Name,
                     searchSet.Project.Name,
                     searchSet.ClashMatrix.Name,
@@ -246,7 +246,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     ActivateExpander(SelectProjectExpander);
                     DeactivateExpander(LoginExpander);
                     ObservableCollection<string> projectCbxDataSource = new ObservableCollection<string>
-                        ( ViewsHandler.CurrentUser.Projects.Select(x => x.Name + ": " + x.Code).ToList());
+                        (ViewsHandler.CurrentUser.Projects.Select(x => x.Name + ": " + x.Code).ToList());
                     ProjectCbx.ItemsSource = projectCbxDataSource;
                     return true;
                 }
@@ -306,7 +306,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
                 ViewsHandler.CurrentAClashMatrix = ViewsHandler.CurrentProjectClashMatrices.ElementAt(currentClashMatrixIndex);
 
-                if (ViewsHandler.CurrentAClashMatrix != null )
+                if (ViewsHandler.CurrentAClashMatrix != null)
                 {
                     ActivateExpander(SelectFunctionExpander);
                     DeactivateExpander(SelectClashMatrixExpander);
@@ -328,7 +328,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
                 List<ASearchSet> dbSearchSets = new List<ASearchSet>();
 
-                if (nwSearchSets == null|| nwSearchSets.Count>0)
+                if (nwSearchSets == null || nwSearchSets.Count > 0)
                 {
                     DB.DBHandler.SyncSearchSetsWithDB(
                         ViewsHandler.CurrentUser,
@@ -336,7 +336,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         ref dbSearchSets,
                         nwSearchSets
                         );
-                    if (dbSearchSets.Count>0)
+                    if (dbSearchSets.Count > 0)
                     {
                         return PresentSearchSetsOnDataGrid(PresenterDataGrid, DBNWHandler.DBNWComparison.ASearchSetsComparisonList);
                     }
@@ -351,14 +351,22 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 List<AClashTest> dbClashTests = new List<AClashTest>();
 
                 dbClashTests = DB.DBHandler.DBAClashTests;
+                if (dbClashTests == null || dbClashTests.Count < 1)
+                {
+                    System.Windows.Forms.MessageBox.Show("No clash tests were found on the Database!");
+                    return false;
+                }
 
                 PresentClashTestsOnDataGrid(this.PresenterDataGrid, dbClashTests);
-
             }
-            if (FunctionClashResultsRBtn.IsChecked==true)
+            if (FunctionClashResultsRBtn.IsChecked == true)
             {
                 List<AClashTest> dbClashTests = DB.DBHandler.DBAClashTests;
+                List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests;
 
+                bool hamada = DB.DBHandler.SetClashResultToDB(Views.ViewsHandler.CurrentAClashMatrix, nwClashTests);
+
+                return hamada;
             }
             return false;
 

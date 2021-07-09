@@ -97,5 +97,12 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             this.IsFromNavis = isFromNavis;
         }
 
+        // ----------> THIS METHOD STILL IS PROGRESS <----------
+        public static string GetHeaders()
+        {
+            string[] headers = { "Name", "Project", "Clash Matrix", "Trade Id", "Modified By", "Condition" };
+
+            return string.Join(",", headers);
+        }
     }
 }
