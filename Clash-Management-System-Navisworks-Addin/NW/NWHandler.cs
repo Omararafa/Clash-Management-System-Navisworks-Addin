@@ -335,10 +335,25 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         #region ClashResultMethods
 
-        static List<AClashTestResult> GetClashTestResults()
+        public static List<AClashTestResult> GetAClashTestResults(AClashTest aClashTest)
         {
-            throw new Exception("Method GetClashTestResults: Work in progress");
-            return null;
+            List<ClashResult> clashTestResultsLst = GetClashResults(aClashTest.ClashTest);
+            List<AClashTestResult> aClashTestResultsLst = new List<AClashTestResult>();
+
+            foreach (ClashResult clashResult in clashTestResultsLst)
+            {
+                AClashTestResult aClashTestResult = new AClashTestResult(aClashTest, clashResult); 
+                aClashTestResultsLst.Add(aClashTestResult);
+            }
+
+            return aClashTestResultsLst;
+        }
+
+        private static List<ClashResult> GetClashResults(ClashTest clashTest)
+        {
+            List<ClashResult> clashTestResultsLst = clashTest.Children.Cast<ClashResult>().ToList();
+
+            return clashTestResultsLst;
         }
 
         #endregion

@@ -273,16 +273,16 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         }
         public static bool SyncClashTest(AClashMatrix clashMatrix, ref List<AClashTest> clashTests, ref List<WebService.ClashTest> dbFailedClashTests)
         {
-            if (clashTests==null)
+            if (clashTests == null)
             {
                 clashTests = new List<AClashTest>();
             }
 
-            if (dbFailedClashTests==null)
+            if (dbFailedClashTests == null)
             {
                 dbFailedClashTests = new List<WebService.ClashTest>();
             }
-            
+
             int clashMatrixId = clashMatrix.Id;
             WebService.ServiceResponse serviceResponse = service.GetClashTests(clashMatrixId);
 
@@ -446,11 +446,11 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 clashResultSyncRequest.ClashTest = dbClashTest;
 
                 //TODO: Create, populate ClashResult classes after update of ClashResult class in View Models.
-                int ClashTestResultsCount = nwClashTest.ClashTestResults.Count;
+                int ClashTestResultsCount = nwClashTest.AClashTestResults.Count;
                 WebService.ClashResult[] dbClashTestResults = new WebService.ClashResult[ClashTestResultsCount];
 
                 int i = 0;
-                foreach (var nwResult in nwClashTest.ClashTestResults)
+                foreach (var nwResult in nwClashTest.AClashTestResults)
                 {
                     WebService.ClashResult dbResult = GetDBClashResultFromNWClashResult(nwResult);
                     dbClashTestResults[i] = dbResult;
