@@ -194,8 +194,15 @@
             VerticalAlignment="Stretch"
             Background="MintCream"
             Foreground="LightSlateGray"
-            FontFamily="Century Gothic, Courier New" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" MaxColumnWidth="100" MinRowHeight="38"
-            >
+            FontFamily="Century Gothic, Courier New" 
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto" 
+                  AlternatingRowBackground="DimGray"
+                  >
             <DataGrid.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
