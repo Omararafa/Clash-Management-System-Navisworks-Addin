@@ -49,5 +49,12 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             this.ModifiedBy = ViewsHandler.CurrentUser.Name;
         }
 
+        public static string GetHeaders()
+        {
+            string[] headers = {"Name", "Project", "Clash Matrix", "Trade Id", "Modified By",  "Condition"};
+
+            return string.Join(",", headers);
+        }
+
     }
 }
