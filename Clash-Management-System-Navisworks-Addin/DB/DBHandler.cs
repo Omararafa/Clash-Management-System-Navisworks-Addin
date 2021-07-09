@@ -410,7 +410,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             {
                 WebService.ClashResultSyncRequest clashResultSyncRequest = new WebService.ClashResultSyncRequest();
 
-                AClashTest nwClashTest = clashTestResult.ClashTest;
+                AClashTest nwClashTest = clashTestResult.AClashTest;
                 WebService.ClashTest dbClashTest = new WebService.ClashTest();
 
                 dbClashTest.AddDate = nwClashTest.AddedDate;

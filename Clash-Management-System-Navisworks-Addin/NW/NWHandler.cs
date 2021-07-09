@@ -50,16 +50,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             }
         }
 
-        private static List<AClashTestResult> _nwAClashResults;
-        public static List<AClashTestResult> NWAClashResults
-        {
-            get
-            {
-                _nwAClashResults = GetClashTestResults();
-                return _nwAClashResults;
-            }
-        }
-
         private static DocumentClash _documentClash;
 
         public static DocumentClash DocumentClash
