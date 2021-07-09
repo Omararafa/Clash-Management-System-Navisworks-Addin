@@ -273,15 +273,9 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         }
         public static bool SyncClashTests(AClashMatrix clashMatrix, ref List<AClashTest> clashTests, ref List<WebService.ClashTest> dbFailedClashTests)
         {
-            if (clashTests == null)
-            {
-                clashTests = new List<AClashTest>();
-            }
+            clashTests = new List<AClashTest>();
+            dbFailedClashTests = new List<WebService.ClashTest>();
 
-            if (dbFailedClashTests == null)
-            {
-                dbFailedClashTests = new List<WebService.ClashTest>();
-            }
 
             int clashMatrixId = clashMatrix.Id;
             WebService.ServiceResponse serviceResponse = service.GetClashTests(clashMatrixId);
@@ -317,9 +311,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                                 ProjectCode = dbClashTest.ProjectCode,
                                 SearchSet1 = new ASearchSet
                                 {
-
                                     Pk = -1,
-                                    Name = dbClashTest.SearchSet1.Name,
+                                    Name = ModifyDBSearchSetName(dbClashTest.SearchSet1),
                                     TradeId = dbClashTest.SearchSet1.TradeId,
                                     Project = new Project(),
                                     ModifiedBy = "",
@@ -329,7 +322,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                                 {
 
                                     Pk = -1,
-                                    Name = dbClashTest.SearchSet2.Name,
+                                    Name = ModifyDBSearchSetName(dbClashTest.SearchSet2),
                                     TradeId = dbClashTest.SearchSet2.TradeId,
                                     Project = new Project(),
                                     ModifiedBy = "",
@@ -357,8 +350,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
         private static bool IsSearchSetExistOnDB(WebService.ClashTest dbClashTest, List<ASearchSet> nwASearchSets)
         {
-            if (nwASearchSets.Exists(searchSet => searchSet.Name == dbClashTest.SearchSet1.Name) &&
-                nwASearchSets.Exists(searchSet => searchSet.Name == dbClashTest.SearchSet2.Name))
+            if (nwASearchSets.Exists(searchSet => searchSet.Name == ModifyDBSearchSetName(dbClashTest.SearchSet1)) &&
+                nwASearchSets.Exists(searchSet => searchSet.Name == ModifyDBSearchSetName(dbClashTest.SearchSet2)))
             {
                 return true;
             }
@@ -366,6 +359,11 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             {
                 return false;
             }
+        }
+
+        private static string ModifyDBSearchSetName(WebService.SearchSetInfo searchSet)
+        {
+            return searchSet.TradeAbbr + "-" + searchSet.Name;
         }
 
         #endregion
