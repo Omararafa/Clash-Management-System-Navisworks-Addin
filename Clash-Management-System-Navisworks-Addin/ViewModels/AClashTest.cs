@@ -11,6 +11,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
 {
     public class AClashTest
     {
+        public bool IsSelected { get; set; }
         public string Name { get; set; }
         public EntityComparisonResult Condition { get; set; }
         public int Id { get; set; }

@@ -59,7 +59,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
                 _documentClash = Document.Clash as DocumentClash;
                 return _documentClash;
             }
-
         }
 
         #endregion
@@ -327,6 +326,8 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         public static List<AClashTestResult> GetAClashTestResults(AClashTest aClashTest)
         {
+            DocumentClash.TestsData.TestsRunTest(aClashTest.ClashTest);
+
             List<ClashResult> clashTestResultsLst = GetClashResults(aClashTest.ClashTest);
             List<AClashTestResult> aClashTestResultsLst = new List<AClashTestResult>();
 
