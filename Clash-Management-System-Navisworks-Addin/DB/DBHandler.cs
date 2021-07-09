@@ -448,13 +448,12 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 clashResultSyncRequest.ClashTest = dbClashTest;
 
-
-                //Build DB ClashResult[] object
+                //TODO: Create, populate ClashResult classes after update of ClashResult class in View Models.
                 int ClashTestResultsCount = nwClashTest.ClashTestResults.Count;
                 WebService.ClashResult[] dbClashTestResults = new WebService.ClashResult[ClashTestResultsCount];
 
                 int i = 0;
-                foreach (var nwResult in nwClashTest.ClashTestResults)
+                foreach (var nwResult in nwClashTest.AClashTestResults)
                 {
                     WebService.ClashResult dbResult = GetDBClashResultFromNWClashResult(nwResult);
                     dbClashTestResults[i] = dbResult;
