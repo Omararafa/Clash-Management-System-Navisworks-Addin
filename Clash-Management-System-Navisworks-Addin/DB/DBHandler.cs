@@ -198,7 +198,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
             catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show(e.Message);
+                System.Windows.Forms.MessageBox.Show("Database Exception: " + e.Message);
                 return false;
             }
         }
@@ -210,140 +210,169 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         public static bool SyncSearchSetsWithDB(User user, AClashMatrix clashMatrix, ref List<ASearchSet> searchSetsFromDB,
             List<ASearchSet> searchSetsFromNW)
         {
-            string userTradeAbb = DBHandler.TradeAbb;
-            int clashMatrixId = clashMatrix.Id;
-            searchSetsFromDB = new List<ASearchSet>();
-            string[] SearchSetsNames = searchSetsFromNW.Select(x => x.Name).ToArray();
 
-            WebService.ServiceResponse serviceResponse = service
-            .SyncSearchSets(userTradeAbb, clashMatrixId, SearchSetsNames);
-
-
-            switch (serviceResponse.State)
+            try
             {
-                case WebService.ResponseState.SUCCESS:
 
-                    WebService.SyncSearchSetsResults syncSearchSetsResults = serviceResponse as WebService.SyncSearchSetsResults;
-                    string name = "";
-                    int matrixId = -1;
-                    string dbMessage = "";
-                    EntityComparisonResult status = EntityComparisonResult.NotChecked;
 
-                    foreach (var result in syncSearchSetsResults.Reports)
-                    {
-                        name = result.Name;
-                        matrixId = result.MatrixId;
-                        dbMessage = result.Message;
+                string userTradeAbb = DBHandler.TradeAbb;
+                int clashMatrixId = clashMatrix.Id;
+                searchSetsFromDB = new List<ASearchSet>();
+                string[] searchSetsNames = searchSetsFromNW.Select(x => x.Name).ToArray();
 
-                        switch (result.ReportType)
+                Dictionary<string, string[]> processedSearchSetNames = ProcessSearchSetNames(searchSetsNames);
+
+
+                foreach (var group in processedSearchSetNames)
+                {
+
+                }
+                //TODO: Add lines below to the foreach looping above
+                var item = processedSearchSetNames.ElementAt(1);
+                string tradeAbb = item.Key;
+                string[] modifiedSearchSetNames = item.Value;
+
+                WebService.ServiceResponse serviceResponse = service
+                .SyncSearchSets(tradeAbb, clashMatrixId, modifiedSearchSetNames);
+
+
+                switch (serviceResponse.State)
+                {
+                    case WebService.ResponseState.SUCCESS:
+
+                        WebService.SyncSearchSetsResults syncSearchSetsResults = serviceResponse as WebService.SyncSearchSetsResults;
+                        string name = "";
+                        int matrixId = -1;
+                        string dbMessage = "";
+                        EntityComparisonResult status = EntityComparisonResult.NotChecked;
+
+                        foreach (var result in syncSearchSetsResults.Reports)
                         {
-                            case WebService.ReportType.ADD:
-                                status = EntityComparisonResult.New;
-                                break;
-                            case WebService.ReportType.REMOVE:
-                                status = EntityComparisonResult.Deleted;
-                                break;
-                            case WebService.ReportType.UPDATE:
-                                status = EntityComparisonResult.Edited;
-                                break;
-                            default:
-                                break;
+                            name = result.Name;
+                            matrixId = result.MatrixId;
+                            dbMessage = result.Message;
+
+                            switch (result.ReportType)
+                            {
+                                case WebService.ReportType.ADD:
+                                    status = EntityComparisonResult.New;
+                                    break;
+                                case WebService.ReportType.REMOVE:
+                                    status = EntityComparisonResult.Deleted;
+                                    break;
+                                case WebService.ReportType.UPDATE:
+                                    status = EntityComparisonResult.Edited;
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            ASearchSet searchSet = new ASearchSet(name, matrixId, dbMessage, status, false);
+                            searchSetsFromDB.Add(searchSet);
                         }
 
-                        ASearchSet searchSet = new ASearchSet(name, matrixId, dbMessage, status, false);
-                        searchSetsFromDB.Add(searchSet);
-                    }
-
-                    return true;
-                case WebService.ResponseState.FAILD:
-                    WebService.Error error = serviceResponse as WebService.Error;
-                    System.Windows.Forms.MessageBox.Show(error.Meesage);
-                    return false;
-                default:
-                    return false;
+                        return true;
+                    case WebService.ResponseState.FAILD:
+                        WebService.Error error = serviceResponse as WebService.Error;
+                        System.Windows.Forms.MessageBox.Show(error.Meesage);
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Database Exception: " + e.Message);
+                return false;
             }
         }
         #endregion
 
         #region ClashTestsHandlers
 
-        private static WebService.ClashTest ConvertToDBClashTest(AClashTest nwClashTest)
-        {
-            return new WebService.ClashTest();
-        }
         public static bool SyncClashTests(AClashMatrix clashMatrix, ref List<AClashTest> clashTests, ref List<WebService.ClashTest> dbFailedClashTests)
         {
-            clashTests = new List<AClashTest>();
-            dbFailedClashTests = new List<WebService.ClashTest>();
-
-
-            int clashMatrixId = clashMatrix.Id;
-            WebService.ServiceResponse serviceResponse = service.GetClashTests(clashMatrixId);
-
-            switch (serviceResponse.State)
+            try
             {
-                case WebService.ResponseState.SUCCESS:
 
-                    WebService.ClashTestsResults clashTestsResults = serviceResponse as WebService.ClashTestsResults;
 
-                    List<AClashTest> clashTestsFromDB = new List<AClashTest>();
-                    List<ASearchSet> nwSearchSets = NWHandler.NWASearchSets;
+                clashTests = new List<AClashTest>();
+                dbFailedClashTests = new List<WebService.ClashTest>();
 
-                    foreach (var dbClashTest in clashTestsResults.ClashTests)
-                    {
-                        if (IsSearchSetExistOnDB(dbClashTest, nwSearchSets))
+
+                int clashMatrixId = clashMatrix.Id;
+                WebService.ServiceResponse serviceResponse = service.GetClashTests(clashMatrixId);
+
+                switch (serviceResponse.State)
+                {
+                    case WebService.ResponseState.SUCCESS:
+
+                        WebService.ClashTestsResults clashTestsResults = serviceResponse as WebService.ClashTestsResults;
+
+                        List<AClashTest> clashTestsFromDB = new List<AClashTest>();
+                        List<ASearchSet> nwSearchSets = NWHandler.NWASearchSets;
+
+                        foreach (var dbClashTest in clashTestsResults.ClashTests)
                         {
-                            AClashTest clashTest = new AClashTest
+                            if (IsSearchSetExistOnDB(dbClashTest, nwSearchSets))
                             {
-                                Name = dbClashTest.Name,
-                                Condition = EntityComparisonResult.NotChecked,
-                                Id = dbClashTest.Id,
-                                UniqueName = dbClashTest.UniqueName,
-                                Type = dbClashTest.Type,
-                                TypeName = dbClashTest.TypeName,
-                                Tolerance = dbClashTest.Tolerance,
-                                ClashMatrixId = dbClashTest.MatrixId,
-                                TradeId = dbClashTest.TradeId,
-                                TradeCode = dbClashTest.TradeCode,
-                                AddedDate = dbClashTest.AddDate,
-                                LastRunDate = dbClashTest.LastRunDate,
-                                AddedBy = dbClashTest.AddedBy,
-                                ProjectCode = dbClashTest.ProjectCode,
-                                SearchSet1 = new ASearchSet
+                                AClashTest clashTest = new AClashTest
                                 {
-                                    Pk = -1,
-                                    Name = ModifyDBSearchSetName(dbClashTest.SearchSet1),
-                                    TradeId = dbClashTest.SearchSet1.TradeId,
-                                    Project = new Project(),
-                                    ModifiedBy = "",
-                                    IsFromNavis = false
-                                },
-                                SearchSet2 = new ASearchSet
-                                {
+                                    Name = dbClashTest.Name,
+                                    Condition = EntityComparisonResult.NotChecked,
+                                    Id = dbClashTest.Id,
+                                    UniqueName = dbClashTest.UniqueName,
+                                    Type = dbClashTest.Type,
+                                    TypeName = dbClashTest.TypeName,
+                                    //Tolerance = dbClashTest.Tolerance,
+                                    ClashMatrixId = dbClashTest.MatrixId,
+                                    TradeId = dbClashTest.TradeId,
+                                    TradeCode = dbClashTest.TradeCode,
+                                    AddedDate = dbClashTest.AddDate,
+                                    LastRunDate = dbClashTest.LastRunDate,
+                                    AddedBy = dbClashTest.AddedBy,
+                                    ProjectCode = dbClashTest.ProjectCode,
+                                    SearchSet1 = new ASearchSet
+                                    {
+                                        Pk = -1,
+                                        Name = ModifyDBSearchSetName(dbClashTest.SearchSet1),
+                                        TradeId = dbClashTest.SearchSet1.TradeId,
+                                        Project = new Project(),
+                                        ModifiedBy = "",
+                                        IsFromNavis = false
+                                    },
+                                    SearchSet2 = new ASearchSet
+                                    {
 
-                                    Pk = -1,
-                                    Name = ModifyDBSearchSetName(dbClashTest.SearchSet2),
-                                    TradeId = dbClashTest.SearchSet2.TradeId,
-                                    Project = new Project(),
-                                    ModifiedBy = "",
-                                    IsFromNavis = false
-                                }
-                            };
+                                        Pk = -1,
+                                        Name = ModifyDBSearchSetName(dbClashTest.SearchSet2),
+                                        TradeId = dbClashTest.SearchSet2.TradeId,
+                                        Project = new Project(),
+                                        ModifiedBy = "",
+                                        IsFromNavis = false
+                                    }
+                                };
 
-                            clashTestsFromDB.Add(clashTest);
-                            clashTests = clashTestsFromDB;
+                                clashTestsFromDB.Add(clashTest);
+                                clashTests = clashTestsFromDB;
+                            }
+                            else
+                            {
+                                dbFailedClashTests.Add(dbClashTest);
+                            }
                         }
-                        else
-                        {
-                            dbFailedClashTests.Add(dbClashTest);
-                        }
-                    }
 
-                    return true;
-                case WebService.ResponseState.FAILD:
-                    return false;
-                default:
-                    return false;
+                        return true;
+                    case WebService.ResponseState.FAILD:
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Database Exception: " + e.Message);
+                return false;
             }
 
         }
@@ -364,6 +393,33 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         private static string ModifyDBSearchSetName(WebService.SearchSetInfo searchSet)
         {
             return searchSet.TradeAbbr + "-" + searchSet.Name;
+        }
+
+        private static Dictionary<string, string[]> ProcessSearchSetNames(string[] namesWithTradeAbb)
+        {
+            Dictionary<string, string[]> processedNames = new Dictionary<string, string[]>();
+
+            List<string[]> splittedNames = new List<string[]>();
+
+            foreach (var nameWithAbb in namesWithTradeAbb)
+            {
+                string[] splitedName = nameWithAbb.Split(new char[] { '-' }, 2);
+                splittedNames.Add(splitedName);
+            }
+
+            var groupedSplittedNames = splittedNames.GroupBy(x => x[0]).ToList();
+            foreach (var group in groupedSplittedNames)
+            {
+                string tradeAbb = group.Key;
+                List<string> value = new List<string>();
+                foreach (var name in group)
+                {
+                    value.Add(name[1]);
+                }
+                processedNames.Add(tradeAbb, value.ToArray());
+            }
+
+            return processedNames;
         }
 
         #endregion
@@ -437,7 +493,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                     TradeId = nwClashTest.SearchSet1.TradeId,
                     TradeAbbr = TradeAbb
                 };
-                dbClashTest.Tolerance = nwClashTest.Tolerance;
+                //TODO: report tolerance issue to DB
+                //dbClashTest.Tolerance = nwClashTest.Tolerance;
                 dbClashTest.TradeId = nwClashTest.TradeId;
                 dbClashTest.TradeCode = nwClashTest.TradeCode;
                 dbClashTest.Type = nwClashTest.Type;

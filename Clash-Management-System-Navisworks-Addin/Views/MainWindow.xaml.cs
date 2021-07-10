@@ -85,6 +85,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             dataTable.Columns.Add("Modified By");
             dataTable.Columns.Add("Status");
 
+            if (data==null||data.Count<1)
+            {
+                return false;
+            }
+
             foreach (var searchSet in data)
             {
                 DataRow row = dataTable.Rows.Add(
@@ -115,6 +120,13 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             dataTable.Columns.Add("Added By");
             dataTable.Columns.Add("Search Set 1");
             dataTable.Columns.Add("Search Set 2");
+
+
+            if (data == null || data.Count < 1)
+            {
+                return false;
+            }
+
 
             foreach (var test in data)
             {
@@ -330,6 +342,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
                 if (nwSearchSets == null || nwSearchSets.Count > 0)
                 {
+                    //TODO: Delete line below
+                    PresentSearchSetsOnDataGrid(PresenterDataGrid, NW.NWHandler.NWASearchSets);
+                    
+
                     DB.DBHandler.SyncSearchSetsWithDB(
                         ViewsHandler.CurrentUser,
                         ViewsHandler.CurrentAClashMatrix,

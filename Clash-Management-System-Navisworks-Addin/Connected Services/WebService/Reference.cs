@@ -22,6 +22,20 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_CheckDatabaseConnection", ReplyAction="*")]
         System.Threading.Tasks.Task<bool> DEBUG_CheckDatabaseConnectionAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_ThrowExceptionToFile", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        void DEBUG_ThrowExceptionToFile();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_ThrowExceptionToFile", ReplyAction="*")]
+        System.Threading.Tasks.Task DEBUG_ThrowExceptionToFileAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_FixSearchSetsLogTable", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        bool DEBUG_FixSearchSetsLogTable();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_FixSearchSetsLogTable", ReplyAction="*")]
+        System.Threading.Tasks.Task<bool> DEBUG_FixSearchSetsLogTableAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="Dar/GetProjects", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string domain, string user);
@@ -459,8 +473,6 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         
         private string tradeCodeField;
         
-        private double toleranceField;
-        
         private System.Nullable<System.DateTime> addDateField;
         
         private System.Nullable<System.DateTime> lastRunDateField;
@@ -572,19 +584,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
-        public double Tolerance {
-            get {
-                return this.toleranceField;
-            }
-            set {
-                this.toleranceField = value;
-                this.RaisePropertyChanged("Tolerance");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=8)]
         public System.Nullable<System.DateTime> AddDate {
             get {
                 return this.addDateField;
@@ -596,7 +596,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
         public System.Nullable<System.DateTime> LastRunDate {
             get {
                 return this.lastRunDateField;
@@ -608,7 +608,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
         public string AddedBy {
             get {
                 return this.addedByField;
@@ -620,7 +620,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
         public string ProjectCode {
             get {
                 return this.projectCodeField;
@@ -632,7 +632,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public Priority Priority {
             get {
                 return this.priorityField;
@@ -644,7 +644,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public SearchSetInfo SearchSet1 {
             get {
                 return this.searchSet1Field;
@@ -656,7 +656,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
         public SearchSetInfo SearchSet2 {
             get {
                 return this.searchSet2Field;
@@ -1200,6 +1200,22 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         
         public System.Threading.Tasks.Task<bool> DEBUG_CheckDatabaseConnectionAsync() {
             return base.Channel.DEBUG_CheckDatabaseConnectionAsync();
+        }
+        
+        public void DEBUG_ThrowExceptionToFile() {
+            base.Channel.DEBUG_ThrowExceptionToFile();
+        }
+        
+        public System.Threading.Tasks.Task DEBUG_ThrowExceptionToFileAsync() {
+            return base.Channel.DEBUG_ThrowExceptionToFileAsync();
+        }
+        
+        public bool DEBUG_FixSearchSetsLogTable() {
+            return base.Channel.DEBUG_FixSearchSetsLogTable();
+        }
+        
+        public System.Threading.Tasks.Task<bool> DEBUG_FixSearchSetsLogTableAsync() {
+            return base.Channel.DEBUG_FixSearchSetsLogTableAsync();
         }
         
         public Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string domain, string user) {
