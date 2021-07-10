@@ -76,8 +76,28 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         public bool PresentSearchSetsOnDataGrid(DataGrid datagrid, List<ASearchSet> data)
         {
-            DataTable dataTable = new DataTable("Search Sets");
+            if (data.Count<1)
+            {
+                return false;
+            }
+            datagrid.Columns.Clear();
+            datagrid.ItemsSource = data;
 
+            List<string> searchSetBindingProperties = new List<string>
+            {
+                "Name", "Project.Name", "ClashMatrix.Name", "TradeId" 
+            };
+
+            foreach (var colName in searchSetBindingProperties)
+            {
+                var col = new DataGridTextColumn();
+                col.Header = colName;
+                col.Binding = new Binding(colName);
+                datagrid.Columns.Add(col);
+            }
+            /*
+            DataTable dataTable = new DataTable("Search Sets");
+            dataTable.Columns.Clear();
             dataTable.Columns.Add("Name");
             dataTable.Columns.Add("Project");
             dataTable.Columns.Add("Clash Matrix");
@@ -89,6 +109,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 return false;
             }
+            
 
             foreach (var searchSet in data)
             {
@@ -102,12 +123,41 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     );
             }
             datagrid.ItemsSource = dataTable.DefaultView;
+            */
 
             return true;
         }
 
         public bool PresentClashTestsOnDataGrid(DataGrid datagrid, List<AClashTest> data)
         {
+
+            if (data.Count < 1)
+            {
+                return false;
+            }
+            datagrid.Columns.Clear();
+            datagrid.ItemsSource = data;
+
+            var col1 = new DataGridCheckBoxColumn();
+            col1.Header = "Sync";
+            col1.Binding = new Binding("IsSelected");
+            datagrid.Columns.Add(col1);
+
+            List<string> clashTestBindingProperties = new List<string>
+            {
+                "Name", "Status","Project.Name", "ClashMatrix.Name", "AClashResult.Count","SearchSet1.Name","SearchSet2.Name"
+            };
+
+            foreach (var colName in clashTestBindingProperties)
+            {
+                var col = new DataGridTextColumn();
+                col.Header = colName;
+                col.Binding = new Binding(colName);
+                datagrid.Columns.Add(col);
+            }
+
+            return true;
+            /*
             DataTable dataTable = new DataTable("Clash Tests");
 
             dataTable.Columns.Add("Name");
@@ -146,6 +196,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             datagrid.ItemsSource = dataTable.DefaultView;
 
             return true;
+            */
         }
 
         private void Expander_PreviewMouseUp(object sender, RoutedEventArgs e)
