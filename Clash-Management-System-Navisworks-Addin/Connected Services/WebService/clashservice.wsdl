@@ -232,7 +232,7 @@
       </s:complexType>
       <s:complexType name="ClashResultSyncRequest">
         <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="ClashTest" type="tns:ClashTest" />
+          <s:element minOccurs="1" maxOccurs="1" name="ClashTestId" type="s:int" />
           <s:element minOccurs="0" maxOccurs="1" name="NewResults" type="tns:ArrayOfClashResult" />
         </s:sequence>
       </s:complexType>

@@ -411,19 +411,19 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Dar")]
     public partial class ClashResultSyncRequest : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private ClashTest clashTestField;
+        private int clashTestIdField;
         
         private ClashResult[] newResultsField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public ClashTest ClashTest {
+        public int ClashTestId {
             get {
-                return this.clashTestField;
+                return this.clashTestIdField;
             }
             set {
-                this.clashTestField = value;
-                this.RaisePropertyChanged("ClashTest");
+                this.clashTestIdField = value;
+                this.RaisePropertyChanged("ClashTestId");
             }
         }
         
@@ -436,368 +436,6 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
             set {
                 this.newResultsField = value;
                 this.RaisePropertyChanged("NewResults");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="Dar")]
-    public partial class ClashTest : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private int idField;
-        
-        private string nameField;
-        
-        private string uniqueNameField;
-        
-        private int typeField;
-        
-        private string typeNameField;
-        
-        private int matrixIdField;
-        
-        private int tradeIdField;
-        
-        private string tradeCodeField;
-        
-        private System.Nullable<System.DateTime> addDateField;
-        
-        private System.Nullable<System.DateTime> lastRunDateField;
-        
-        private string addedByField;
-        
-        private string projectCodeField;
-        
-        private Priority priorityField;
-        
-        private SearchSetInfo searchSet1Field;
-        
-        private SearchSetInfo searchSet2Field;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int Id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-                this.RaisePropertyChanged("Id");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public string Name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-                this.RaisePropertyChanged("Name");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public string UniqueName {
-            get {
-                return this.uniqueNameField;
-            }
-            set {
-                this.uniqueNameField = value;
-                this.RaisePropertyChanged("UniqueName");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public int Type {
-            get {
-                return this.typeField;
-            }
-            set {
-                this.typeField = value;
-                this.RaisePropertyChanged("Type");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
-        public string TypeName {
-            get {
-                return this.typeNameField;
-            }
-            set {
-                this.typeNameField = value;
-                this.RaisePropertyChanged("TypeName");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
-        public int MatrixId {
-            get {
-                return this.matrixIdField;
-            }
-            set {
-                this.matrixIdField = value;
-                this.RaisePropertyChanged("MatrixId");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
-        public int TradeId {
-            get {
-                return this.tradeIdField;
-            }
-            set {
-                this.tradeIdField = value;
-                this.RaisePropertyChanged("TradeId");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
-        public string TradeCode {
-            get {
-                return this.tradeCodeField;
-            }
-            set {
-                this.tradeCodeField = value;
-                this.RaisePropertyChanged("TradeCode");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=8)]
-        public System.Nullable<System.DateTime> AddDate {
-            get {
-                return this.addDateField;
-            }
-            set {
-                this.addDateField = value;
-                this.RaisePropertyChanged("AddDate");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
-        public System.Nullable<System.DateTime> LastRunDate {
-            get {
-                return this.lastRunDateField;
-            }
-            set {
-                this.lastRunDateField = value;
-                this.RaisePropertyChanged("LastRunDate");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
-        public string AddedBy {
-            get {
-                return this.addedByField;
-            }
-            set {
-                this.addedByField = value;
-                this.RaisePropertyChanged("AddedBy");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
-        public string ProjectCode {
-            get {
-                return this.projectCodeField;
-            }
-            set {
-                this.projectCodeField = value;
-                this.RaisePropertyChanged("ProjectCode");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
-        public Priority Priority {
-            get {
-                return this.priorityField;
-            }
-            set {
-                this.priorityField = value;
-                this.RaisePropertyChanged("Priority");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
-        public SearchSetInfo SearchSet1 {
-            get {
-                return this.searchSet1Field;
-            }
-            set {
-                this.searchSet1Field = value;
-                this.RaisePropertyChanged("SearchSet1");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
-        public SearchSetInfo SearchSet2 {
-            get {
-                return this.searchSet2Field;
-            }
-            set {
-                this.searchSet2Field = value;
-                this.RaisePropertyChanged("SearchSet2");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="Dar")]
-    public partial class Priority : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private int idField;
-        
-        private string nameField;
-        
-        private string descriptionField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int Id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-                this.RaisePropertyChanged("Id");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public string Name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-                this.RaisePropertyChanged("Name");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public string Description {
-            get {
-                return this.descriptionField;
-            }
-            set {
-                this.descriptionField = value;
-                this.RaisePropertyChanged("Description");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="Dar")]
-    public partial class SearchSetInfo : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private int idField;
-        
-        private string nameField;
-        
-        private int tradeIdField;
-        
-        private string tradeAbbrField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public int Id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-                this.RaisePropertyChanged("Id");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
-        public string Name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-                this.RaisePropertyChanged("Name");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
-        public int TradeId {
-            get {
-                return this.tradeIdField;
-            }
-            set {
-                this.tradeIdField = value;
-                this.RaisePropertyChanged("TradeId");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
-        public string TradeAbbr {
-            get {
-                return this.tradeAbbrField;
-            }
-            set {
-                this.tradeAbbrField = value;
-                this.RaisePropertyChanged("TradeAbbr");
             }
         }
         
@@ -1061,6 +699,368 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         
         /// <remarks/>
         UPDATE,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="Dar")]
+    public partial class SearchSetInfo : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int idField;
+        
+        private string nameField;
+        
+        private int tradeIdField;
+        
+        private string tradeAbbrField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int Id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+                this.RaisePropertyChanged("Id");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("Name");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public int TradeId {
+            get {
+                return this.tradeIdField;
+            }
+            set {
+                this.tradeIdField = value;
+                this.RaisePropertyChanged("TradeId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public string TradeAbbr {
+            get {
+                return this.tradeAbbrField;
+            }
+            set {
+                this.tradeAbbrField = value;
+                this.RaisePropertyChanged("TradeAbbr");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="Dar")]
+    public partial class Priority : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int idField;
+        
+        private string nameField;
+        
+        private string descriptionField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int Id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+                this.RaisePropertyChanged("Id");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("Name");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string Description {
+            get {
+                return this.descriptionField;
+            }
+            set {
+                this.descriptionField = value;
+                this.RaisePropertyChanged("Description");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.8.4084.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="Dar")]
+    public partial class ClashTest : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int idField;
+        
+        private string nameField;
+        
+        private string uniqueNameField;
+        
+        private int typeField;
+        
+        private string typeNameField;
+        
+        private int matrixIdField;
+        
+        private int tradeIdField;
+        
+        private string tradeCodeField;
+        
+        private System.Nullable<System.DateTime> addDateField;
+        
+        private System.Nullable<System.DateTime> lastRunDateField;
+        
+        private string addedByField;
+        
+        private string projectCodeField;
+        
+        private Priority priorityField;
+        
+        private SearchSetInfo searchSet1Field;
+        
+        private SearchSetInfo searchSet2Field;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=0)]
+        public int Id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+                this.RaisePropertyChanged("Id");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=1)]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("Name");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=2)]
+        public string UniqueName {
+            get {
+                return this.uniqueNameField;
+            }
+            set {
+                this.uniqueNameField = value;
+                this.RaisePropertyChanged("UniqueName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        public int Type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+                this.RaisePropertyChanged("Type");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        public string TypeName {
+            get {
+                return this.typeNameField;
+            }
+            set {
+                this.typeNameField = value;
+                this.RaisePropertyChanged("TypeName");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=5)]
+        public int MatrixId {
+            get {
+                return this.matrixIdField;
+            }
+            set {
+                this.matrixIdField = value;
+                this.RaisePropertyChanged("MatrixId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=6)]
+        public int TradeId {
+            get {
+                return this.tradeIdField;
+            }
+            set {
+                this.tradeIdField = value;
+                this.RaisePropertyChanged("TradeId");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=7)]
+        public string TradeCode {
+            get {
+                return this.tradeCodeField;
+            }
+            set {
+                this.tradeCodeField = value;
+                this.RaisePropertyChanged("TradeCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=8)]
+        public System.Nullable<System.DateTime> AddDate {
+            get {
+                return this.addDateField;
+            }
+            set {
+                this.addDateField = value;
+                this.RaisePropertyChanged("AddDate");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
+        public System.Nullable<System.DateTime> LastRunDate {
+            get {
+                return this.lastRunDateField;
+            }
+            set {
+                this.lastRunDateField = value;
+                this.RaisePropertyChanged("LastRunDate");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        public string AddedBy {
+            get {
+                return this.addedByField;
+            }
+            set {
+                this.addedByField = value;
+                this.RaisePropertyChanged("AddedBy");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        public string ProjectCode {
+            get {
+                return this.projectCodeField;
+            }
+            set {
+                this.projectCodeField = value;
+                this.RaisePropertyChanged("ProjectCode");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        public Priority Priority {
+            get {
+                return this.priorityField;
+            }
+            set {
+                this.priorityField = value;
+                this.RaisePropertyChanged("Priority");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        public SearchSetInfo SearchSet1 {
+            get {
+                return this.searchSet1Field;
+            }
+            set {
+                this.searchSet1Field = value;
+                this.RaisePropertyChanged("SearchSet1");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        public SearchSetInfo SearchSet2 {
+            get {
+                return this.searchSet2Field;
+            }
+            set {
+                this.searchSet2Field = value;
+                this.RaisePropertyChanged("SearchSet2");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
     
     /// <remarks/>
