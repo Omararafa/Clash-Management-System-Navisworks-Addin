@@ -240,21 +240,22 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             return clashTest;
         }
 
-        public static AClashTest ModifyClashTest(AClashTest sourceAClashTest, AClashTest targetAClashTest)
+        public static AClashTest ModifyClashTest(AClashTest sourceAClashTest, AClashTest targetAClashTest, List<ASearchSet> nwASearchSets)
         {
             // sourceClashTest: The ClashTest to copy properties from
             // targetClashTest: The ClashTest to edit
 
             ClashTest tempClashTest = new ClashTest();
 
-            tempClashTest.DisplayName = sourceAClashTest.ClashTest.DisplayName;
-            tempClashTest.CustomTestName = sourceAClashTest.ClashTest.CustomTestName;
-            tempClashTest.TestType = sourceAClashTest.ClashTest.TestType;
-            tempClashTest.Tolerance = sourceAClashTest.ClashTest.Tolerance;
+            tempClashTest.DisplayName = sourceAClashTest.Name;
+            tempClashTest.CustomTestName = sourceAClashTest.Name;
+            tempClashTest.TestType = GetClashTestType(sourceAClashTest.TypeName.ToLower());
+            tempClashTest.Tolerance = sourceAClashTest.Tolerance;
 
+            targetAClashTest.Id = sourceAClashTest.Id; 
 
-            SelectionSet searchSetA = sourceAClashTest.SearchSet1.SelectionSet;
-            SelectionSet searchSetB = sourceAClashTest.SearchSet2.SelectionSet;
+            SelectionSet searchSetA = nwASearchSets.Where(searchSet => searchSet.Name == sourceAClashTest.SearchSet1.Name).First().SelectionSet;
+            SelectionSet searchSetB = nwASearchSets.Where(searchSet => searchSet.Name == sourceAClashTest.SearchSet2.Name).First().SelectionSet;
 
             SelectionSource selectionSourceA = Document.SelectionSets.CreateSelectionSource(searchSetA);
             SelectionSource selectionSourceB = Document.SelectionSets.CreateSelectionSource(searchSetB);

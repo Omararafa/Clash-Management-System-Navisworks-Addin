@@ -97,6 +97,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             Name = "ClashServiceSoap",
             Security = new BasicHttpSecurity { Mode = BasicHttpSecurityMode.None },
+            MaxReceivedMessageSize = 10000000
         },
         address);
 
@@ -213,8 +214,6 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
             try
             {
-
-
                 string userTradeAbb = DBHandler.TradeAbb;
                 int clashMatrixId = clashMatrix.Id;
                 searchSetsFromDB = new List<ASearchSet>();
@@ -290,15 +289,12 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
         #region ClashTestsHandlers
 
-        public static bool SyncClashTests(AClashMatrix clashMatrix, ref List<AClashTest> clashTests, ref List<WebService.ClashTest> dbFailedClashTests)
+        public static bool SyncClashTests(AClashMatrix clashMatrix, ref List<AClashTest> clashTestsFromDB, ref List<WebService.ClashTest> dbFailedClashTests)
         {
             try
             {
-
-
-                clashTests = new List<AClashTest>();
+                clashTestsFromDB = new List<AClashTest>();
                 dbFailedClashTests = new List<WebService.ClashTest>();
-
 
                 int clashMatrixId = clashMatrix.Id;
                 WebService.ServiceResponse serviceResponse = service.GetClashTests(clashMatrixId);
@@ -309,57 +305,49 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                         WebService.ClashTestsResults clashTestsResults = serviceResponse as WebService.ClashTestsResults;
 
-                        List<AClashTest> clashTestsFromDB = new List<AClashTest>();
-                        List<ASearchSet> nwSearchSets = NWHandler.NWASearchSets;
+                        List<ASearchSet> nwASearchSets = NWHandler.NWASearchSets;
 
                         foreach (var dbClashTest in clashTestsResults.ClashTests)
                         {
-                            if (IsSearchSetExistOnDB(dbClashTest, nwSearchSets))
+                            AClashTest clashTest = new AClashTest
                             {
-                                AClashTest clashTest = new AClashTest
-                                {
-                                    Name = dbClashTest.Name,
-                                    Condition = EntityComparisonResult.NotChecked,
-                                    Id = dbClashTest.Id,
-                                    UniqueName = dbClashTest.UniqueName,
-                                    Type = dbClashTest.Type,
-                                    TypeName = dbClashTest.TypeName,
-                                    //Tolerance = dbClashTest.Tolerance,
-                                    ClashMatrixId = dbClashTest.MatrixId,
-                                    TradeId = dbClashTest.TradeId,
-                                    TradeCode = dbClashTest.TradeCode,
-                                    AddedDate = dbClashTest.AddDate,
-                                    LastRunDate = dbClashTest.LastRunDate,
-                                    AddedBy = dbClashTest.AddedBy,
-                                    ProjectCode = dbClashTest.ProjectCode,
-                                    SearchSet1 = new ASearchSet
-                                    {
-                                        Pk = -1,
-                                        Name = ModifyDBSearchSetName(dbClashTest.SearchSet1),
-                                        TradeId = dbClashTest.SearchSet1.TradeId,
-                                        Project = new Project(),
-                                        ModifiedBy = "",
-                                        IsFromNavis = false
-                                    },
-                                    SearchSet2 = new ASearchSet
-                                    {
+                                Name = dbClashTest.Name,
+                                Condition = EntityComparisonResult.NotChecked,
+                                Id = dbClashTest.Id,
+                                UniqueName = dbClashTest.UniqueName,
+                                Type = dbClashTest.Type,
+                                TypeName = dbClashTest.TypeName,
+                                //Tolerance = dbClashTest.Tolerance,
+                                ClashMatrixId = dbClashTest.MatrixId,
+                                TradeId = dbClashTest.TradeId,
+                                TradeCode = dbClashTest.TradeCode,
+                                AddedDate = dbClashTest.AddDate,
+                                LastRunDate = dbClashTest.LastRunDate,
+                                AddedBy = dbClashTest.AddedBy,
+                                ProjectCode = dbClashTest.ProjectCode,
+                                SearchSet1 = nwASearchSets.Where(searchSet => searchSet.Name == ModifyDBSearchSetName(dbClashTest.SearchSet1)).FirstOrDefault(),
+                                SearchSet2 = nwASearchSets.Where(searchSet => searchSet.Name == ModifyDBSearchSetName(dbClashTest.SearchSet2)).FirstOrDefault()
+                            };
 
-                                        Pk = -1,
-                                        Name = ModifyDBSearchSetName(dbClashTest.SearchSet2),
-                                        TradeId = dbClashTest.SearchSet2.TradeId,
-                                        Project = new Project(),
-                                        ModifiedBy = "",
-                                        IsFromNavis = false
-                                    }
-                                };
-
-                                clashTestsFromDB.Add(clashTest);
-                                clashTests = clashTestsFromDB;
-                            }
-                            else
+                            if (clashTest.SearchSet1 == null || clashTest.SearchSet2 == null)
                             {
                                 dbFailedClashTests.Add(dbClashTest);
+                                continue;
                             }
+
+                            clashTest.SearchSet1.Pk = -1;
+                            clashTest.SearchSet1.TradeId = dbClashTest.SearchSet1.TradeId;
+                            clashTest.SearchSet1.Project = ViewsHandler.CurrentProject;
+                            clashTest.SearchSet1.ModifiedBy = "";
+                            clashTest.SearchSet1.IsFromNavis = true;
+
+                            clashTest.SearchSet2.Pk = -1;
+                            clashTest.SearchSet2.TradeId = dbClashTest.SearchSet2.TradeId;
+                            clashTest.SearchSet2.Project = ViewsHandler.CurrentProject;
+                            clashTest.SearchSet2.ModifiedBy = "";
+                            clashTest.SearchSet2.IsFromNavis = true;
+
+                            clashTestsFromDB.Add(clashTest);
                         }
 
                         return true;
@@ -455,7 +443,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         }
 
         //TODO: Method below needs update after ClashResult class update in ViewModels
-        public static bool SetClashResultToDB(AClashMatrix clashMatrix, List<AClashTest> clashTestsFromNW)
+        public static bool SyncClashResultToDB(AClashMatrix clashMatrix, List<AClashTest> clashTestsFromNW)
         {
             int clashMatrixId = clashMatrix.Id;
             int clashTestsCount = clashTestsFromNW.Count;
@@ -470,6 +458,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 //Build Clash Test DB Object
                 WebService.ClashTest dbClashTest = new WebService.ClashTest();
 
+                /*
                 dbClashTest.AddDate = nwClashTest.AddedDate;
                 dbClashTest.AddedBy = nwClashTest.AddedBy;
                 dbClashTest.Id = nwClashTest.Id;
@@ -502,7 +491,10 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 dbClashTest.UniqueName = nwClashTest.UniqueName;
 
                 clashResultSyncRequest.ClashTest = dbClashTest;
+                */
 
+                AClashTest dbAClashTest = DBAClashTests.Where(clashTest => clashTest.Name == nwClashTest.Name).First();
+                clashResultSyncRequest.ClashTestId = dbAClashTest.Id;
 
                 //Build DB ClashResult[] object
                 int ClashTestResultsCount = nwClashTest.AClashTestResults.Count;

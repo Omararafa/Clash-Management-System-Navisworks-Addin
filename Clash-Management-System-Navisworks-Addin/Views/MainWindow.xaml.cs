@@ -361,24 +361,41 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             if (FunctionClashTestsRBtn.IsChecked == true)
             {
                 List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests;
+                List<AClashTest> dbClashTests = DB.DBHandler.DBAClashTests;
 
                 PresentClashTestsOnDataGrid(this.PresenterDataGrid, nwClashTests);
 
-                List<AClashTest> dbClashTests = new List<AClashTest>();
 
-                dbClashTests = DB.DBHandler.DBAClashTests;
                 if (dbClashTests == null || dbClashTests.Count < 1)
                 {
                     System.Windows.Forms.MessageBox.Show("No clash tests were found on the Database!");
                     return false;
                 }
 
-                PresentClashTestsOnDataGrid(this.PresenterDataGrid, dbClashTests);
+                try
+                {
+                    List<AClashTest> comparedAClashTests = DBNWHandler.DBNWComparison.CompareNWDBAClashTests();
+                    PresentClashTestsOnDataGrid(this.PresenterDataGrid, comparedAClashTests);
+                }
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                    return false;
+                }
+
+                return true;
             }
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
-                List<AClashTest> dbClashTests = DB.DBHandler.DBAClashTests;
+                List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests.Where(clashTest => !clashTest.IsSelected).ToList();
 
+                bool isSynced = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, nwClashTests);
+
+                if (isSynced)
+                {
+                    //PresentClashTestsOnDataGrid(this.PresenterDataGrid, dbClashTests);
+
+                }
             }
             return false;
 

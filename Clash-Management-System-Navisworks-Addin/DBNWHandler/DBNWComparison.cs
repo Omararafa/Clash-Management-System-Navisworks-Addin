@@ -77,7 +77,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             return combinedASearchSets;
         }
 
-        private static List<AClashTest> CompareNWDBAClashTests()
+        public static List<AClashTest> CompareNWDBAClashTests()
         {
             // 1. Create a dictionary for the NW clash Tests
             // 2. Iterate over the DB clash tests list
@@ -95,23 +95,29 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             // 5. Create combined list = dbLst + nwLst
 
 
+            List<ASearchSet> nwASearchSet = NWHandler.NWASearchSets;
             List<AClashTest> nwClashTests = NWHandler.NWAClashTests;
+            List<AClashTest> dbAClashTests = DBHandler.DBAClashTests;
             List<AClashTest> combinedAClashTests = new List<AClashTest>();
 
             Dictionary<string, AClashTest> nwAClashTestsDic = nwClashTests.ToDictionary(x => x.Name);
 
-            foreach (AClashTest dbAClashTest in DBHandler.DBAClashTests)
+            foreach (AClashTest dbAClashTest in dbAClashTests)
             {
                 if (nwAClashTestsDic.ContainsKey(dbAClashTest.Name))
                 {
                     if (IsAClashTestsEqual(nwAClashTestsDic[dbAClashTest.Name], dbAClashTest))
                     {
+                        UpdateDBAClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
                         dbAClashTest.Condition = EntityComparisonResult.NotEdited;
+                        
                         nwAClashTestsDic.Remove(dbAClashTest.Name);
                     } else
                     {
                         dbAClashTest.Condition = EntityComparisonResult.Edited;
-                        NWHandler.ModifyClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
+                        NWHandler.ModifyClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name], nwASearchSet);
+                        UpdateDBAClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
+
                         nwAClashTestsDic.Remove(dbAClashTest.Name);
                     }
                 }
@@ -128,7 +134,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
                 nwAClashTestsDic[clashTestName].Condition = EntityComparisonResult.Deleted;
             }
 
-            combinedAClashTests.AddRange(DBHandler.DBAClashTests);
+            combinedAClashTests.AddRange(dbAClashTests);
             combinedAClashTests.AddRange(nwAClashTestsDic.Values.ToList());
 
             return combinedAClashTests;
@@ -145,6 +151,18 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             }
 
             return false;
+        }
+
+        private static AClashTest UpdateDBAClashTest(AClashTest dbAClashTest, AClashTest nwAClashTesy)
+        {
+            dbAClashTest.ClashTest = nwAClashTesy.ClashTest;
+            dbAClashTest.SearchSet1 = nwAClashTesy.SearchSet1;
+            dbAClashTest.SearchSet2 = nwAClashTesy.SearchSet2;
+            dbAClashTest.AddedBy = nwAClashTesy.AddedBy;
+            dbAClashTest.AddedDate = nwAClashTesy.AddedDate;
+            dbAClashTest.LastRunDate = nwAClashTesy.LastRunDate;
+
+            return dbAClashTest;
         }
         #endregion
     }
