@@ -45,8 +45,23 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         {
             get
             {
-                _nwAClashTests = GetClashTests();
+                if (_nwAClashTests == null)
+                {
+                    _nwAClashTests = GetClashTests();
+                    return _nwAClashTests;
+                }
+
+                else if (_nwAClashTests.First().AClashTestResults == null)
+                {
+                    UpdateAClashTestsResults(_nwAClashTests);
+                }
+
                 return _nwAClashTests;
+            }
+
+            set
+            {
+                _nwAClashTests = value;
             }
         }
 
@@ -167,7 +182,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             if (documentClashTests != null && documentClashTests.Count > 0)
             {
                 List<AClashTest> aClashTests = GetAClashTestList(documentClashTests);
-                return aClashTests; 
+                return aClashTests;
             }
 
             return null;
@@ -252,7 +267,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             tempClashTest.TestType = GetClashTestType(sourceAClashTest.TypeName.ToLower());
             tempClashTest.Tolerance = sourceAClashTest.Tolerance;
 
-            targetAClashTest.Id = sourceAClashTest.Id; 
+            targetAClashTest.Id = sourceAClashTest.Id;
 
             SelectionSet searchSetA = nwASearchSets.Where(searchSet => searchSet.Name == sourceAClashTest.SearchSet1.Name).First().SelectionSet;
             SelectionSet searchSetB = nwASearchSets.Where(searchSet => searchSet.Name == sourceAClashTest.SearchSet2.Name).First().SelectionSet;
@@ -325,6 +340,28 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         #region ClashResultMethods
 
+        public static bool UpdateAClashTestsResults(List<AClashTest> nwAClashTests)
+        {
+            //List<AClashTest> nwAClashTests = NWHandler.NWAClashTests;
+
+            foreach (AClashTest aClashTest in nwAClashTests)
+            {
+                List<AClashTestResult> aClashTestResults = new List<AClashTestResult>();
+                List<ClashResult> clashResults = GetClashResults(aClashTest.ClashTest);
+
+                foreach (ClashResult clashResult in clashResults)
+                {
+                    AClashTestResult aClashTestResult = new AClashTestResult(aClashTest, clashResult);
+                    aClashTestResults.Add(aClashTestResult);
+                }
+
+                aClashTest.AClashTestResults = aClashTestResults;
+            }
+
+            NWHandler.NWAClashTests = nwAClashTests;
+            return true;
+        }
+
         public static List<AClashTestResult> GetAClashTestResults(AClashTest aClashTest)
         {
             DocumentClash.TestsData.TestsRunTest(aClashTest.ClashTest);
@@ -334,7 +371,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
             foreach (ClashResult clashResult in clashTestResultsLst)
             {
-                AClashTestResult aClashTestResult = new AClashTestResult(aClashTest, clashResult); 
+                AClashTestResult aClashTestResult = new AClashTestResult(aClashTest, clashResult);
                 aClashTestResultsLst.Add(aClashTestResult);
             }
 

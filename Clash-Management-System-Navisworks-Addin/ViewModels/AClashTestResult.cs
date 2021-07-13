@@ -45,10 +45,10 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             this.Distance = clashResult.Distance;
             this.ClashPoint = new ClashPoint(clashResult.Center);
             this.Item1 = clashResult.Item1;
-            this.Item1Name = clashResult.Item1.DisplayName;
+            this.Item1Name = clashResult.Item1 == null ? string.Empty : clashResult.Item1.DisplayName;
             this.Item1SourceFile = GetItemSourceFile(clashResult.Item1);
             this.Item2 = clashResult.Item2;
-            this.Item2Name = clashResult.Item2.DisplayName; ;
+            this.Item2Name = clashResult.Item2 == null ? string.Empty : clashResult.Item2.DisplayName;
             this.Item2SourceFile = GetItemSourceFile(clashResult.Item2);
         }
 
@@ -83,6 +83,11 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
 
         private static string GetItemSourceFile(ModelItem item)
         {
+            if (item == null)
+            {
+                return string.Empty;
+            }
+
             DataProperty property = item.PropertyCategories.FindCategoryByDisplayName("Item").Properties.FindPropertyByDisplayName("Source File");
             string sourceFile = property.Value.IsDisplayString ? property.Value.ToDisplayString() : property.Value.ToString();
 

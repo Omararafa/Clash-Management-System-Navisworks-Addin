@@ -36,7 +36,8 @@ namespace Clash_Management_System_Navisworks_Addin
                     MainWindow mainWindow = new MainWindow();
                     ElementHost.EnableModelessKeyboardInterop(mainWindow);
 
-                    mainWindow.Show();
+                    mainWindow.ShowDialog();
+                    mainWindow.Topmost = true;
 
                     break;
             }

@@ -76,7 +76,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         public bool PresentSearchSetsOnDataGrid(DataGrid datagrid, List<ASearchSet> data)
         {
-            if (data.Count<1)
+            if (data.Count < 1)
             {
                 return false;
             }
@@ -85,7 +85,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             List<string> searchSetBindingProperties = new List<string>
             {
-                "Name", "Project.Name", "ClashMatrix.Name", "TradeId" 
+                "Name", "Project.Name", "ClashMatrix.Name", "TradeId"
             };
 
             foreach (var colName in searchSetBindingProperties)
@@ -130,7 +130,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         public bool PresentClashTestsOnDataGrid(DataGrid datagrid, List<AClashTest> data)
         {
-
             if (data.Count < 1)
             {
                 return false;
@@ -139,13 +138,14 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             datagrid.ItemsSource = data;
 
             var col1 = new DataGridCheckBoxColumn();
+            col1.IsReadOnly = false;
             col1.Header = "Sync";
             col1.Binding = new Binding("IsSelected");
             datagrid.Columns.Add(col1);
 
             List<string> clashTestBindingProperties = new List<string>
             {
-                "Name", "Status","Project.Name", "ClashMatrix.Name", "AClashResult.Count","SearchSet1.Name","SearchSet2.Name"
+                "Name","ClashTest.Status", "AClashTestResults.Count","SearchSet1.Name","SearchSet2.Name"
             };
 
             foreach (var colName in clashTestBindingProperties)
@@ -395,7 +395,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 {
                     //TODO: Delete line below
                     PresentSearchSetsOnDataGrid(PresenterDataGrid, NW.NWHandler.NWASearchSets);
-                    
+
 
                     DB.DBHandler.SyncSearchSetsWithDB(
                         ViewsHandler.CurrentUser,
@@ -414,7 +414,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests;
                 List<AClashTest> dbClashTests = DB.DBHandler.DBAClashTests;
 
-                PresentClashTestsOnDataGrid(this.PresenterDataGrid, nwClashTests);
+                //PresentClashTestsOnDataGrid(this.PresenterDataGrid, nwClashTests);
 
 
                 if (dbClashTests == null || dbClashTests.Count < 1)
@@ -438,14 +438,16 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
-                List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests.Where(clashTest => !clashTest.IsSelected).ToList();
+                //List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests.Where(clashTest => !clashTest.IsSelected).ToList();
 
-                bool isSynced = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, nwClashTests);
+                //bool isSynced = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, nwClashTests);
 
-                if (isSynced)
+                if (true)
                 {
-                    //PresentClashTestsOnDataGrid(this.PresenterDataGrid, dbClashTests);
-
+                    List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
+                    NW.NWHandler.UpdateAClashTestsResults(aClashTests);
+                    DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, aClashTests);
+                    PresentClashTestsOnDataGrid(this.PresenterDataGrid, aClashTests);
                 }
             }
             return false;

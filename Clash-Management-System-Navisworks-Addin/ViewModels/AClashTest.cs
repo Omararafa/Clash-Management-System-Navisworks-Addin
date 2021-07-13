@@ -30,13 +30,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public ASearchSet SearchSet2 { get; set; }
         public ClashTest ClashTest { get; set; }
         public bool IsFromNavis { get; set; }
-        public List<AClashTestResult> AClashTestResults
-        {
-            get
-            {
-                return NWHandler.GetAClashTestResults(this);
-            }
-        }
+        public List<AClashTestResult> AClashTestResults { get; set; }
         public AClashTest()
         {
 
