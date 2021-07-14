@@ -445,7 +445,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 if (true)
                 {
                     List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
-                    NW.NWHandler.UpdateAClashTestsResults(aClashTests);
                     DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, aClashTests);
                     PresentClashTestsOnDataGrid(this.PresenterDataGrid, aClashTests);
                 }

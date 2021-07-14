@@ -45,16 +45,8 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         {
             get
             {
-                if (_nwAClashTests == null)
-                {
-                    _nwAClashTests = GetClashTests();
-                    return _nwAClashTests;
-                }
-
-                else if (_nwAClashTests.First().AClashTestResults == null)
-                {
-                    UpdateAClashTestsResults(_nwAClashTests);
-                }
+                List<AClashTest> aClashTests = GetClashTests();
+                _nwAClashTests = UpdateAClashTestsResults(aClashTests);
 
                 return _nwAClashTests;
             }
@@ -340,9 +332,8 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         #region ClashResultMethods
 
-        public static bool UpdateAClashTestsResults(List<AClashTest> nwAClashTests)
+        public static List<AClashTest> UpdateAClashTestsResults(List<AClashTest> nwAClashTests)
         {
-            //List<AClashTest> nwAClashTests = NWHandler.NWAClashTests;
 
             foreach (AClashTest aClashTest in nwAClashTests)
             {
@@ -358,8 +349,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
                 aClashTest.AClashTestResults = aClashTestResults;
             }
 
-            NWHandler.NWAClashTests = nwAClashTests;
-            return true;
+            return nwAClashTests;
         }
 
         public static List<AClashTestResult> GetAClashTestResults(AClashTest aClashTest)
