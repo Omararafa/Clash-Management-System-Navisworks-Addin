@@ -453,6 +453,10 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
             foreach (AClashTest nwClashTest in clashTestsFromNW)
             {
+                if (nwClashTest.AClashTestResults.Count < 1)
+                {
+                    continue;
+                }
                 WebService.ClashResultSyncRequest clashResultSyncRequest = new WebService.ClashResultSyncRequest();
 
                 //Build Clash Test DB Object
@@ -493,7 +497,12 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 clashResultSyncRequest.ClashTest = dbClashTest;
                 */
 
-                AClashTest dbAClashTest = DBAClashTests.Where(clashTest => clashTest.Name == nwClashTest.Name).First();
+                AClashTest dbAClashTest = DBAClashTests.Where(clashTest => clashTest.Name == nwClashTest.Name).FirstOrDefault();
+
+                if (dbAClashTest == null)
+                {
+                    continue;
+                }
                 clashResultSyncRequest.ClashTestId = dbAClashTest.Id;
 
                 //Build DB ClashResult[] object

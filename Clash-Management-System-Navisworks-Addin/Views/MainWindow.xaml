@@ -264,7 +264,7 @@
                 VerticalAlignment="Center" 
                 Background="MintCream"
                 Foreground="LightSlateGray"
-                FontFamily="Century Gothic, Courier New"
+                FontFamily="Century Gothic, Courier New" Click="Run_Click"
                 
                 />
 

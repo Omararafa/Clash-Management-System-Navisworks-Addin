@@ -137,6 +137,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             datagrid.Columns.Clear();
             datagrid.ItemsSource = data;
 
+
+
+
+
             var col1 = new DataGridCheckBoxColumn();
             col1.IsReadOnly = false;
             col1.Header = "Sync";
@@ -445,12 +449,19 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 if (true)
                 {
                     List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
-                    DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, aClashTests);
                     PresentClashTestsOnDataGrid(this.PresenterDataGrid, aClashTests);
                 }
             }
             return false;
 
+        }
+
+        private bool RunSyncButton()
+        {
+            List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
+            List<AClashTest> selectedClashTests = aClashTests.Where(x => x.AClashTestResults.Count > 0).ToList();
+            DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests);
+            return true;
         }
 
 
@@ -499,6 +510,12 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     textBox.Text = string.Empty;
                 }
             }
+        }
+
+        private void Run_Click(object sender, RoutedEventArgs e)
+        {
+            RunSyncButton();
+            return;
         }
     }
 }
