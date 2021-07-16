@@ -47,7 +47,12 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             {
                 List<AClashTest> aClashTests = GetClashTests();
                 _nwAClashTests = UpdateAClashTestsResults(aClashTests);
-
+                
+                //TODO: to be reviewed further
+                if (aClashTests.Count>0)
+                {
+                    IsClashTestsCalled = true;
+                }
                 return _nwAClashTests;
             }
 
@@ -67,6 +72,8 @@ namespace Clash_Management_System_Navisworks_Addin.NW
                 return _documentClash;
             }
         }
+
+        public static bool IsClashTestsCalled { get; set; }
 
         #endregion
 

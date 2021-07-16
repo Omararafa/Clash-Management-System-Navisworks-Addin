@@ -33,11 +33,18 @@ namespace Clash_Management_System_Navisworks_Addin
                     break;
 
                 case "WPFUI":
-                    MainWindow mainWindow = new MainWindow();
-                    ElementHost.EnableModelessKeyboardInterop(mainWindow);
+                    if (Autodesk.Navisworks.Api.Application.ActiveDocument.Models.Count > 0)
+                    {
+                        MainWindow mainWindow = new MainWindow();
+                        ElementHost.EnableModelessKeyboardInterop(mainWindow);
 
-                    mainWindow.ShowDialog();
-                    mainWindow.Topmost = true;
+                        mainWindow.ShowDialog();
+                        mainWindow.Topmost = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("The document does not contain any models!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
 
                     break;
             }

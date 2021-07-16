@@ -25,7 +25,16 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             {
                 if (this._projects == null||this._projects.Count<=0)
                 {
-                    return _projects = DB.DBHandler.Projects;
+                    try
+                    {
+                        return _projects = DB.DBHandler.Projects;
+
+                    }
+                    catch (Exception)
+                    {
+
+                        return null;
+                    }
                     
                 }
                 return this._projects;

@@ -128,24 +128,20 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             return true;
         }
 
-        public bool PresentClashTestsOnDataGrid(DataGrid datagrid, List<AClashTest> data)
+        public bool PresentClashTestsOnDataGrid(DataGrid datagrid,ref List<AClashTest> data)
         {
             if (data.Count < 1)
             {
                 return false;
             }
-            datagrid.Columns.Clear();
+
+            for (int i = 1; i < datagrid.Columns.Count; i++)
+            {
+                datagrid.Columns.RemoveAt(i);
+            }
             datagrid.ItemsSource = data;
 
 
-
-
-
-            var col1 = new DataGridCheckBoxColumn();
-            col1.IsReadOnly = false;
-            col1.Header = "Sync";
-            col1.Binding = new Binding("IsSelected");
-            datagrid.Columns.Add(col1);
 
             List<string> clashTestBindingProperties = new List<string>
             {
@@ -161,6 +157,25 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
 
             return true;
+            /*
+            var col1 = new DataGridTemplateColumn();
+            col1.Header = "Sync";
+            col1.IsReadOnly = false;
+            CheckBox checkBox = new CheckBox();
+            //<CheckBox IsChecked="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            checkBox.SetBinding(ToggleButton.IsCheckedProperty, "IsSelected");
+            DataTemplate dataTemplate = new DataTemplate();
+            dataTemplate.VisualTree = ;
+            datagrid.Columns.Add(col1);
+
+
+            var col1 = new DataGridCheckBoxColumn();
+            col1.IsReadOnly = false;
+            col1.Header = "Sync";
+            col1.Binding = new Binding("IsSelected");
+            datagrid.Columns.Add(col1);
+            */
             /*
             DataTable dataTable = new DataTable("Clash Tests");
 
@@ -307,6 +322,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 List<Project> projects = ViewsHandler.CurrentUser.Projects;
                 string tradeAbb = ViewsHandler.CurrentUser.TradeAbb;
 
+                if (projects == null)
+                {
+                    System.Windows.Forms.MessageBox.Show("Failed to get projects from database.");
+                    return false;
+                }
 
                 if (ViewsHandler.CurrentUser.Projects != null || ViewsHandler.CurrentUser.Projects.Count > 0)
                 {
@@ -395,12 +415,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
                 List<ASearchSet> dbSearchSets = new List<ASearchSet>();
 
-                if (nwSearchSets == null || nwSearchSets.Count > 0)
+                if (nwSearchSets != null || nwSearchSets.Count > 0)
                 {
-                    //TODO: Delete line below
-                    PresentSearchSetsOnDataGrid(PresenterDataGrid, NW.NWHandler.NWASearchSets);
-
-
                     DB.DBHandler.SyncSearchSetsWithDB(
                         ViewsHandler.CurrentUser,
                         ViewsHandler.CurrentAClashMatrix,
@@ -415,22 +431,24 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             if (FunctionClashTestsRBtn.IsChecked == true)
             {
-                List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests;
-                List<AClashTest> dbClashTests = DB.DBHandler.DBAClashTests;
-
-                //PresentClashTestsOnDataGrid(this.PresenterDataGrid, nwClashTests);
-
-
+                /*
                 if (dbClashTests == null || dbClashTests.Count < 1)
                 {
                     System.Windows.Forms.MessageBox.Show("No clash tests were found on the Database!");
                     return false;
                 }
+              
 
+  */
                 try
                 {
                     List<AClashTest> comparedAClashTests = DBNWHandler.DBNWComparison.CompareNWDBAClashTests();
-                    PresentClashTestsOnDataGrid(this.PresenterDataGrid, comparedAClashTests);
+                    if (!NW.NWHandler.IsClashTestsCalled)
+                    {
+                        System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized.");
+                        return false;
+                    }
+                    PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref comparedAClashTests);
                 }
                 catch (Exception e)
                 {
@@ -449,7 +467,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 if (true)
                 {
                     List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
-                    PresentClashTestsOnDataGrid(this.PresenterDataGrid, aClashTests);
+                    PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref aClashTests);
                 }
             }
             return false;
@@ -458,10 +476,34 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private bool RunSyncButton()
         {
-            List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
-            List<AClashTest> selectedClashTests = aClashTests.Where(x => x.AClashTestResults.Count > 0).ToList();
-            DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests);
-            return true;
+            ViewsHandler.SelectedClashTests = (PresenterDataGrid.ItemsSource as List<AClashTest>).Where(x => x.IsSelected).ToList();
+            //List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
+
+
+
+            if (!NW.NWHandler.IsClashTestsCalled)
+            {
+                System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized or not found.");
+                return false;
+            }
+            List<AClashTest> selectedClashTests = ViewsHandler.SelectedClashTests;
+
+            //List<AClashTest> selectedClashTests = aClashTests.Where(x => x.IsSelected).ToList();
+            if (selectedClashTests.Count < 1 )
+            {
+                return true;
+            }
+            try
+            {
+
+                return DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests);
+
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Sync With Database Exception: " + e.Message);
+                return false;
+            }
         }
 
 

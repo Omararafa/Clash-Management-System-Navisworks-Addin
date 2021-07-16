@@ -28,6 +28,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 return ViewsHandler.CurrentProject.ClashMatrices;
             }
         }
+        public static List<AClashTest> SelectedClashTests { get; set; }
 
 
         #endregion

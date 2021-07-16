@@ -221,12 +221,12 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 Dictionary<string, string[]> processedSearchSetNames = ProcessSearchSetNames(searchSetsNames);
 
-
+                //We shall create a request for each dictionary key [trade abbreviation]
                 foreach (var group in processedSearchSetNames)
                 {
 
                 }
-                //TODO: Add lines below to the foreach looping above
+                //TODO: Add lines below to the foreach looping above DB debugging
                 var item = processedSearchSetNames.ElementAt(1);
                 string tradeAbb = item.Key;
                 string[] modifiedSearchSetNames = item.Value;
@@ -439,6 +439,15 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 Item2Name = nwResult.Item2Name,
                 Item2SourceFile = nwResult.Item2SourceFile
             };
+            if (dbResult.Item1Name == string.Empty)
+            {
+                dbResult.Item1Name = "Not Identified";
+            }
+
+            if (dbResult.Item2Name == string.Empty)
+            {
+                dbResult.Item2Name = "Not Identified";
+            }
             return dbResult;
         }
 
@@ -447,20 +456,27 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             int clashMatrixId = clashMatrix.Id;
             int clashTestsCount = clashTestsFromNW.Count;
-            WebService.ClashResultSyncRequest[] clashResultSyncRequests = new WebService.ClashResultSyncRequest[clashTestsCount];
-
-            int j = 0;
+            List<WebService.ClashResultSyncRequest> clashResultSyncRequests = new List<WebService.ClashResultSyncRequest>();
 
             foreach (AClashTest nwClashTest in clashTestsFromNW)
             {
-                if (nwClashTest.AClashTestResults.Count < 1)
-                {
-                    continue;
-                }
-                WebService.ClashResultSyncRequest clashResultSyncRequest = new WebService.ClashResultSyncRequest();
+                //if (nwClashTest.AClashTestResults.Count < 1)
+                //{
+                //    continue;
+                //}
 
                 //Build Clash Test DB Object
                 WebService.ClashTest dbClashTest = new WebService.ClashTest();
+                //Get corresponding DB ClashTest [to be used for id extraction]
+                AClashTest dbAClashTest = DBAClashTests.Where(clashTest => clashTest.Name == nwClashTest.Name).FirstOrDefault();
+
+                if (dbAClashTest == null)
+                {
+                    continue;
+                }
+
+
+                #region Legacy code
 
                 /*
                 dbClashTest.AddDate = nwClashTest.AddedDate;
@@ -496,45 +512,44 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 clashResultSyncRequest.ClashTest = dbClashTest;
                 */
+                #endregion
 
-                AClashTest dbAClashTest = DBAClashTests.Where(clashTest => clashTest.Name == nwClashTest.Name).FirstOrDefault();
 
-                if (dbAClashTest == null)
-                {
-                    continue;
-                }
+                int ClashTestResultsCount = nwClashTest.AClashTestResults.Count;
+                //Build DB ClashResultSyncRequest object
+                WebService.ClashResultSyncRequest clashResultSyncRequest = new WebService.ClashResultSyncRequest();
+                //[Extractor id]
                 clashResultSyncRequest.ClashTestId = dbAClashTest.Id;
 
                 //Build DB ClashResult[] object
-                int ClashTestResultsCount = nwClashTest.AClashTestResults.Count;
-                WebService.ClashResult[] dbClashTestResults = new WebService.ClashResult[ClashTestResultsCount];
-
-                int i = 0;
+                List<WebService.ClashResult> dbClashTestResults = new List<WebService.ClashResult>();
+                //Populate ClashTestResult into the list
                 foreach (var nwResult in nwClashTest.AClashTestResults)
                 {
                     WebService.ClashResult dbResult = GetDBClashResultFromNWClashResult(nwResult);
-                    dbClashTestResults[i] = dbResult;
-                    i++;
+                    dbClashTestResults.Add(dbResult);
                 }
 
-                clashResultSyncRequest.NewResults = dbClashTestResults;
+                clashResultSyncRequest.NewResults = dbClashTestResults.ToArray();
 
-                clashResultSyncRequests[i] = clashResultSyncRequest;
+                clashResultSyncRequests.Add(clashResultSyncRequest);
 
-
-                j++;
             }
+
             WebService.ServiceResponse serviceResponse = service
-                .SyncClashResults(clashMatrixId, clashResultSyncRequests.ToArray());
+                        .SyncClashResults(clashMatrixId, clashResultSyncRequests.ToArray());
 
             switch (serviceResponse.State)
             {
                 case WebService.ResponseState.SUCCESS:
                     return true;
                 case WebService.ResponseState.FAILD:
+                    System.Windows.Forms.MessageBox.Show("DB Error:"+(serviceResponse as WebService.Error).Meesage);
+                    return false;
                 default:
                     return false;
             }
+
 
         }
 

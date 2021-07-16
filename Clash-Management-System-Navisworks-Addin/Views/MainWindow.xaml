@@ -210,6 +210,18 @@
                     <GradientStop Color="#FF68AF82" Offset="1"/>
                 </LinearGradientBrush>
             </DataGrid.BorderBrush>
+            <DataGrid.Columns>
+                  <DataGridTemplateColumn 
+                    Header="✓" 
+                    IsReadOnly="False"
+                    Width="10">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
 
         </DataGrid>
 
@@ -267,6 +279,7 @@
                 FontFamily="Century Gothic, Courier New" Click="Run_Click"
                 
                 />
+        
 
 
     </Grid>
