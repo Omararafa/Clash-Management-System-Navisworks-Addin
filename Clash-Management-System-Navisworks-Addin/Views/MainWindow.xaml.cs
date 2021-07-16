@@ -335,6 +335,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     ObservableCollection<string> projectCbxDataSource = new ObservableCollection<string>
                         (ViewsHandler.CurrentUser.Projects.Select(x => x.Name + ": " + x.Code).ToList());
                     ProjectCbx.ItemsSource = projectCbxDataSource;
+                    ProjectCbx.Focus();
                     return true;
                 }
             }
@@ -369,6 +370,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         DeactivateExpander(SelectProjectExpander);
 
                         ClashMatrixCbx.ItemsSource = ViewsHandler.CurrentProjectClashMatrices.Select(x => x.Name + ": " + x.Id.ToString());
+                        ClashMatrixCbx.Focus();
+
                         return true;
                     }
                 }
@@ -397,6 +400,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 {
                     ActivateExpander(SelectFunctionExpander);
                     DeactivateExpander(SelectClashMatrixExpander);
+
                     return true;
                 }
             }
@@ -558,6 +562,14 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             RunSyncButton();
             return;
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }

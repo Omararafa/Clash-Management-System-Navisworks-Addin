@@ -220,64 +220,69 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 string[] searchSetsNames = searchSetsFromNW.Select(x => x.Name).ToArray();
 
                 Dictionary<string, string[]> processedSearchSetNames = ProcessSearchSetNames(searchSetsNames);
-
+                bool success = false;
                 //We shall create a request for each dictionary key [trade abbreviation]
                 foreach (var group in processedSearchSetNames)
                 {
+                    //var item = processedSearchSetNames.ElementAt(0);
+                    string tradeAbb = group.Key;
+                    string[] modifiedSearchSetNames = group.Value;
 
-                }
-                //TODO: Add lines below to the foreach looping above DB debugging
-                var item = processedSearchSetNames.ElementAt(1);
-                string tradeAbb = item.Key;
-                string[] modifiedSearchSetNames = item.Value;
-
-                WebService.ServiceResponse serviceResponse = service
-                .SyncSearchSets(tradeAbb, clashMatrixId, modifiedSearchSetNames);
+                    WebService.ServiceResponse serviceResponse = service
+                    .SyncSearchSets(tradeAbb, clashMatrixId, modifiedSearchSetNames);
 
 
-                switch (serviceResponse.State)
-                {
-                    case WebService.ResponseState.SUCCESS:
+                    switch (serviceResponse.State)
+                    {
+                        case WebService.ResponseState.SUCCESS:
 
-                        WebService.SyncSearchSetsResults syncSearchSetsResults = serviceResponse as WebService.SyncSearchSetsResults;
-                        string name = "";
-                        int matrixId = -1;
-                        string dbMessage = "";
-                        EntityComparisonResult status = EntityComparisonResult.NotChecked;
+                            WebService.SyncSearchSetsResults syncSearchSetsResults = serviceResponse as WebService.SyncSearchSetsResults;
+                            string name = "";
+                            int matrixId = -1;
+                            string dbMessage = "";
+                            EntityComparisonResult status = EntityComparisonResult.NotChecked;
 
-                        foreach (var result in syncSearchSetsResults.Reports)
-                        {
-                            name = result.Name;
-                            matrixId = result.MatrixId;
-                            dbMessage = result.Message;
-
-                            switch (result.ReportType)
+                            foreach (var result in syncSearchSetsResults.Reports)
                             {
-                                case WebService.ReportType.ADD:
-                                    status = EntityComparisonResult.New;
-                                    break;
-                                case WebService.ReportType.REMOVE:
-                                    status = EntityComparisonResult.Deleted;
-                                    break;
-                                case WebService.ReportType.UPDATE:
-                                    status = EntityComparisonResult.Edited;
-                                    break;
-                                default:
-                                    break;
+                                name = result.Name;
+                                matrixId = result.MatrixId;
+                                dbMessage = result.Message;
+
+                                switch (result.ReportType)
+                                {
+                                    case WebService.ReportType.ADD:
+                                        status = EntityComparisonResult.New;
+                                        break;
+                                    case WebService.ReportType.REMOVE:
+                                        status = EntityComparisonResult.Deleted;
+                                        break;
+                                    case WebService.ReportType.UPDATE:
+                                        status = EntityComparisonResult.Edited;
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                ASearchSet searchSet = new ASearchSet(name, matrixId, dbMessage, status, false);
+                                searchSetsFromDB.Add(searchSet);
                             }
 
-                            ASearchSet searchSet = new ASearchSet(name, matrixId, dbMessage, status, false);
-                            searchSetsFromDB.Add(searchSet);
-                        }
-
-                        return true;
-                    case WebService.ResponseState.FAILD:
-                        WebService.Error error = serviceResponse as WebService.Error;
-                        System.Windows.Forms.MessageBox.Show(error.Meesage);
-                        return false;
-                    default:
-                        return false;
+                            success = true;
+                            break;
+                        case WebService.ResponseState.FAILD:
+                            WebService.Error error = serviceResponse as WebService.Error;
+                            System.Windows.Forms.MessageBox.Show(error.Meesage);
+                            success = false;
+                            break;
+                        default:
+                            success = false;
+                            break;
+                    }
+                    
                 }
+                return success;
+                //TODO: Add lines below to the foreach looping above DB debugging
+                
             }
             catch (Exception e)
             {

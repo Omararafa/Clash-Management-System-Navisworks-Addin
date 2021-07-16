@@ -51,6 +51,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             List<ASearchSet> dbASearchSets = DBHandler.DBASearchSets;
             List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
 
+            //TODO: DEBUG line [HIGH PRIORITY]
             Dictionary<string, ASearchSet> dbASearchSetsDic = dbASearchSets.ToDictionary(x => x.Name);
 
             foreach (ASearchSet nwSearchSet in NWHandler.NWASearchSets)

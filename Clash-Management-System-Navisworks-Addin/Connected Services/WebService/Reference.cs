@@ -36,6 +36,13 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_FixSearchSetsLogTable", ReplyAction="*")]
         System.Threading.Tasks.Task<bool> DEBUG_FixSearchSetsLogTableAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="Dar/IsServiceAwake", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        bool IsServiceAwake();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="Dar/IsServiceAwake", ReplyAction="*")]
+        System.Threading.Tasks.Task<bool> IsServiceAwakeAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="Dar/GetProjects", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string domain, string user);
@@ -859,6 +866,8 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         
         private string tradeCodeField;
         
+        private double toleranceField;
+        
         private System.Nullable<System.DateTime> addDateField;
         
         private System.Nullable<System.DateTime> lastRunDateField;
@@ -970,7 +979,19 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=8)]
+        public double Tolerance {
+            get {
+                return this.toleranceField;
+            }
+            set {
+                this.toleranceField = value;
+                this.RaisePropertyChanged("Tolerance");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
         public System.Nullable<System.DateTime> AddDate {
             get {
                 return this.addDateField;
@@ -982,7 +1003,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true, Order=10)]
         public System.Nullable<System.DateTime> LastRunDate {
             get {
                 return this.lastRunDateField;
@@ -994,7 +1015,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
         public string AddedBy {
             get {
                 return this.addedByField;
@@ -1006,7 +1027,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
         public string ProjectCode {
             get {
                 return this.projectCodeField;
@@ -1018,7 +1039,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=12)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
         public Priority Priority {
             get {
                 return this.priorityField;
@@ -1030,7 +1051,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
         public SearchSetInfo SearchSet1 {
             get {
                 return this.searchSet1Field;
@@ -1042,7 +1063,7 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute(Order=15)]
         public SearchSetInfo SearchSet2 {
             get {
                 return this.searchSet2Field;
@@ -1216,6 +1237,14 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         
         public System.Threading.Tasks.Task<bool> DEBUG_FixSearchSetsLogTableAsync() {
             return base.Channel.DEBUG_FixSearchSetsLogTableAsync();
+        }
+        
+        public bool IsServiceAwake() {
+            return base.Channel.IsServiceAwake();
+        }
+        
+        public System.Threading.Tasks.Task<bool> IsServiceAwakeAsync() {
+            return base.Channel.IsServiceAwakeAsync();
         }
         
         public Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string domain, string user) {
