@@ -128,7 +128,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             return true;
         }
 
-        public bool PresentClashTestsOnDataGrid(DataGrid datagrid,ref List<AClashTest> data)
+        public bool PresentClashTestsOnDataGrid(DataGrid datagrid, ref List<AClashTest> data)
         {
             if (data.Count < 1)
             {
@@ -468,11 +468,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
                 //bool isSynced = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, nwClashTests);
 
-                if (true)
-                {
-                    List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
-                    PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref aClashTests);
-                }
+                List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
+                PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref aClashTests);
+                return true;
             }
             return false;
 
@@ -493,7 +491,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             List<AClashTest> selectedClashTests = ViewsHandler.SelectedClashTests;
 
             //List<AClashTest> selectedClashTests = aClashTests.Where(x => x.IsSelected).ToList();
-            if (selectedClashTests.Count < 1 )
+            if (selectedClashTests.Count < 1)
             {
                 return true;
             }
@@ -541,7 +539,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
         {
             bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
-            UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
             return;
 
         }
@@ -561,6 +558,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         private void Run_Click(object sender, RoutedEventArgs e)
         {
             RunSyncButton();
+            bool isValidSelection = (PresenterDataGrid.ItemsSource as List<AClashTest>).Where(x => x.IsSelected).ToList().Count > 0;
+            UpdateFeedbackTextBlock(FunctionFeedbackTxt, isValidSelection);
+
             return;
         }
 
