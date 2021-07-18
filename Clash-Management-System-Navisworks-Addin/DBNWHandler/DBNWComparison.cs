@@ -50,9 +50,16 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
 
             List<ASearchSet> dbASearchSets = DBHandler.DBASearchSets;
             List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
+            Dictionary<string, ASearchSet> dbASearchSetsDic = new Dictionary<string, ASearchSet>();
 
             //TODO: DEBUG line [HIGH PRIORITY]
-            Dictionary<string, ASearchSet> dbASearchSetsDic = dbASearchSets.ToDictionary(x => x.Name);
+            foreach (ASearchSet aDBSearchSet in dbASearchSets)
+            {
+                if (dbASearchSetsDic.ContainsKey(aDBSearchSet.Name) != false)
+                {
+                    dbASearchSetsDic.Add(aDBSearchSet.Name, aDBSearchSet);
+                }
+            }
 
             foreach (ASearchSet nwSearchSet in NWHandler.NWASearchSets)
             {
@@ -111,9 +118,10 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
                     {
                         UpdateDBAClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
                         dbAClashTest.Condition = EntityComparisonResult.NotEdited;
-                        
+
                         nwAClashTestsDic.Remove(dbAClashTest.Name);
-                    } else
+                    }
+                    else
                     {
                         dbAClashTest.Condition = EntityComparisonResult.Edited;
                         NWHandler.ModifyClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name], nwASearchSet);
