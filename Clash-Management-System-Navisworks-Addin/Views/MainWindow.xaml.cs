@@ -80,7 +80,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 return false;
             }
-            datagrid.Columns.Clear();
+            for (int i = 1; i < datagrid.Columns.Count; i++)
+            {
+                datagrid.Columns.RemoveAt(i);
+            }
             datagrid.ItemsSource = data;
 
             List<string> searchSetBindingProperties = new List<string>
@@ -467,7 +470,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 //List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests.Where(clashTest => !clashTest.IsSelected).ToList();
 
                 //bool isSynced = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, nwClashTests);
-
+                this.ClashMatrixFeedbackTxt.Visibility = Visibility.Hidden;
                 List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
                 PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref aClashTests);
                 return true;
@@ -539,6 +542,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
         {
             bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
+            UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
+
             return;
 
         }
