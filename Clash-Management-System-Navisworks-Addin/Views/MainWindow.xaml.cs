@@ -542,6 +542,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
         {
             bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
+            if (FunctionClashResultsRBtn.IsChecked==true)
+            {
+                return;
+            }
             UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
 
             return;
