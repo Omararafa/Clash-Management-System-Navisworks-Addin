@@ -100,6 +100,7 @@
                       Header="Project"
                       HorizontalAlignment="Stretch"
                       Margin="1,0,1,0"
+                      
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
