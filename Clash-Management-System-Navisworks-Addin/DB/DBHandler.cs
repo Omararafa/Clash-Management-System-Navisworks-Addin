@@ -83,6 +83,21 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
         }
 
+
+        public static bool IsServiceAwake
+        {
+            get
+            {
+                try
+                {
+                    return service.IsServiceAwake();
+                }
+                catch (EndpointNotFoundException)
+                {
+                    return false;
+                }
+            }
+        }
         //TODO:Remap TradeAbb
         public static string TradeAbb
         {
@@ -100,6 +115,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             MaxReceivedMessageSize = 10000000
         },
         address);
+
 
         #endregion
 
@@ -125,9 +141,9 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
             dbASearchSets.ForEach(aSearhSet => aSearhSet.IsFromNavis = false);
 
-            dbASearchSets.Add(new ASearchSet("M_Ducts", currentClashMatrixId, "Test", EntityComparisonResult.NotChecked, false));
-            dbASearchSets.Add(new ASearchSet("FF_Spinklers", currentClashMatrixId, "Test", EntityComparisonResult.NotChecked, false));
-            dbASearchSets.Add(new ASearchSet("EL_Conduits", currentClashMatrixId, "Test", EntityComparisonResult.NotChecked, false));
+            dbASearchSets.Add(new ASearchSet("M_Ducts", currentClashMatrixId, "Test", "AR", EntityComparisonResult.NotChecked, false));
+            dbASearchSets.Add(new ASearchSet("FF_Spinklers", currentClashMatrixId, "AR", "Test", EntityComparisonResult.NotChecked, false));
+            dbASearchSets.Add(new ASearchSet("EL_Conduits", currentClashMatrixId, "AR", "Test", EntityComparisonResult.NotChecked, false));
 
             return dbASearchSets;
         }
@@ -214,15 +230,14 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
             try
             {
-                string userTradeAbb = DBHandler.TradeAbb;
                 int clashMatrixId = clashMatrix.Id;
                 searchSetsFromDB = new List<ASearchSet>();
                 string[] searchSetsNames = searchSetsFromNW.Select(x => x.Name).ToArray();
 
-                Dictionary<string, string[]> processedSearchSetNames = ProcessSearchSetNames(searchSetsNames);
+                Dictionary<string, string[]> groupedSearchSetNames = GroupSearchSetsByTradeAbb(searchSetsNames);
                 bool success = false;
                 //We shall create a request for each dictionary key [trade abbreviation]
-                foreach (var group in processedSearchSetNames)
+                foreach (var group in groupedSearchSetNames)
                 {
                     //var item = processedSearchSetNames.ElementAt(0);
                     string tradeAbb = group.Key;
@@ -240,13 +255,15 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                             string name = "";
                             int matrixId = -1;
                             string dbMessage = "";
+                            //string tradeAbb = "";
                             EntityComparisonResult status = EntityComparisonResult.NotChecked;
 
                             foreach (var result in syncSearchSetsResults.Reports)
                             {
-                                name = result.Name;
+                                name = tradeAbb + "-" + result.Name;
                                 matrixId = result.MatrixId;
                                 dbMessage = result.Message;
+                                //tradeAbb = result.TradeAbb;
 
                                 switch (result.ReportType)
                                 {
@@ -263,7 +280,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                                         break;
                                 }
 
-                                ASearchSet searchSet = new ASearchSet(name, matrixId, dbMessage, status, false);
+                                ASearchSet searchSet = new ASearchSet(name, matrixId, dbMessage, tradeAbb, status, false);
                                 searchSetsFromDB.Add(searchSet);
                             }
 
@@ -278,11 +295,11 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                             success = false;
                             break;
                     }
-                    
+
                 }
                 return success;
                 //TODO: Add lines below to the foreach looping above DB debugging
-                
+
             }
             catch (Exception e)
             {
@@ -388,7 +405,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             return searchSet.TradeAbbr + "-" + searchSet.Name;
         }
 
-        private static Dictionary<string, string[]> ProcessSearchSetNames(string[] namesWithTradeAbb)
+        private static Dictionary<string, string[]> GroupSearchSetsByTradeAbb(string[] namesWithTradeAbb)
         {
             Dictionary<string, string[]> processedNames = new Dictionary<string, string[]>();
 
@@ -549,7 +566,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 case WebService.ResponseState.SUCCESS:
                     return true;
                 case WebService.ResponseState.FAILD:
-                    System.Windows.Forms.MessageBox.Show("DB Error:"+(serviceResponse as WebService.Error).Meesage);
+                    System.Windows.Forms.MessageBox.Show("DB Error:" + (serviceResponse as WebService.Error).Meesage);
                     return false;
                 default:
                     return false;

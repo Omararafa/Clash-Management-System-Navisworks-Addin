@@ -12,6 +12,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
     {
         public int Pk { get; set; }
         public int TradeId { get; set; }
+        public string TradeAbb { get; set; }
         public Project Project { get; set; }
         public bool IsFromNavis { get; set; }
         public string ModifiedBy { get; set; }
@@ -28,13 +29,14 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         }
 
         // Database initiation constructor
-        public ASearchSet(string name, int clashMatrixId, string dbMessage, EntityComparisonResult condition, bool isFromNavis)
+        public ASearchSet(string name, int clashMatrixId, string dbMessage,string tradeAbb, EntityComparisonResult condition, bool isFromNavis)
         {
             this.Name = name;
             this.ClashMatrixId = clashMatrixId;
             this.DBMessage = dbMessage;
             this.Conditon = condition;
             this.IsFromNavis = isFromNavis;
+            this.TradeAbb=tradeAbb;
         }
 
         // Navisworks objects initiation constructor
