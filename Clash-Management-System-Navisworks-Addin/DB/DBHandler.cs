@@ -209,6 +209,9 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                         return true;
 
                     case WebService.ResponseState.FAILD:
+                        WebService.Error error = serviceResponse as WebService.Error;
+                        System.Windows.Forms.MessageBox.Show("Database Exception: " +error.Meesage);
+                        return false;
                     default:
                         return false;
                 }
