@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Clash_Management_System_Navisworks_Addin.Views"
         mc:Ignorable="d"
         x:ClassModifier="public"
-        Title="MainWindow" Height="500" Width="800" WindowStartupLocation="CenterScreen" KeyUp="Window_KeyUp">
+        Title="Clash Management" Height="500" Width="800" WindowStartupLocation="CenterScreen" KeyUp="Window_KeyUp">
     <Grid x:Name="WindowGrid" x:FieldModifier="public">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
@@ -39,6 +39,32 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
+        <!--Header Data-->
+        <Image
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Grid.Row="1"
+            Grid.RowSpan="2" 
+            Margin="10,10,10,10" 
+            Source="darLogo.png">
+
+        </Image>
+        <TextBlock
+            Text="Clash Management"
+            FontSize="25"
+            Grid.Column="3"
+            Grid.ColumnSpan="10"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Margin="10,10,10,10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="Century Gothic, Courier New" 
+            >
+
+        </TextBlock>
+
+        <!--Sidebar Data-->
         <StackPanel Name="SidebarExpandersStackPanel"
             Grid.ColumnSpan="2" 
             Grid.Column="1" 
@@ -47,7 +73,8 @@
             Grid.Row="3" 
             Grid.RowSpan="7" 
             VerticalAlignment="Stretch" 
-            Background="DimGray">
+            Background="Gainsboro">
+            <!--
             <Expander Name="LoginExpander"
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
@@ -93,6 +120,7 @@
                 </DockPanel>
 
             </Expander>
+            -->
             <Expander x:Name="SelectProjectExpander"
                       x:FieldModifier="public"
                       Grid.ColumnSpan="5" 
@@ -111,11 +139,13 @@
                                Margin="5,25,5,5"/>
                     <ComboBox Name="ProjectCbx" 
                               Text="Select a Project"
-                              Margin="5,5,5,5" />
+                              Margin="5,5,5,5" SelectionChanged="ProjectCbx_SelectionChanged" />
+                    <!--
                     <Button Name="SelectProjectBtn" 
                             Content="Ok"
                             Margin="65,15,15,5" 
                             Click="SelectProjectBtn_Click"/>
+                    -->
                     <TextBlock Name="ProjectsFeedbackTxt"
                             Text="Project Status"
                             Visibility="Hidden"
@@ -140,10 +170,12 @@
                                Margin="5,25,5,5"/>
                     <ComboBox Name="ClashMatrixCbx" 
                               Text="Select a Clash Matrix"
-                              Margin="5,5,5,5"/>
+                              Margin="5,5,5,5" SelectionChanged="ClashMatrixCbx_SelectionChanged"/>
+                    <!--
                     <Button Name="SelectClashMatrixBtn" 
                             Content="Ok"
                             Margin="65,15,15,5" Click="SelectClashMatrixBtn_Click"/>
+                    -->
                     <TextBlock Name="ClashMatrixFeedbackTxt"
                             Text="Clash Matrix Status"
                             Visibility="Hidden"
@@ -167,17 +199,19 @@
                                Margin="5,25,5,5"/>
                     <RadioButton Name="FunctionSearchSetsRBtn"
                                  Content="Sync Search Sets"
-                                 Margin="5,5,5,5"/>
+                                 Margin="5,5,5,5" Checked="SelectedFunctionChanged"/>
                     <RadioButton Name="FunctionClashTestsRBtn"
                                  Content="Get Clash Tests"
-                                 Margin="5,5,5,5"/>
+                                 Margin="5,5,5,5" Checked="SelectedFunctionChanged"/>
                     <RadioButton Name="FunctionClashResultsRBtn"
                                  Content="Sync Clash Results"
-                                 Margin="5,5,5,5"/>
+                                 Margin="5,5,5,5" Checked="SelectedFunctionChanged"/>
+                    <!--
                     <Button Name="SelectFunctionBtn" 
                             Content="Update"
                             Margin="65,15,15,5"
                             Click="SelectFunctionBtn_Click"/>
+                    -->
                     <TextBlock Name="FunctionFeedbackTxt"
                             Text="Function Status"
                             Visibility="Hidden"
@@ -193,7 +227,6 @@
             Grid.Row="3" 
             Grid.RowSpan="7" 
             VerticalAlignment="Stretch"
-            Background="MintCream"
             Foreground="LightSlateGray"
             FontFamily="Century Gothic, Courier New" 
             CanUserAddRows="False"
@@ -202,7 +235,7 @@
             AutoGenerateColumns="False"
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Auto" 
-            MinRowHeight="10" 
+            MinRowHeight="10" Background="#FFF0F0F0" 
                   
                   >
             <DataGrid.BorderBrush>
@@ -212,7 +245,7 @@
                 </LinearGradientBrush>
             </DataGrid.BorderBrush>
             <DataGrid.Columns>
-                  <DataGridTemplateColumn 
+                <DataGridTemplateColumn 
                     Header="✓" 
                     IsReadOnly="False"
                     Width="10">
@@ -227,6 +260,7 @@
         </DataGrid>
 
         <!-- Footer Buttons -->
+        <!--
         <Button Name="AboutBtn"
                 Grid.ColumnSpan="1" 
                 Content="About!" 
@@ -266,22 +300,139 @@
                 Foreground="LightSlateGray"
                 FontFamily="Century Gothic, Courier New"
                 />
+        -->
         <Button Name="Run"
                 Grid.ColumnSpan="2" 
                 Content="Run" 
                 Grid.Column="10" 
                 HorizontalAlignment="Center" 
-                Margin="0,0,0,0"
+                Margin="0,0,0,20"
                 Grid.Row="11" 
                 Width="80"
+                Height="25"
                 VerticalAlignment="Center" 
-                Background="MintCream"
-                Foreground="LightSlateGray"
+                Background="Gainsboro"
+                Foreground="DimGray"
                 FontFamily="Century Gothic, Courier New" Click="Run_Click"
                 
                 />
-        
-
-
+        <StatusBar 
+            HorizontalAlignment="Center" 
+            Height="25" 
+            Margin="0,0,0,0" 
+            Grid.Row="11" 
+            Grid.RowSpan="2" 
+            Grid.Column="0"
+            Grid.ColumnSpan="13"
+            VerticalAlignment="Bottom" Width="800" 
+>
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="100" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            
+            <StatusBarItem
+                Grid.Column="0"
+                Margin="5,0,0,0"
+                HorizontalContentAlignment="Center">
+                
+                <Button 
+                    Name="HelpDeskBtn"
+                    HorizontalAlignment="Center" 
+                    Width="20"
+                    Height="20"
+                    VerticalAlignment="Center"
+                    Foreground="Transparent"
+                    FontFamily="Century Gothic, Courier New"
+                    BorderBrush="Transparent" Click="HelpDeskBtn_Click">
+                    <Button.Background>
+                        <ImageBrush ImageSource="HelpDeskIcon.png" Stretch="Uniform"/>
+                    </Button.Background>
+                </Button>
+            </StatusBarItem>
+            
+            <Separator 
+                Grid.Column="1">
+            </Separator>
+            
+            <StatusBarItem
+                Grid.Column="2"
+                HorizontalContentAlignment="Center">
+                <Button 
+                    Name="HelpFileBtn"
+                    HorizontalAlignment="Center" 
+                    Width="20"
+                    Height="20"
+                    VerticalAlignment="Center"
+                    Foreground="Transparent"
+                    FontFamily="Century Gothic, Courier New"
+                    BorderBrush="Transparent" Click="HelpFileBtn_Click">
+                    <Button.Background>
+                        <ImageBrush ImageSource="HelpFileIcon.png" Stretch="Uniform"/>
+                    </Button.Background>
+                </Button>
+            </StatusBarItem>
+            
+            <Separator 
+                Grid.Column="3">
+            </Separator>
+            
+            <StatusBarItem
+                Grid.Column="4"
+                HorizontalContentAlignment="Center">
+                <Button 
+                    Name="AboutBtn"
+                    HorizontalAlignment="Center" 
+                    Width="20"
+                    Height="20"
+                    VerticalAlignment="Center"
+                    Foreground="Transparent"
+                    FontFamily="Century Gothic, Courier New"
+                    BorderBrush="Transparent" Click="AboutBtn_Click">
+                    <Button.Background>
+                        <ImageBrush ImageSource="HelpIcon.png" Stretch="Uniform"/>
+                    </Button.Background>
+                </Button>
+            </StatusBarItem>
+            
+            <StatusBarItem
+                Grid.Column="10">
+                <TextBlock
+                    Text="Dar @2021"
+                    Foreground="Gray">
+                </TextBlock>
+            </StatusBarItem>
+            
+        </StatusBar>
+<!--
+        <MediaElement  
+            Grid.ColumnSpan="8" 
+            Grid.Column="4" 
+            HorizontalAlignment="Center" 
+            Grid.Row="3" 
+            Grid.RowSpan="7" 
+            VerticalAlignment="Center"
+            Name="mediaElement1" 
+            Source="E:\Work\Freelance\dar\Navisworks Clash Management Addin\01\IN\External\20210728-Beta feedback\loader_seq.gif"
+            LoadedBehavior="Play" 
+            Stretch="Uniform" 
+            SpeedRatio="1"
+            OpacityMask="White"/>
+        -->
     </Grid>
 </Window>

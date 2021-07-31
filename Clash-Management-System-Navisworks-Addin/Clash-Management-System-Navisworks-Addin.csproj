@@ -170,6 +170,18 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\HelpDeskIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\HelpFileIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\HelpIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\darLogo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>set path=$(ProjectDir)\NW\Clash-Management-System-Navisworks-Addin.xaml

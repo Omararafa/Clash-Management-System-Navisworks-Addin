@@ -32,9 +32,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         public Brush expanderHighlightBackground = (Brush)ColorConverter.ConvertFromString("MintCream");
         public Brush expanderHighlightForeground = (Brush)ColorConverter.ConvertFromString("LightSlateGray");
         */
-        public Brush expanderNormalBackground = Brushes.MintCream;
+        public Brush expanderNormalBackground = Brushes.Gainsboro;
         public Brush expanderNormalForeground = Brushes.LightSlateGray;
-        public Brush expanderHighlightBackground = Brushes.MintCream;
+        public Brush expanderHighlightBackground = Brushes.Gainsboro;
         public Brush expanderHighlightForeground = Brushes.LightSlateGray;
         List<Expander> SidebarExpanders = new List<Expander>();
 
@@ -46,12 +46,13 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             SidebarExpanders.AddRange(new List<Expander>
             {
-                LoginExpander,
+                //LoginExpander,
                 SelectProjectExpander,
                 SelectClashMatrixExpander,
                 SelectFunctionExpander
             });
-
+            WindowGrid.Background = expanderNormalForeground;
+            
 
 
             //Set initial values for expanders
@@ -62,7 +63,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private void InitialLoginLoadState()
         {
-            Expander expander = LoginExpander;
+            Expander expander = SelectProjectExpander;
             ActivateExpander(expander);
             List<Expander> expandersToDeactivate = new List<Expander>();
             expandersToDeactivate.AddRange(SidebarExpanders);
@@ -71,6 +72,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 DeactivateExpander(ex);
             }
+            LoginProcedure();
 
         }
 
@@ -301,8 +303,44 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             feedbackTextBlock.Background = Brushes.Red;
             return;
         }
-        private bool LoginProcedure(Button Btn)
+        private bool LoginProcedure()
         {
+
+            string userName = Environment.UserName;
+            string userDomain = Environment.UserDomainName;
+
+            //TODO deploy: remove two lines below for dynamic login access
+            userName = "AMM";
+            userDomain = "CIVIL";
+
+
+            if (userName != string.Empty && userDomain != string.Empty)
+            {
+                ViewsHandler.CurrentUser = new User(userName, userDomain);
+                List<Project> projects = ViewsHandler.CurrentUser.Projects;
+                string tradeAbb = ViewsHandler.CurrentUser.TradeAbb;
+
+                if (projects == null)
+                {
+                    System.Windows.Forms.MessageBox.Show("Failed to get projects from database.");
+                    return false;
+                }
+
+                if (ViewsHandler.CurrentUser.Projects != null || ViewsHandler.CurrentUser.Projects.Count > 0)
+                {
+                    ActivateExpander(SelectProjectExpander);
+                    ObservableCollection<string> projectCbxDataSource = new ObservableCollection<string>
+                        (ViewsHandler.CurrentUser.Projects.Select(x => x.Name + ": " + x.Code).ToList());
+                    ProjectCbx.ItemsSource = projectCbxDataSource;
+                    ProjectCbx.Focus();
+                    return true;
+                }
+            }
+
+            return false;
+
+
+            #region OldLoginProcedure
             /*
              * This method shall be used for the login procedure as follows;
              * 1-DB: Send user name and password to database
@@ -315,7 +353,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
              * 8-UI: study to present the username into a text block within the header/footer
              * 9-DB: Get list of projects assigned to the user from the database
              */
+            
 
+            /*
             //TODO: Bary, update data to be written into the Assembly
             string userName = UserNameTxt.Text.Trim();
             string userDomain = UserDomainTxt.Text.Trim();
@@ -345,11 +385,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
 
             return false;
+            */
+            #endregion
+
         }
-
-
-
-
 
         /*
         * This method shall be used for the Handle the event of project selection as follows;
@@ -358,7 +397,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         * 3-UI: Handle the process of activate Clash Matrices expander
         * 4-UI: Handle the process of deactivate project expander
         */
-        private bool ProjectSelectedProcedure(Button button)
+        private bool ProjectSelectedProcedure()
         {
             //TODO: Bary Assembly: Create and store Project Class
             int currentProjectIndex = ProjectCbx.SelectedIndex;
@@ -390,7 +429,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         * 3-UI: Handle the process of activate select function expander
         * 4-UI: Handle the process of deactivate Clash Matrices expander
         */
-        private bool ClashMatrixSelectedProcedure(Button button)
+        private bool ClashMatrixSelectedProcedure()
         {
             int currentClashMatrixIndex = ClashMatrixCbx.SelectedIndex;
 
@@ -404,6 +443,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 {
                     ActivateExpander(SelectFunctionExpander);
                     DeactivateExpander(SelectClashMatrixExpander);
+                    FunctionSearchSetsRBtn.Focus();
 
                     return true;
                 }
@@ -439,15 +479,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             if (FunctionClashTestsRBtn.IsChecked == true)
             {
-                /*
-                if (dbClashTests == null || dbClashTests.Count < 1)
-                {
-                    System.Windows.Forms.MessageBox.Show("No clash tests were found on the Database!");
-                    return false;
-                }
-              
-
-  */
                 try
                 {
                     List<AClashTest> comparedAClashTests = DBNWHandler.DBNWComparison.CompareNWDBAClashTests();
@@ -520,30 +551,34 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
+            /*
             bool loginStatus = LoginProcedure(sender as Button);
             UpdateFeedbackTextBlock(LoginFeedbackTxt, loginStatus);
+            */
         }
 
         private void SelectProjectBtn_Click(object sender, RoutedEventArgs e)
         {
-
-            bool selectProjectStatus = ProjectSelectedProcedure(sender as Button);
+            /*
+            bool selectProjectStatus = ProjectSelectedProcedure();
             UpdateFeedbackTextBlock(ProjectsFeedbackTxt, selectProjectStatus);
-            return;
+            */
         }
 
         private void SelectClashMatrixBtn_Click(object sender, RoutedEventArgs e)
         {
-            bool selectClashMatrixStatus = ClashMatrixSelectedProcedure(sender as Button);
+            /*
+            bool selectClashMatrixStatus = ClashMatrixSelectedProcedure();
             UpdateFeedbackTextBlock(ClashMatrixFeedbackTxt, selectClashMatrixStatus);
             return;
+            */
         }
 
 
         private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
         {
             bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
-            if (FunctionClashResultsRBtn.IsChecked==true)
+            if (FunctionClashResultsRBtn.IsChecked == true)
             {
                 return;
             }
@@ -580,6 +615,47 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 Close();
             }
+        }
+
+        private void ProjectCbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            bool selectProjectStatus = ProjectSelectedProcedure();
+            UpdateFeedbackTextBlock(ProjectsFeedbackTxt, selectProjectStatus);
+            return;
+        }
+
+        private void ClashMatrixCbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            bool selectClashMatrixStatus = ClashMatrixSelectedProcedure();
+            UpdateFeedbackTextBlock(ClashMatrixFeedbackTxt, selectClashMatrixStatus);
+        }
+
+        private void SelectedFunctionChanged(object sender, RoutedEventArgs e)
+        {
+            bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
+            if (FunctionClashResultsRBtn.IsChecked == true)
+            {
+                return;
+            }
+            UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
+        }
+
+        private void AboutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO Deploy: Change tool version
+            System.Windows.Forms.MessageBox.Show("Clash Management Tool Version: 1.0.0");
+        }
+
+        private void HelpFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO Deploy: Change help file path
+            Process.Start("https://dar.com/error/NotFound");
+        }
+
+        private void HelpDeskBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO Deploy: Change help desk path
+            Process.Start("https://dar.com/error/NotFound");
         }
     }
 }
