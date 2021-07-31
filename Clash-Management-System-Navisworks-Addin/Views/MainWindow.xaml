@@ -8,7 +8,10 @@
         mc:Ignorable="d"
         x:ClassModifier="public"
         Title="Clash Management" Height="500" Width="800" WindowStartupLocation="CenterScreen" KeyUp="Window_KeyUp">
-    <Grid x:Name="WindowGrid" x:FieldModifier="public">
+    <Window.Resources>
+        <DropShadowEffect x:Key="MyEffect" ShadowDepth="0" Color="Blue" Opacity="1" BlurRadius="20"/>
+    </Window.Resources>
+    <Grid x:Name="WindowGrid" x:FieldModifier="public" Background="Gainsboro">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="80"/>
@@ -26,8 +29,8 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="85"/>
+            <ColumnDefinition Width="85"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -69,11 +72,13 @@
             Grid.ColumnSpan="2" 
             Grid.Column="1" 
             HorizontalAlignment="Stretch" 
-            Margin="0,0,0,0" 
+            Margin="3,5,3,3" 
             Grid.Row="3" 
             Grid.RowSpan="7" 
             VerticalAlignment="Stretch" 
-            Background="Gainsboro">
+            Background="Gainsboro"
+            >
+            
             <!--
             <Expander Name="LoginExpander"
                       Grid.ColumnSpan="5" 
@@ -125,34 +130,37 @@
                       x:FieldModifier="public"
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
-                      Header="Project"
+                      
                       HorizontalAlignment="Stretch"
                       Margin="1,0,1,0"
-                      
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
                       FontFamily="Century Gothic, Courier New"
                       Expanded="Expander_PreviewMouseUp">
+                <Expander.Header>
+                    <TextBlock Text="Project Clash Matrices" FontWeight="Bold"/>
+                </Expander.Header>
                 <StackPanel>
                     <TextBlock Text="Select a Project"
-                               Margin="5,25,5,5"/>
+                               Margin="5,15,5,5"/>
                     <ComboBox Name="ProjectCbx" 
                               Text="Select a Project"
-                              Margin="5,5,5,5" SelectionChanged="ProjectCbx_SelectionChanged" />
-                    <!--
-                    <Button Name="SelectProjectBtn" 
-                            Content="Ok"
-                            Margin="65,15,15,5" 
-                            Click="SelectProjectBtn_Click"/>
-                    -->
-                    <TextBlock Name="ProjectsFeedbackTxt"
-                            Text="Project Status"
-                            Visibility="Hidden"
-                            Margin="5,5,5,5"
-                            HorizontalAlignment="Center"/>
+                              Margin="5,5,5,5" 
+                              SelectionChanged="ProjectCbx_SelectionChanged" />
+                    <TextBlock Text="Select a Clash Matrix"
+                               Margin="5,15,5,5"/>
+                    <ComboBox Name="ClashMatrixCbx" 
+                              Text="Select a Clash Matrix"
+                              Margin="5,5,5,15" 
+                              SelectionChanged="ClashMatrixCbx_SelectionChanged"/>
                 </StackPanel>
             </Expander>
+            <Separator
+                Margin="10">
+                
+            </Separator>
+            <!--    
             <Expander Name="SelectClashMatrixExpander"
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
@@ -165,35 +173,31 @@
                       FontFamily="Century Gothic, Courier New"
                       Expanded="Expander_PreviewMouseUp">
                 <StackPanel>
-                    <!--Add textblock for the current project Name-->
                     <TextBlock Text="Select a Clash Matrix"
                                Margin="5,25,5,5"/>
-                    <ComboBox Name="ClashMatrixCbx" 
+            <ComboBox Name="ClashMatrixCbx" 
                               Text="Select a Clash Matrix"
                               Margin="5,5,5,5" SelectionChanged="ClashMatrixCbx_SelectionChanged"/>
-                    <!--
-                    <Button Name="SelectClashMatrixBtn" 
-                            Content="Ok"
-                            Margin="65,15,15,5" Click="SelectClashMatrixBtn_Click"/>
-                    -->
-                    <TextBlock Name="ClashMatrixFeedbackTxt"
+            <TextBlock Name="ClashMatrixFeedbackTxt"
                             Text="Clash Matrix Status"
                             Visibility="Hidden"
                             Margin="5,5,5,5"
                             HorizontalAlignment="Center"/>
                 </StackPanel>
-            </Expander>
+        </Expander> -->
             <Expander Name="SelectFunctionExpander"
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
-                      Header="Function"
                       HorizontalAlignment="Stretch"
                       Margin="1,0,1,0"
                       Grid.Row="4" 
                       Grid.RowSpan="3"
                       VerticalAlignment="Top"
                       FontFamily="Century Gothic, Courier New"
-                      Expanded="Expander_PreviewMouseUp">
+                      Expanded="Expander_PreviewMouseUp" >
+            <Expander.Header>
+                <TextBlock Text="Function" FontWeight="Bold"/>
+            </Expander.Header>
                 <StackPanel>
                     <TextBlock Text="Select a Function"
                                Margin="5,25,5,5"/>
@@ -220,6 +224,17 @@
                 </StackPanel>
             </Expander>
         </StackPanel>
+        <Border 
+                BorderBrush="DimGray" 
+                BorderThickness="1" 
+                Grid.ColumnSpan="2" 
+            Grid.Column="1"
+            HorizontalAlignment="Stretch" 
+            Margin="0,0,0,0" 
+            Grid.Row="3" 
+            Grid.RowSpan="7" />
+
+
         <DataGrid Name="PresenterDataGrid"
             Grid.ColumnSpan="8" 
             Grid.Column="4" 
@@ -227,7 +242,6 @@
             Grid.Row="3" 
             Grid.RowSpan="7" 
             VerticalAlignment="Stretch"
-            Foreground="LightSlateGray"
             FontFamily="Century Gothic, Courier New" 
             CanUserAddRows="False"
             CanUserDeleteRows="False"
@@ -235,15 +249,11 @@
             AutoGenerateColumns="False"
             HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Auto" 
-            MinRowHeight="10" Background="#FFF0F0F0" 
-                  
-                  >
-            <DataGrid.BorderBrush>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="0"/>
-                    <GradientStop Color="#FF68AF82" Offset="1"/>
-                </LinearGradientBrush>
-            </DataGrid.BorderBrush>
+            MinRowHeight="10" 
+            Background="Gainsboro" 
+            Foreground="DimGray"
+            BorderBrush="DimGray">
+            
             <DataGrid.Columns>
                 <DataGridTemplateColumn 
                     Header="✓" 
@@ -301,7 +311,37 @@
                 FontFamily="Century Gothic, Courier New"
                 />
         -->
-        <Button Name="Run"
+        <Button Name="SelectAllBtn"
+                Grid.ColumnSpan="2" 
+                Content="Select All" 
+                Grid.Column="4" 
+                HorizontalAlignment="Left" 
+                Margin="5,0,0,20"
+                Grid.Row="11" 
+                Width="80"
+                Height="25"
+                VerticalAlignment="Center" 
+                Background="Gainsboro"
+                Foreground="DimGray"
+                FontFamily="Century Gothic, Courier New" 
+                Click="SelectAllBtn_Click"
+                />
+        <Button Name="DeselectAllBtn"
+                Grid.ColumnSpan="2" 
+                Content="Deselect All" 
+                Grid.Column="5" 
+                HorizontalAlignment="Left" 
+                Margin="25,0,0,20"
+                Grid.Row="11" 
+                Width="80"
+                Height="25"
+                VerticalAlignment="Center" 
+                Background="Gainsboro"
+                Foreground="DimGray"
+                FontFamily="Century Gothic, Courier New" 
+                Click="DeselectAllBtn_Click"
+                />
+        <Button Name="RunBtn"
                 Grid.ColumnSpan="2" 
                 Content="Run" 
                 Grid.Column="10" 
@@ -313,9 +353,10 @@
                 VerticalAlignment="Center" 
                 Background="Gainsboro"
                 Foreground="DimGray"
-                FontFamily="Century Gothic, Courier New" Click="Run_Click"
-                
+                FontFamily="Century Gothic, Courier New" 
+                Click="Run_Click"
                 />
+
         <StatusBar 
             HorizontalAlignment="Center" 
             Height="25" 
@@ -350,42 +391,32 @@
                 Grid.Column="0"
                 Margin="5,0,0,0"
                 HorizontalContentAlignment="Center">
-                
-                <Button 
+                <Image
                     Name="HelpDeskBtn"
                     HorizontalAlignment="Center" 
                     Width="20"
                     Height="20"
-                    VerticalAlignment="Center"
-                    Foreground="Transparent"
-                    FontFamily="Century Gothic, Courier New"
-                    BorderBrush="Transparent" Click="HelpDeskBtn_Click">
-                    <Button.Background>
-                        <ImageBrush ImageSource="HelpDeskIcon.png" Stretch="Uniform"/>
-                    </Button.Background>
-                </Button>
+                    VerticalAlignment="Center" 
+                    MouseUp="HelpDeskBtn_Click"
+                    Source="HelpDeskIcon.png">
+                </Image>
             </StatusBarItem>
             
             <Separator 
                 Grid.Column="1">
             </Separator>
-            
+
             <StatusBarItem
                 Grid.Column="2"
                 HorizontalContentAlignment="Center">
-                <Button 
+                <Image
                     Name="HelpFileBtn"
                     HorizontalAlignment="Center" 
                     Width="20"
                     Height="20"
-                    VerticalAlignment="Center"
-                    Foreground="Transparent"
-                    FontFamily="Century Gothic, Courier New"
-                    BorderBrush="Transparent" Click="HelpFileBtn_Click">
-                    <Button.Background>
-                        <ImageBrush ImageSource="HelpFileIcon.png" Stretch="Uniform"/>
-                    </Button.Background>
-                </Button>
+                    VerticalAlignment="Center" MouseUp="HelpFileBtn_Click"
+                    Source="HelpFileIcon.png">
+                </Image>
             </StatusBarItem>
             
             <Separator 
@@ -395,19 +426,15 @@
             <StatusBarItem
                 Grid.Column="4"
                 HorizontalContentAlignment="Center">
-                <Button 
+                <Image
                     Name="AboutBtn"
                     HorizontalAlignment="Center" 
                     Width="20"
                     Height="20"
-                    VerticalAlignment="Center"
-                    Foreground="Transparent"
-                    FontFamily="Century Gothic, Courier New"
-                    BorderBrush="Transparent" Click="AboutBtn_Click">
-                    <Button.Background>
-                        <ImageBrush ImageSource="HelpIcon.png" Stretch="Uniform"/>
-                    </Button.Background>
-                </Button>
+                    VerticalAlignment="Center" 
+                    MouseUp="AboutBtn_Click"
+                    Source="HelpIcon.png">
+                </Image>
             </StatusBarItem>
             
             <StatusBarItem
