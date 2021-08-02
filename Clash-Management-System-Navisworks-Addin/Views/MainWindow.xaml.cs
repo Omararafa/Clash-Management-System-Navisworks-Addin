@@ -74,6 +74,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             LoginProcedure();
             ClashMatrixCbx.IsEnabled = false;
+            StatusBarMessage.Visibility = Visibility.Hidden;
+            PresenterDataGrid.Visibility = Visibility.Hidden;
 
         }
 
@@ -84,11 +86,16 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 return false;
             }
-            for (int i = 1; i < datagrid.Columns.Count; i++)
-            {
-                datagrid.Columns.RemoveAt(i);
-            }
+            var checkBoxColumn = datagrid.Columns.First();
+            datagrid.Columns.Clear();
+            datagrid.Columns.Add(checkBoxColumn);
+            
             datagrid.ItemsSource = data;
+            PresenterDataGrid.Visibility = Visibility.Visible;
+
+            datagrid.Columns.ElementAt(0).Visibility = Visibility.Hidden;
+            SelectAllBtn.Visibility = Visibility.Hidden;
+            DeselectAllBtn.Visibility = Visibility.Hidden;
 
             List<string> searchSetBindingProperties = new List<string>
             {
@@ -99,14 +106,18 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 var col = new DataGridTextColumn();
                 col.Header = colName;
+                /*
                 string[] splittedHeader = colName.Split(new char[] { '.' }, 2);
                 if (splittedHeader.Length==2)
                 {
                     col.Header = splittedHeader[1];
                 }
+                */
                 col.Binding = new Binding(colName);
                 datagrid.Columns.Add(col);
             }
+            datagrid.Columns.Last().Width = DataGridLength.Auto;
+
             /*
             DataTable dataTable = new DataTable("Search Sets");
             dataTable.Columns.Clear();
@@ -147,11 +158,23 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 return false;
             }
 
-            for (int i = 1; i < datagrid.Columns.Count; i++)
-            {
-                datagrid.Columns.RemoveAt(i);
-            }
+
+            var checkBoxColumn = datagrid.Columns.First();
+            datagrid.Columns.Clear();
+            datagrid.Columns.Add(checkBoxColumn);
+            
             datagrid.ItemsSource = data;
+            PresenterDataGrid.Visibility = Visibility.Visible;
+            datagrid.Columns.ElementAt(0).Visibility = Visibility.Hidden;
+            SelectAllBtn.Visibility = Visibility.Hidden;
+            DeselectAllBtn.Visibility = Visibility.Hidden;
+
+            if (FunctionClashResultsRBtn.IsChecked==true)
+            {
+                datagrid.Columns.ElementAt(0).Visibility = Visibility.Visible;
+                SelectAllBtn.Visibility = Visibility.Visible;
+                DeselectAllBtn.Visibility = Visibility.Visible;
+            }
 
 
 
@@ -164,15 +187,18 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 var col = new DataGridTextColumn();
                 col.Header = colName;
+                /*
                 string[] splittedHeader = colName.Split(new char[] { '.' }, 2);
                 if (splittedHeader.Length == 2)
                 {
                     col.Header = splittedHeader[1];
                 }
+                */
                 col.Binding = new Binding(colName);
                 datagrid.Columns.Add(col);
             }
 
+            datagrid.Columns.Last().Width = DataGridLength.Auto;
             return true;
             /*
             var col1 = new DataGridTemplateColumn();
@@ -672,10 +698,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private void Run_Click(object sender, RoutedEventArgs e)
         {
+            StatusBarMessage.Visibility = Visibility.Visible;
             RunSyncButton();
             bool isValidSelection = (PresenterDataGrid.ItemsSource as List<AClashTest>).Where(x => x.IsSelected).ToList().Count > 0;
             UpdateFeedbackTextBlock(FunctionFeedbackTxt, isValidSelection);
-
+            StatusBarMessage.Visibility = Visibility.Hidden;
             return;
         }
 
