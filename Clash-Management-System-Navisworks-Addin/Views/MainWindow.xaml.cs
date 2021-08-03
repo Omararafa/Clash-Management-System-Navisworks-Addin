@@ -559,6 +559,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         }
                         int comparedClashTestsCount = comparedAClashTests.Count();
                         string msg = string.Format("Clash Tests: {0} Total synchronized successfully", comparedClashTestsCount);
+                        msg += Environment.NewLine;
+                        msg += "Make sure to update clash tests in the current document before sync clash tests results.";
                         System.Windows.Forms.MessageBox.Show(
                             msg, "Clash Management",
                             System.Windows.Forms.MessageBoxButtons.OK,
