@@ -1,26 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Threading.Tasks;
-using Autodesk.Navisworks.Api;
-using System.Collections.Generic;
+﻿using System.Windows.Forms;
 using Autodesk.Navisworks.Api.Plugins;
-using Autodesk.Navisworks.Api.DocumentParts;
-using Clash_Management_System_Navisworks_Addin.NW;
-using Clash_Management_System_Navisworks_Addin.Views;
-using Clash_Management_System_Navisworks_Addin.Testing;
-using Clash_Management_System_Navisworks_Addin.ViewModels;
 using System.Windows.Forms.Integration;
+using Clash_Management_System_Navisworks_Addin.Views;
+
 
 namespace Clash_Management_System_Navisworks_Addin
 {
-    [Plugin("Clash-Management-System-Navisworks-Addin", "WYHk", DisplayName = "Hello!")]
+    [Plugin("Clash-Management-System-Navisworks-Addin", "AAW", DisplayName = "Clash Management")]
     [RibbonLayout("Clash-Management-System-Navisworks-Addin.xaml")]
     [RibbonTab("ID_CustomTab_1", DisplayName = "Clash Management")]
-    [Command("BE", CanToggle = true, DisplayName = "Button1")]
-    [Command("WPFUI", CanToggle = true, DisplayName = "Button2")]
-
+    [Command("ClashManagement", Icon = "16x16.png", LargeIcon = "32x32.png",
+              CanToggle = true, DisplayName = "Clash Management",
+              ToolTip ="Sync search sets, clash tests and clash resutls")]
 
     class NWCmd : CommandHandlerPlugin
     {
@@ -28,11 +19,7 @@ namespace Clash_Management_System_Navisworks_Addin
         {
             switch (commandId)
             {
-                case "BE":
-                    SearchSetClassTests.ASearchSetComparisonTest();
-                    break;
-
-                case "WPFUI":
+                case "ClashManagement":
                     if (DB.DBHandler.IsServiceAwake)
                     {
                         if (Autodesk.Navisworks.Api.Application.ActiveDocument.Models.Count > 0)

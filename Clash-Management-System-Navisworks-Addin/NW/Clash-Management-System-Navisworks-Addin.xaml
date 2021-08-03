@@ -12,29 +12,18 @@
     <!-- END STANDARD SECTION DO NOT EDIT -->
 
 
-
     <RibbonTab Id="ID_CustomTab_1" KeyTip="T1">
+
         <RibbonPanel x:Uid="RibbonPane1_1">
-            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" KeyTip="C1" Title="Backecd Panel Test">
-                <local:NWRibbonButton x:Uid="BE" Id="BE"
+            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" KeyTip="C1" Title="Clash Management">
+                <local:NWRibbonButton x:Uid="ClashManagement" Id="ClashManagement"
                                     Size="Large"
                                     KeyTip="B1"
-                                    ShowText="True"   
-                                    Text="Backend"
-                                    Orientation="Vertical"/>
+                                    ShowText="False"   
+                                    Text=""
+                                    Orientation="Horizontal"/>
             </RibbonPanelSource>
         </RibbonPanel>
 
-        <RibbonPanel x:Uid="RibbonPane1_2">
-            <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_2" KeyTip="C2" Title="UI Panel Test">
-                <local:NWRibbonButton x:Uid="WPFUI" Id="WPFUI"
-                                    Size="Large"
-                                    KeyTip="B2"
-                                    ShowText="True"   
-                                    Text="WPF UI"
-                                    Orientation="Vertical"/>
-            </RibbonPanelSource>
-        </RibbonPanel>
-        
     </RibbonTab>
 </RibbonControl>
