@@ -374,12 +374,12 @@
                 <ItemsPanelTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="35" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="25" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="30" />
-                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="25" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -392,7 +392,7 @@
             
             <StatusBarItem
                 Grid.Column="0"
-                Margin="5,0,0,0"
+                Margin="10,0,0,0"
                 HorizontalContentAlignment="Center">
                 <Image
                     Name="HelpDeskBtn"
@@ -448,7 +448,6 @@
                 <TextBlock
                     Margin="10,0,0,0"
                     Name="StatusBarMessage"
-                    Text="Sync with database in progress..."
                     Foreground="Gray">
                 </TextBlock>
             </StatusBarItem>

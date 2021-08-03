@@ -17,6 +17,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
+using Clash_Management_System_Navisworks_Addin.WebService;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Clash_Management_System_Navisworks_Addin.Views
 {
@@ -38,7 +40,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         public Brush expanderHighlightBackground = Brushes.Gainsboro;
         public Brush expanderHighlightForeground = Brushes.DimGray;
         List<Expander> SidebarExpanders = new List<Expander>();
-        bool IsRunClicked;
+        bool IsRunClicked = false;
 
 
         public MainWindow()
@@ -103,54 +105,33 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             List<string> searchSetBindingProperties = new List<string>
             {
-                "Name", "Project.Name", "ClashMatrix.Name", "TradeId"
+                "Name", "Project.Name", "ClashMatrix.Name"
             };
 
-            foreach (var colName in searchSetBindingProperties)
+
+            foreach (var colProperty in searchSetBindingProperties)
             {
                 var col = new DataGridTextColumn();
-                col.Header = colName;
-                /*
-                string[] splittedHeader = colName.Split(new char[] { '.' }, 2);
-                if (splittedHeader.Length==2)
+                string colName = colProperty;
+                switch (colProperty)
                 {
-                    col.Header = splittedHeader[1];
+                    case "Name":
+                        colName = "Search Set";
+                        break;
+                    case "Project.Name":
+                        colName = "Project";
+                        break;
+                    case "ClashMatrix.Name":
+                        colName = "Clash Matrix";
+                        break;
+                    default:
+                        break;
                 }
-                */
-                col.Binding = new Binding(colName);
+                col.Header = colName;
+
+                col.Binding = new Binding(colProperty);
                 datagrid.Columns.Add(col);
             }
-            datagrid.Columns.Last().Width = DataGridLength.Auto;
-
-            /*
-            DataTable dataTable = new DataTable("Search Sets");
-            dataTable.Columns.Clear();
-            dataTable.Columns.Add("Name");
-            dataTable.Columns.Add("Project");
-            dataTable.Columns.Add("Clash Matrix");
-            dataTable.Columns.Add("Trade Id");
-            dataTable.Columns.Add("Modified By");
-            dataTable.Columns.Add("Status");
-
-            if (data==null||data.Count<1)
-            {
-                return false;
-            }
-            
-
-            foreach (var searchSet in data)
-            {
-                DataRow row = dataTable.Rows.Add(
-                    searchSet.Name,
-                    searchSet.Project.Name,
-                    searchSet.ClashMatrix.Name,
-                    searchSet.TradeId.ToString(),
-                    searchSet.ModifiedBy.ToString(),
-                    searchSet.Conditon.ToString()
-                    );
-            }
-            datagrid.ItemsSource = dataTable.DefaultView;
-            */
 
             return true;
         }
@@ -187,22 +168,35 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 "Name","ClashTest.Status", "AClashTestResults.Count","SearchSet1.Name","SearchSet2.Name"
             };
 
-            foreach (var colName in clashTestBindingProperties)
+            foreach (var colProperty in clashTestBindingProperties)
             {
                 var col = new DataGridTextColumn();
-                col.Header = colName;
-                /*
-                string[] splittedHeader = colName.Split(new char[] { '.' }, 2);
-                if (splittedHeader.Length == 2)
+                string colName = colProperty;
+                switch (colProperty)
                 {
-                    col.Header = splittedHeader[1];
+                    case "Name":
+                        colName = "Clash Test";
+                        break;
+                    case "ClashTest.Status":
+                        colName = "Status";
+                        break;
+                    case "AClashTestResults.Count":
+                        colName = "Results Count";
+                        break;
+                    case "SearchSet1.Name":
+                        colName = "Search Set 1";
+                        break;
+                    case "SearchSet2.Name":
+                        colName = "Search Set 2";
+                        break;
+                    default:
+                        break;
                 }
-                */
-                col.Binding = new Binding(colName);
+                col.Header = colName;
+                col.Binding = new Binding(colProperty);
                 datagrid.Columns.Add(col);
             }
 
-            datagrid.Columns.Last().Width = DataGridLength.Auto;
             return true;
             /*
             var col1 = new DataGridTemplateColumn();
@@ -358,7 +352,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             if (userName != string.Empty && userDomain != string.Empty)
             {
                 ViewsHandler.CurrentUser = new User(userName, userDomain);
-                List<Project> projects = ViewsHandler.CurrentUser.Projects;
+                var projects = ViewsHandler.CurrentUser.Projects;
                 string tradeAbb = ViewsHandler.CurrentUser.TradeAbb;
 
                 if (projects == null)
@@ -500,9 +494,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         */
         private bool FunctionSelectedProcedure(Button button)
         {
-            try
+
+            if (FunctionSearchSetsRBtn.IsChecked == true)
             {
-                if (FunctionSearchSetsRBtn.IsChecked == true)
+                try
                 {
                     List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
 
@@ -532,19 +527,17 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         }
                     }
                     return PresentSearchSetsOnDataGrid(PresenterDataGrid, nwSearchSets);
-
                 }
-            }
-            catch (Exception e)
-            {
-                System.Windows.Forms.MessageBox.Show(e.Message);
-                return false;
-            }
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                    return false;
+                }
 
 
+            }
             if (FunctionClashTestsRBtn.IsChecked == true)
             {
-
                 try
                 {
                     List<AClashTest> nwClashTest = NW.NWHandler.NWAClashTests;
@@ -570,7 +563,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                             msg, "Clash Management",
                             System.Windows.Forms.MessageBoxButtons.OK,
                             System.Windows.Forms.MessageBoxIcon.Information);
-                        return true;
+                        nwClashTest = NW.NWHandler.NWAClashTests;
+                        return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
 
                     }
                     return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
@@ -639,6 +633,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         }
 
+
+
+
+        /*
         private bool FunctionSelectedPreviewProcedure(Button button)
         {
             if (FunctionSearchSetsRBtn.IsChecked == true)
@@ -657,13 +655,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 try
                 {
                     List<AClashTest> nwAClashTests = NW.NWHandler.NWAClashTests;
-                    /*
-                    if (!NW.NWHandler.IsClashTestsCalled)
-                    {
-                        System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized.");
-                        return false;
-                    }
-                    */
+
                     PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwAClashTests);
                 }
                 catch (Exception e)
@@ -718,13 +710,14 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             return false;
 
         }
-
+        */
         private bool RunSyncButton()
         {
             IsRunClicked = true;
 
-            return FunctionSelectedProcedure(RunBtn);
-
+            bool result = FunctionSelectedProcedure(RunBtn);
+            StatusBarMessage.Visibility = Visibility.Hidden;
+            return result;
         }
 
 
@@ -759,18 +752,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         }
 
 
-        private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
-        {
-            bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
-            if (FunctionClashResultsRBtn.IsChecked == true)
-            {
-                return;
-            }
-            UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
-
-            return;
-
-        }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -786,6 +767,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private void Run_Click(object sender, RoutedEventArgs e)
         {
+            StatusBarMessage.Text = "Sync with database in progress...";
             StatusBarMessage.Visibility = Visibility.Visible;
             RunSyncButton();
 
@@ -818,26 +800,29 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         private void SelectedFunctionChanged(object sender, RoutedEventArgs e)
         {
             RunBtn.Visibility = Visibility.Visible;
-
+            StatusBarMessage.Text = "Collecting data from Navisworks in progress...";
+            StatusBarMessage.Visibility = Visibility.Visible;
             bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
+            StatusBarMessage.Visibility = Visibility.Hidden;
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
                 return;
             }
             UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
+            RunBtn.Focus();
         }
 
         private void AboutBtn_Click(object sender, RoutedEventArgs e)
         {
             //TODO Deploy: Change tool version
-            System.Windows.Forms.MessageBox.Show("Clash Management Tool Version: 1.0.0");
+            System.Windows.Forms.MessageBox.Show(
+                "Clash Management Tool Version: 1.0.0",
+                "Clash Management",
+                System.Windows.Forms.MessageBoxButtons.OK,
+                System.Windows.Forms.MessageBoxIcon.Information);
+
         }
 
-        private void HelpFileBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //TODO Deploy: Change help file path
-            Process.Start("https://dar.com/error/NotFound");
-        }
 
         private void HelpDeskBtn_Click(object sender, RoutedEventArgs e)
         {
