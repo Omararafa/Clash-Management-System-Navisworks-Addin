@@ -12,6 +12,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -37,7 +38,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         public Brush expanderHighlightBackground = Brushes.Gainsboro;
         public Brush expanderHighlightForeground = Brushes.DimGray;
         List<Expander> SidebarExpanders = new List<Expander>();
-
+        bool IsRunClicked;
 
 
         public MainWindow()
@@ -52,7 +53,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 SelectFunctionExpander
             });
             WindowGrid.Background = expanderNormalBackground;
-            
+
 
 
             //Set initial values for expanders
@@ -74,8 +75,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             LoginProcedure();
             ClashMatrixCbx.IsEnabled = false;
+            RunBtn.Visibility = Visibility.Hidden;
             StatusBarMessage.Visibility = Visibility.Hidden;
             PresenterDataGrid.Visibility = Visibility.Hidden;
+            SelectAllBtn.Visibility = Visibility.Hidden;
+            DeselectAllBtn.Visibility = Visibility.Hidden;
 
         }
 
@@ -89,7 +93,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             var checkBoxColumn = datagrid.Columns.First();
             datagrid.Columns.Clear();
             datagrid.Columns.Add(checkBoxColumn);
-            
+
             datagrid.ItemsSource = data;
             PresenterDataGrid.Visibility = Visibility.Visible;
 
@@ -162,14 +166,14 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             var checkBoxColumn = datagrid.Columns.First();
             datagrid.Columns.Clear();
             datagrid.Columns.Add(checkBoxColumn);
-            
+
             datagrid.ItemsSource = data;
             PresenterDataGrid.Visibility = Visibility.Visible;
             datagrid.Columns.ElementAt(0).Visibility = Visibility.Hidden;
             SelectAllBtn.Visibility = Visibility.Hidden;
             DeselectAllBtn.Visibility = Visibility.Hidden;
 
-            if (FunctionClashResultsRBtn.IsChecked==true)
+            if (FunctionClashResultsRBtn.IsChecked == true)
             {
                 datagrid.Columns.ElementAt(0).Visibility = Visibility.Visible;
                 SelectAllBtn.Visibility = Visibility.Visible;
@@ -390,7 +394,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
              * 8-UI: study to present the username into a text block within the header/footer
              * 9-DB: Get list of projects assigned to the user from the database
              */
-            
+
 
             /*
             //TODO: Bary, update data to be written into the Assembly
@@ -496,44 +500,81 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         */
         private bool FunctionSelectedProcedure(Button button)
         {
-            if (FunctionSearchSetsRBtn.IsChecked == true)
+            try
             {
-                List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
-                List<ASearchSet> dbSearchSets = new List<ASearchSet>();
-                List<ASearchSet> comparedSearchSets = new List<ASearchSet>();
-                if (nwSearchSets != null || nwSearchSets.Count > 0)
+                if (FunctionSearchSetsRBtn.IsChecked == true)
                 {
-                    DB.DBHandler.SyncSearchSetsWithDB(
-                        ViewsHandler.CurrentUser,
-                        ViewsHandler.CurrentAClashMatrix,
-                        ref dbSearchSets,
-                        nwSearchSets
-                        );
-                    if (dbSearchSets.Count > 0)
+                    List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
+
+                    if (IsRunClicked)
                     {
-                        comparedSearchSets = DBNWHandler.DBNWComparison.ASearchSetsComparisonList;
-                        int newSearchSets = comparedSearchSets.Count();
-                        string msg = string.Format("Search Sets: {0} Total synchronized successfully", newSearchSets);
-                        System.Windows.Forms.MessageBox.Show(msg,"Clash Management",System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
-                        return PresentSearchSetsOnDataGrid(PresenterDataGrid, comparedSearchSets);
+                        IsRunClicked = false;
+
+                        List<ASearchSet> dbSearchSets = new List<ASearchSet>();
+                        List<ASearchSet> comparedSearchSets = new List<ASearchSet>();
+                        if (nwSearchSets != null || nwSearchSets.Count > 0)
+                        {
+                            DB.DBHandler.SyncSearchSetsWithDB(
+                                ViewsHandler.CurrentUser,
+                                ViewsHandler.CurrentAClashMatrix,
+                                ref dbSearchSets,
+                                nwSearchSets
+                                );
+                            if (dbSearchSets.Count > 0)
+                            {
+                                comparedSearchSets = DBNWHandler.DBNWComparison.ASearchSetsComparisonList;
+                                int newSearchSets = comparedSearchSets.Count();
+                                string msg = string.Format("Search Sets: {0} Total synchronized successfully", newSearchSets);
+                                System.Windows.Forms.MessageBox.Show(msg, "Clash Management", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                                return PresentSearchSetsOnDataGrid(PresenterDataGrid, comparedSearchSets);
+                            }
+                            return false;
+                        }
                     }
-                    return false;
+                    return PresentSearchSetsOnDataGrid(PresenterDataGrid, nwSearchSets);
+
                 }
             }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show(e.Message);
+                return false;
+            }
+
+
             if (FunctionClashTestsRBtn.IsChecked == true)
             {
+
                 try
                 {
-                    List<AClashTest> comparedAClashTests = DBNWHandler.DBNWComparison.CompareNWDBAClashTests();
-                    if (!NW.NWHandler.IsClashTestsCalled)
+                    List<AClashTest> nwClashTest = NW.NWHandler.NWAClashTests;
+
+                    if (IsRunClicked)
                     {
-                        System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized.");
-                        return false;
+                        IsRunClicked = false;
+
+                        if (!NW.NWHandler.IsClashTestsCalled)
+                        {
+                            System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized or not found.");
+                            return false;
+                        }
+                        List<AClashTest> comparedAClashTests = DBNWHandler.DBNWComparison.CompareNWDBAClashTests();
+                        if (!NW.NWHandler.IsClashTestsCalled)
+                        {
+                            System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized.");
+                            return false;
+                        }
+                        int comparedClashTestsCount = comparedAClashTests.Count();
+                        string msg = string.Format("Clash Tests: {0} Total synchronized successfully", comparedClashTestsCount);
+                        System.Windows.Forms.MessageBox.Show(
+                            msg, "Clash Management",
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Information);
+                        return true;
+
                     }
-                    int newClashTests = comparedAClashTests.Count();
-                    string msg = string.Format("Clash Tests: {0} Total synchronized successfully", newClashTests);
-                    System.Windows.Forms.MessageBox.Show(msg, "Clash Management", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
-                    return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref comparedAClashTests);
+                    return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
+
                 }
                 catch (Exception e)
                 {
@@ -543,13 +584,56 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
-                //List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests.Where(clashTest => !clashTest.IsSelected).ToList();
+                try
+                {
 
-                //bool isSynced = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, nwClashTests);
-                //this.ClashMatrixFeedbackTxt.Visibility = Visibility.Hidden;
-                List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
-                PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref aClashTests);
-                return true;
+
+                    List<AClashTest> nwClashTest = NW.NWHandler.NWAClashTests;
+                    if (IsRunClicked)
+                    {
+                        IsRunClicked = false;
+
+                        ViewsHandler.SelectedClashTests = (PresenterDataGrid.ItemsSource as List<AClashTest>).Where(x => x.IsSelected).ToList();
+                        List<AClashTest> selectedClashTests = ViewsHandler.SelectedClashTests;
+                        if (selectedClashTests.Count < 1)
+                        {
+                            System.Windows.Forms.MessageBox.Show(
+                                "No Clash Test was selected.",
+                                "Error",
+                                System.Windows.Forms.MessageBoxButtons.OK,
+                                System.Windows.Forms.MessageBoxIcon.Error);
+                            return false;
+                        }
+
+                        try
+                        {
+                            bool syncStatus = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests);
+                            bool presentStatus = PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
+                            int newClashTests = selectedClashTests.Count();
+                            string msg = string.Format("Clash Tests: {0} Total synchronized successfully", newClashTests);
+                            System.Windows.Forms.MessageBox.Show(
+                                msg, "Clash Management",
+                                System.Windows.Forms.MessageBoxButtons.OK,
+                                System.Windows.Forms.MessageBoxIcon.Information);
+
+                            return syncStatus;
+
+                        }
+                        catch (Exception e)
+                        {
+                            System.Windows.Forms.MessageBox.Show("Sync With Database Exception: " + e.Message);
+                            return false;
+                        }
+
+                    }
+                    PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                    return false;
+                }
             }
             return false;
 
@@ -596,6 +680,37 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
                 //bool isSynced = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, nwClashTests);
                 //this.ClashMatrixFeedbackTxt.Visibility = Visibility.Hidden;
+                if (IsRunClicked)
+                {
+                    IsRunClicked = false;
+
+                    ViewsHandler.SelectedClashTests = (PresenterDataGrid.ItemsSource as List<AClashTest>).Where(x => x.IsSelected).ToList();
+
+                    if (!NW.NWHandler.IsClashTestsCalled)
+                    {
+                        System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized or not found.");
+                        return false;
+                    }
+                    List<AClashTest> selectedClashTests = ViewsHandler.SelectedClashTests;
+
+                    //List<AClashTest> selectedClashTests = aClashTests.Where(x => x.IsSelected).ToList();
+                    if (selectedClashTests.Count < 1)
+                    {
+                        return true;
+                    }
+                    try
+                    {
+
+                        return DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests);
+
+                    }
+                    catch (Exception e)
+                    {
+                        System.Windows.Forms.MessageBox.Show("Sync With Database Exception: " + e.Message);
+                        return false;
+                    }
+
+                }
                 List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
                 PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref aClashTests);
                 return true;
@@ -606,37 +721,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private bool RunSyncButton()
         {
+            IsRunClicked = true;
 
-            FunctionSelectedProcedure(RunBtn);
+            return FunctionSelectedProcedure(RunBtn);
 
-            ViewsHandler.SelectedClashTests = (PresenterDataGrid.ItemsSource as List<AClashTest>).Where(x => x.IsSelected).ToList();
-            //List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
-
-
-
-            if (!NW.NWHandler.IsClashTestsCalled)
-            {
-                System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized or not found.");
-                return false;
-            }
-            List<AClashTest> selectedClashTests = ViewsHandler.SelectedClashTests;
-
-            //List<AClashTest> selectedClashTests = aClashTests.Where(x => x.IsSelected).ToList();
-            if (selectedClashTests.Count < 1)
-            {
-                return true;
-            }
-            try
-            {
-
-                return DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests);
-
-            }
-            catch (Exception e)
-            {
-                System.Windows.Forms.MessageBox.Show("Sync With Database Exception: " + e.Message);
-                return false;
-            }
         }
 
 
@@ -673,7 +761,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private void SelectFunctionBtn_Click(object sender, RoutedEventArgs e)
         {
-            bool selectFunctionStatus = FunctionSelectedPreviewProcedure(sender as Button);
+            bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
                 return;
@@ -700,8 +788,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             StatusBarMessage.Visibility = Visibility.Visible;
             RunSyncButton();
-            bool isValidSelection = (PresenterDataGrid.ItemsSource as List<AClashTest>).Where(x => x.IsSelected).ToList().Count > 0;
-            UpdateFeedbackTextBlock(FunctionFeedbackTxt, isValidSelection);
+
             StatusBarMessage.Visibility = Visibility.Hidden;
             return;
         }
@@ -714,7 +801,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
         }
 
-        
+
         private void ProjectCbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bool selectProjectStatus = ProjectSelectedProcedure();
@@ -726,11 +813,13 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             bool selectClashMatrixStatus = ClashMatrixSelectedProcedure();
             //UpdateFeedbackTextBlock(ClashMatrixFeedbackTxt, selectClashMatrixStatus);
         }
-        
+
 
         private void SelectedFunctionChanged(object sender, RoutedEventArgs e)
         {
-            bool selectFunctionStatus = FunctionSelectedPreviewProcedure(sender as Button);
+            RunBtn.Visibility = Visibility.Visible;
+
+            bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
                 return;
@@ -768,11 +857,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             foreach (var item in items)
             {
                 AClashTest test = item as AClashTest;
-                if (test!=null)
+                if (test != null)
                 {
                     test.IsSelected = true;
                 }
-                
+
             }
             PresenterDataGrid.ItemsSource = null;
             PresenterDataGrid.ItemsSource = items;
