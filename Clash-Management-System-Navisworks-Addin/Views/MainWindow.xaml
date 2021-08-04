@@ -44,13 +44,14 @@
         </Grid.ColumnDefinitions>
         <!--Header Data-->
         <Image
+            Name="CompanyImage"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Grid.Row="1"
             Grid.RowSpan="2" 
             Margin="10,10,10,10" 
-            Source="darLogo.png">
-
+            Source="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\darLogo.png">
+            <!-- "pack://application:,,,/Views/darLogo.png" -->  
         </Image>
         <TextBlock
             Text="Clash Management"
@@ -401,7 +402,7 @@
                     Height="20"
                     VerticalAlignment="Center" 
                     MouseUp="HelpDeskBtn_Click"
-                    Source="HelpDeskIcon.png">
+                    Source="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\HelpDeskIcon.png">
                 </Image>
             </StatusBarItem>
             
@@ -418,7 +419,7 @@
                     Width="20"
                     Height="20"
                     VerticalAlignment="Center" MouseUp="HelpFileBtn_Click"
-                    Source="HelpFileIcon.png">
+                    Source="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\HelpFileIcon.png">
                 </Image>
             </StatusBarItem>
             
@@ -436,7 +437,7 @@
                     Height="20"
                     VerticalAlignment="Center" 
                     MouseUp="AboutBtn_Click"
-                    Source="HelpIcon.png">
+                    Source="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\HelpIcon.png">
                 </Image>
             </StatusBarItem>
             <Separator 

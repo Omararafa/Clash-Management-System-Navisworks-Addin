@@ -73,7 +73,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             PresenterDataGrid.Visibility = Visibility.Hidden;
             SelectAllBtn.Visibility = Visibility.Hidden;
             DeselectAllBtn.Visibility = Visibility.Hidden;
-
         }
 
 
@@ -133,7 +132,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 return false;
             }
-
 
             var checkBoxColumn = datagrid.Columns.First();
             datagrid.Columns.Clear();

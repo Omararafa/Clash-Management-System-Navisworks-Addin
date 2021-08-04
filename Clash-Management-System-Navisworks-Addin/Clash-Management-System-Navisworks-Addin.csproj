@@ -69,6 +69,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>False</Private>
@@ -181,6 +182,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\darLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Doc\DeploymentComponents.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\C__Users_Bary_source_repos_Clash-Management-System-Navisworks-Addin_Clash-Management-System-Navisworks-Addin_Views.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
