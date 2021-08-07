@@ -87,9 +87,9 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             this.IsFromNavis = isFromNavis;
         }
 
-        public static string GetHeaders()
+        public static string GetReportHeaders()
         {
-            string[] headers = { "Name", "Project", "Clash Matrix", "Trade Id", "Modified By", "Condition" };
+            string[] headers = { "Project", "Clash Matrix", "Name", "Status", "Search Set 1", "Search Set 2" };
 
             return string.Join(",", headers);
         }

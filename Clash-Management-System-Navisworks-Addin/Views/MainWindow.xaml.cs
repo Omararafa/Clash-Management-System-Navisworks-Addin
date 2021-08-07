@@ -393,6 +393,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                             System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized.");
                             return false;
                         }
+
+                        Reporting.ReportHandler.WriteReport(comparedAClashTests);
+
                         int comparedClashTestsCount = comparedAClashTests.Count();
                         string msg = string.Format("Clash Tests: {0} Total synchronized successfully", comparedClashTestsCount);
                         msg += Environment.NewLine;
@@ -402,8 +405,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                             System.Windows.Forms.MessageBoxButtons.OK,
                             System.Windows.Forms.MessageBoxIcon.Information);
                         nwClashTest = NW.NWHandler.NWAClashTests;
-                        return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
 
+                        return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
                     }
                     return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
 
