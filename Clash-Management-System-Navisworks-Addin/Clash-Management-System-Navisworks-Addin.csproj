@@ -106,7 +106,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Reporting\ReportHandler.cs" />
-    <Compile Include="Resouces\dummy.cs" />
     <Compile Include="Testing\SearchSetClassTests.cs" />
     <Compile Include="ViewModels\AClashMatrix.cs" />
     <Compile Include="ViewModels\AClashTest.cs" />
@@ -186,6 +185,7 @@
     <Folder Include="DBModels\" />
     <Folder Include="Doc\" />
     <Folder Include="Logging\" />
+    <Folder Include="Resouces\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Linq;
-using System.Threading.Tasks;
-using Autodesk.Navisworks.Api;
-using System.Collections.Generic;
+﻿using Autodesk.Navisworks.Api;
 using Clash_Management_System_Navisworks_Addin.Views;
 
 namespace Clash_Management_System_Navisworks_Addin.ViewModels

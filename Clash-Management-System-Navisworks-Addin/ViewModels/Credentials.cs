@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace Clash_Management_System_Navisworks_Addin.ViewModels
 {
@@ -10,10 +6,6 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
     {
         User User { get; set; }
         string Password { get; set; }
-
         bool IsAuthorized { get; set; }
-
-        
-
     }
 }
