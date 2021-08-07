@@ -419,8 +419,12 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 try
                 {
 
+                    List<AClashTest> nwClashTest = new List<AClashTest>();
+                    if (!IsRunClicked)
+                    {
+                        nwClashTest = NW.NWHandler.NWAClashTests;
+                    }
 
-                    List<AClashTest> nwClashTest = NW.NWHandler.NWAClashTests;
                     if (IsRunClicked)
                     {
                         IsRunClicked = false;
@@ -439,6 +443,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
                         try
                         {
+                            nwClashTest = NW.NWHandler.NWAClashTests;
                             bool syncStatus = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests);
                             bool presentStatus = PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
                             int newClashTests = selectedClashTests.Count();
@@ -475,6 +480,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             IsRunClicked = true;
             StatusBarMessage.Visibility = Visibility.Visible;
+
             bool result = FunctionSelectedProcedure();
             return result;
         }
@@ -576,6 +582,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 selectFunctionStatus = true;
             }
+            StatusBarMessage.Visibility = Visibility.Hidden;
 
             UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
             RunBtn.Focus();
@@ -641,7 +648,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private void RunBtn_GotFocus(object sender, RoutedEventArgs e)
         {
-            StatusBarMessage.Visibility = Visibility.Hidden;
+            //StatusBarMessage.Visibility = Visibility.Hidden;
 
             Refresh.RefreshUI(this);
         }
@@ -651,6 +658,18 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             StatusBarMessage.Text = "Collecting data from Navisworks in progress...";
 
             StatusBarMessage.Visibility = Visibility.Visible;
+        }
+
+        private void RunBtn_MouseEnter(object sender, MouseEventArgs e)
+        {
+            StatusBarMessage.Visibility = Visibility.Visible;
+
+        }
+
+        private void RunBtn_MouseLeave(object sender, MouseEventArgs e)
+        {
+            StatusBarMessage.Visibility = Visibility.Hidden;
+
         }
     }
     public static class Refresh
