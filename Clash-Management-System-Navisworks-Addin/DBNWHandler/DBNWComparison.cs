@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Collections.Generic;
 using Clash_Management_System_Navisworks_Addin.DB;
 using Clash_Management_System_Navisworks_Addin.NW;
@@ -52,7 +49,6 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
             Dictionary<string, ASearchSet> dbASearchSetsDic = new Dictionary<string, ASearchSet>();
 
-            //TODO: DEBUG line [HIGH PRIORITY]
             foreach (ASearchSet aDBSearchSet in dbASearchSets)
             {
                 if (dbASearchSetsDic.ContainsKey(aDBSearchSet.Name) != false)

@@ -1,8 +1,0 @@
-﻿
-
-//PLUGINS PATH: C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin
-1. DLL to PLUGINS PATH
-2. Icons to PLUGINS PATH/Images
-3. Resources (UI and PLugin Icon)
-
-4. Webservice : to load server

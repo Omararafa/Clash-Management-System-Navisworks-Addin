@@ -1,16 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Reflection;
+﻿using System.Linq;
 using System.Windows.Forms;
-using System.Threading.Tasks;
 using Autodesk.Navisworks.Api;
 using System.Collections.Generic;
 using Autodesk.Navisworks.Api.Clash;
 using Autodesk.Navisworks.Api.DocumentParts;
 using App = Autodesk.Navisworks.Api.Application;
-using Clash_Management_System_Navisworks_Addin.DB;
-using Clash_Management_System_Navisworks_Addin.Views;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
 
 namespace Clash_Management_System_Navisworks_Addin.NW
@@ -47,9 +41,8 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             {
                 List<AClashTest> aClashTests = GetClashTests();
                 _nwAClashTests = UpdateAClashTestsResults(aClashTests);
-                
-                //TODO: to be reviewed further
-                if (aClashTests.Count>0)
+
+                if (aClashTests.Count > 0)
                 {
                     IsClashTestsCalled = true;
                 }
@@ -74,18 +67,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         }
 
         public static bool IsClashTestsCalled { get; set; }
-
-        #endregion
-
-
-        #region ClashMatrixMethods
-
-        static AClashMatrix CreateClashMatrix(List<object> clashMatrixData)
-        {
-            throw new Exception("Method CreateClashMatrix: Work in progress");
-            return null;
-        }
-
 
         #endregion
 
@@ -357,22 +338,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
             }
 
             return nwAClashTests;
-        }
-
-        public static List<AClashTestResult> GetAClashTestResults(AClashTest aClashTest)
-        {
-            DocumentClash.TestsData.TestsRunTest(aClashTest.ClashTest);
-
-            List<ClashResult> clashTestResultsLst = GetClashResults(aClashTest.ClashTest);
-            List<AClashTestResult> aClashTestResultsLst = new List<AClashTestResult>();
-
-            foreach (ClashResult clashResult in clashTestResultsLst)
-            {
-                AClashTestResult aClashTestResult = new AClashTestResult(aClashTest, clashResult);
-                aClashTestResultsLst.Add(aClashTestResult);
-            }
-
-            return aClashTestResultsLst;
         }
 
         private static List<ClashResult> GetClashResults(ClashTest clashTest)

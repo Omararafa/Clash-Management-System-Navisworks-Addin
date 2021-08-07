@@ -94,15 +94,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="DBModels\dummy.cs" />
     <Compile Include="DBNWHandler\DBNWComparison.cs" />
     <Compile Include="DB\AssemblyResourcesHandler.cs" />
     <Compile Include="DB\DBHandler.cs" />
-    <Compile Include="Doc\Draft.cs" />
-    <Compile Include="Logging\dummy.cs" />
     <Compile Include="NW\NWCmd.cs" />
     <Compile Include="NW\NWHandler.cs" />
-    <Compile Include="NW\NWRibbon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -184,10 +180,12 @@
     <Resource Include="Views\darLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Doc\DeploymentComponents.txt" />
+    <None Include="Resources\C__Users_Bary_source_repos_Clash-Management-System-Navisworks-Addin_Clash-Management-System-Navisworks-Addin_Views.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\C__Users_Bary_source_repos_Clash-Management-System-Navisworks-Addin_Clash-Management-System-Navisworks-Addin_Views.png" />
+    <Folder Include="DBModels\" />
+    <Folder Include="Doc\" />
+    <Folder Include="Logging\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
