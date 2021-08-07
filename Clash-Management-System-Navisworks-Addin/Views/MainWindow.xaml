@@ -93,42 +93,6 @@
 
             </TextBlock>
         </DockPanel>
-        <!--
-        <TextBlock
-            Name="HeaderProjectName"
-            Text="Project Name"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Grid.Row="1"
-            Grid.RowSpan="1" 
-            Margin="10,10,10,10" 
-            >
-        </TextBlock>
-        
-        <Image
-            Name="CompanyImage"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Grid.Row="1"
-            Grid.RowSpan="2" 
-            Margin="10,10,10,10" 
-            Source="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\darLogo.png">
-        </Image>
-        
-        <TextBlock
-            Text="Clash Management"
-            FontSize="25"
-            Grid.Column="3"
-            Grid.ColumnSpan="10"
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            Margin="10,10,10,10"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            FontFamily="Century Gothic, Courier New" 
-            >
-        </TextBlock>
--->
         <!--Sidebar Data-->
         <StackPanel Name="SidebarExpandersStackPanel"
             Grid.ColumnSpan="2" 
@@ -140,54 +104,6 @@
             VerticalAlignment="Stretch" 
             Background="Gainsboro"
             >
-
-            <!--
-            <Expander Name="LoginExpander"
-                      Grid.ColumnSpan="5" 
-                      Grid.Column="0" 
-                      Header="Login"
-                      HorizontalAlignment="Stretch"
-                      Margin="1,1,1,0"
-                      Grid.Row="4" 
-                      Grid.RowSpan="3"
-                      VerticalAlignment="Top"
-                      FontFamily="Century Gothic, Courier New"
-                      Expanded="Expander_PreviewMouseUp">
-                <DockPanel
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch">
-
-                    <StackPanel>
-                        <TextBlock Text="User Name"
-                               Margin="5,5,5,5"/>
-                        <TextBox Name="UserNameTxt"
-                                 Text="Enter User Name.."
-                                 Margin="5,5,5,5"
-                             Foreground="DimGray"
-                                 GotFocus="TextBox_GotFocus"/>
-                        <TextBlock Text="User Domain"
-                               Margin="5,5,5,5"/>
-                        <TextBox Name="UserDomainTxt"
-                             Text="Enter User Domain.."
-                             Margin="5,5,5,5"
-                             Foreground="DimGray"
-                                 GotFocus="TextBox_GotFocus"/>
-                        <Button Name="LoginBtn" 
-                            Content="Login"
-                            Margin="65,15,15,5" 
-                                Click="LoginBtn_Click"/>
-                        <TextBlock Name="LoginFeedbackTxt"
-                            Text="Log in Status"
-                            Visibility="Hidden"
-                            Margin="5,5,5,5"
-                            HorizontalAlignment="Center"/>
-
-                    </StackPanel>
-
-                </DockPanel>
-
-            </Expander>
-            -->
             <Expander x:Name="SelectProjectExpander"
                       x:FieldModifier="public"
                       Grid.ColumnSpan="5" 
@@ -221,31 +137,6 @@
                 Margin="10">
 
             </Separator>
-            <!--    
-            <Expander Name="SelectClashMatrixExpander"
-                      Grid.ColumnSpan="5" 
-                      Grid.Column="0" 
-                      Header="Clash Matrix"
-                      HorizontalAlignment="Stretch"
-                      Margin="1,0,1,0"
-                      Grid.Row="4" 
-                      Grid.RowSpan="3"
-                      VerticalAlignment="Top"
-                      FontFamily="Century Gothic, Courier New"
-                      Expanded="Expander_PreviewMouseUp">
-                <StackPanel>
-                    <TextBlock Text="Select a Clash Matrix"
-                               Margin="5,25,5,5"/>
-            <ComboBox Name="ClashMatrixCbx" 
-                              Text="Select a Clash Matrix"
-                              Margin="5,5,5,5" SelectionChanged="ClashMatrixCbx_SelectionChanged"/>
-            <TextBlock Name="ClashMatrixFeedbackTxt"
-                            Text="Clash Matrix Status"
-                            Visibility="Hidden"
-                            Margin="5,5,5,5"
-                            HorizontalAlignment="Center"/>
-                </StackPanel>
-        </Expander> -->
             <Expander Name="SelectFunctionExpander"
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
@@ -314,7 +205,6 @@
             Foreground="DimGray"
             BorderBrush="DimGray">
             
-            <!-- Header="✓"   -->
             <DataGrid.Columns>
                 <DataGridTemplateColumn 
                     x:Name="CheckBoxColumn"
@@ -341,77 +231,6 @@
         </DataGrid>
 
         <!-- Footer Buttons -->
-        <!--
-        <Button Name="AboutBtn"
-                Grid.ColumnSpan="1" 
-                Content="About!" 
-                Grid.Column="1" 
-                HorizontalAlignment="Center" 
-                Margin="0,0,0,0"
-                Grid.Row="11" 
-                Width="70"
-                VerticalAlignment="Center" 
-                Background="MintCream"
-                Foreground="LightSlateGray"
-                FontFamily="Century Gothic, Courier New"
-                />
-        <Button Name="HelpDeskBtn"
-                Grid.ColumnSpan="1" 
-                Content="Help Desk" 
-                Grid.Column="2" 
-                HorizontalAlignment="Center" 
-                Margin="0,0,0,0"
-                Grid.Row="11" 
-                Width="70"
-                VerticalAlignment="Center" 
-                Background="MintCream"
-                Foreground="LightSlateGray"
-                FontFamily="Century Gothic, Courier New"
-                />
-        <Button Name="HelpFileBtn"
-                Grid.ColumnSpan="1" 
-                Content="Help File" 
-                Grid.Column="4" 
-                HorizontalAlignment="Center" 
-                Margin="0,0,0,0"
-                Grid.Row="11" 
-                Width="70"
-                VerticalAlignment="Center" 
-                Background="MintCream"
-                Foreground="LightSlateGray"
-                FontFamily="Century Gothic, Courier New"
-                />
-        <Button Name="SelectAllBtn"
-                Grid.ColumnSpan="2" 
-                Content="Select All" 
-                Grid.Column="4" 
-                HorizontalAlignment="Left" 
-                Margin="5,0,0,20"
-                Grid.Row="11" 
-                Width="80"
-                Height="25"
-                VerticalAlignment="Center" 
-                Background="Gainsboro"
-                Foreground="DimGray"
-                FontFamily="Century Gothic, Courier New" 
-                Click="SelectAllBtn_Click"
-                />
-        <Button Name="DeselectAllBtn"
-                Grid.ColumnSpan="2" 
-                Content="Deselect All" 
-                Grid.Column="5" 
-                HorizontalAlignment="Left" 
-                Margin="25,0,0,20"
-                Grid.Row="11" 
-                Width="80"
-                Height="25"
-                VerticalAlignment="Center" 
-                Background="Gainsboro"
-                Foreground="DimGray"
-                FontFamily="Century Gothic, Courier New" 
-                Click="DeselectAllBtn_Click"
-                />
-        -->
         <Button Name="RunBtn"
                 Grid.ColumnSpan="2" 
                 Content="Run" 
@@ -532,20 +351,5 @@
             </StatusBarItem>
 
         </StatusBar>
-        <!--
-        <MediaElement  
-            Grid.ColumnSpan="8" 
-            Grid.Column="4" 
-            HorizontalAlignment="Center" 
-            Grid.Row="3" 
-            Grid.RowSpan="7" 
-            VerticalAlignment="Center"
-            Name="mediaElement1" 
-            Source="E:\Work\Freelance\dar\Navisworks Clash Management Addin\01\IN\External\20210728-Beta feedback\loader_seq.gif"
-            LoadedBehavior="Play" 
-            Stretch="Uniform" 
-            SpeedRatio="1"
-            OpacityMask="White"/>
-        -->
     </Grid>
 </Window>
