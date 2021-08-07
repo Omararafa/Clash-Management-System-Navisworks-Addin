@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Clash_Management_System_Navisworks_Addin.ViewModels
 {
@@ -12,8 +9,9 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
 
         public string Domain { get; set; }
 
-        public string TradeAbb 
-        { get
+        public string TradeAbb
+        {
+            get
             {
                 return DB.DBHandler.TradeAbb;
             }
@@ -23,7 +21,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         {
             get
             {
-                if (this._projects == null||this._projects.Count<=0)
+                if (this._projects == null || this._projects.Count <= 0)
                 {
                     try
                     {
@@ -35,7 +33,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
 
                         return null;
                     }
-                    
+
                 }
                 return this._projects;
             }
