@@ -500,46 +500,6 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                     continue;
                 }
 
-
-                #region Legacy code
-
-                /*
-                dbClashTest.AddDate = nwClashTest.AddedDate;
-                dbClashTest.AddedBy = nwClashTest.AddedBy;
-                dbClashTest.Id = nwClashTest.Id;
-                dbClashTest.LastRunDate = nwClashTest.LastRunDate;
-                dbClashTest.MatrixId = nwClashTest.ClashMatrixId;
-                dbClashTest.Name = nwClashTest.Name;
-                dbClashTest.ProjectCode = nwClashTest.ProjectCode;
-                dbClashTest.SearchSet1 = new WebService.SearchSetInfo
-                {
-                    //TODO: Check Id property source from searchSet Id
-                    Id = nwClashTest.SearchSet1.TradeId,
-                    Name = nwClashTest.SearchSet1.Name,
-                    TradeId = nwClashTest.SearchSet1.TradeId,
-                    TradeAbbr = TradeAbb
-                };
-                dbClashTest.SearchSet2 = new WebService.SearchSetInfo
-                {
-                    //TODO: Check Id property source from searchSet Id
-                    Id = nwClashTest.SearchSet1.TradeId,
-                    Name = nwClashTest.SearchSet1.Name,
-                    TradeId = nwClashTest.SearchSet1.TradeId,
-                    TradeAbbr = TradeAbb
-                };
-                //TODO: report tolerance issue to DB
-                //dbClashTest.Tolerance = nwClashTest.Tolerance;
-                dbClashTest.TradeId = nwClashTest.TradeId;
-                dbClashTest.TradeCode = nwClashTest.TradeCode;
-                dbClashTest.Type = nwClashTest.Type;
-                dbClashTest.TypeName = nwClashTest.TypeName;
-                dbClashTest.UniqueName = nwClashTest.UniqueName;
-
-                clashResultSyncRequest.ClashTest = dbClashTest;
-                */
-                #endregion
-
-
                 int ClashTestResultsCount = nwClashTest.AClashTestResults.Count;
                 //Build DB ClashResultSyncRequest object
                 WebService.ClashResultSyncRequest clashResultSyncRequest = new WebService.ClashResultSyncRequest();

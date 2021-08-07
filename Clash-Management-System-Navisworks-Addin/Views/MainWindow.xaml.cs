@@ -21,12 +21,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
     {
         public int expandedTrueHeight = 200;
         public int expandedfalseHeight = 25;
-        /*
-        public Brush expanderNormalBackground = (Brush)ColorConverter.ConvertFromString("MintCream");
-        public Brush expanderNormalForeground = (Brush)ColorConverter.ConvertFromString("LightSlateGray");
-        public Brush expanderHighlightBackground = (Brush)ColorConverter.ConvertFromString("MintCream");
-        public Brush expanderHighlightForeground = (Brush)ColorConverter.ConvertFromString("LightSlateGray");
-        */
         public Brush expanderNormalBackground = Brushes.Gainsboro;
         public Brush expanderNormalForeground = Brushes.DimGray;
         public Brush expanderHighlightBackground = Brushes.Gainsboro;
@@ -41,14 +35,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             SidebarExpanders.AddRange(new List<Expander>
             {
-                //LoginExpander,
                 SelectProjectExpander,
-                //SelectClashMatrixExpander,
                 SelectFunctionExpander
             });
             WindowGrid.Background = expanderNormalBackground;
-
-
 
             //Set initial values for expanders
             InitialLoginLoadState();
@@ -72,8 +62,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             RunBtn.Visibility = Visibility.Hidden;
             StatusBarMessage.Visibility = Visibility.Hidden;
             PresenterDataGrid.Visibility = Visibility.Hidden;
-            //SelectAllBtn.Visibility = Visibility.Hidden;
-            //DeselectAllBtn.Visibility = Visibility.Hidden;
             HeaderDockPanel1.Visibility = Visibility.Hidden;
             HeaderDockPanel2.Visibility = Visibility.Hidden;
 
@@ -89,13 +77,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             var checkBoxColumn = datagrid.Columns.First();
             datagrid.Columns.Clear();
             datagrid.Columns.Add(checkBoxColumn);
-
             datagrid.ItemsSource = data;
             PresenterDataGrid.Visibility = Visibility.Visible;
-
             datagrid.Columns.ElementAt(0).Visibility = Visibility.Hidden;
-            //SelectAllBtn.Visibility = Visibility.Hidden;
-            //DeselectAllBtn.Visibility = Visibility.Hidden;
 
             List<string> searchSetBindingProperties = new List<string>
             {
@@ -140,18 +124,13 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             var checkBoxColumn = datagrid.Columns.First();
             datagrid.Columns.Clear();
             datagrid.Columns.Add(checkBoxColumn);
-
             datagrid.ItemsSource = data;
             PresenterDataGrid.Visibility = Visibility.Visible;
             datagrid.Columns.ElementAt(0).Visibility = Visibility.Hidden;
-            //SelectAllBtn.Visibility = Visibility.Hidden;
-            //DeselectAllBtn.Visibility = Visibility.Hidden;
 
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
                 datagrid.Columns.ElementAt(0).Visibility = Visibility.Visible;
-               //SelectAllBtn.Visibility = Visibility.Visible;
-                //DeselectAllBtn.Visibility = Visibility.Visible;
             }
 
 
@@ -191,77 +170,16 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
 
             return true;
-            /*
-            var col1 = new DataGridTemplateColumn();
-            col1.Header = "Sync";
-            col1.IsReadOnly = false;
-            CheckBox checkBox = new CheckBox();
-            //<CheckBox IsChecked="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            checkBox.SetBinding(ToggleButton.IsCheckedProperty, "IsSelected");
-            DataTemplate dataTemplate = new DataTemplate();
-            dataTemplate.VisualTree = ;
-            datagrid.Columns.Add(col1);
-
-
-            var col1 = new DataGridCheckBoxColumn();
-            col1.IsReadOnly = false;
-            col1.Header = "Sync";
-            col1.Binding = new Binding("IsSelected");
-            datagrid.Columns.Add(col1);
-            */
-            /*
-            DataTable dataTable = new DataTable("Clash Tests");
-
-            dataTable.Columns.Add("Name");
-            dataTable.Columns.Add("Condition");
-            dataTable.Columns.Add("Id");
-            dataTable.Columns.Add("Type Name");
-            dataTable.Columns.Add("Tolerance");
-            dataTable.Columns.Add("Trade Code");
-            dataTable.Columns.Add("Add Time");
-            dataTable.Columns.Add("Added By");
-            dataTable.Columns.Add("Search Set 1");
-            dataTable.Columns.Add("Search Set 2");
-
-
-            if (data == null || data.Count < 1)
-            {
-                return false;
-            }
-
-
-            foreach (var test in data)
-            {
-                dataTable.Rows.Add(
-                    test.Name,
-                    test.Condition,
-                    test.Id,
-                    test.TypeName,
-                    test.Tolerance,
-                    test.TradeCode,
-                    test.AddedDate,
-                    test.AddedBy,
-                    test.SearchSet1.Name,
-                    test.SearchSet2.Name
-                    );
-            }
-            datagrid.ItemsSource = dataTable.DefaultView;
-
-            return true;
-            */
         }
 
         private void Expander_PreviewMouseUp(object sender, RoutedEventArgs e)
         {
             Expander expander = sender as Expander;
             FrameworkElement frameworkElement = e.OriginalSource as FrameworkElement;
-            //Other condition to be added: && frameworkElement.Name == "HeaderSite"
-            //frameworkElement is ToggleButton 
             if (true)
             {
                 Trace.WriteLine("Clicked in expander header");
-                //ActivateExpander(expander);
                 List<Expander> expandersToDeactivate = new List<Expander>();
                 expandersToDeactivate.AddRange(SidebarExpanders);
                 expandersToDeactivate.Remove(expander);
@@ -273,30 +191,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         }
 
         #region View Moderator Methods
-        private Expander ExpanderHeaderClicked(Expander expander)
-        {
-            /*
-             *Functions by this method 
-             * Enable Expander
-             * Disable rest of expanders
-             * Change this expander height to 200
-             * set other Expanders height to 25
-             * Highlight this expander header
-             * Normalize other expanders header
-             */
-
-            expander.IsEnabled = true;
-            expander.Height = 200;
-
-            //Disable rest of expanders
-            //Set other Expanders height to 25
-
-
-
-
-            throw new Exception("Method ExpanderHeaderClicked: Work in progress");
-            return null;
-        }
 
         private bool ActivateExpander(Expander expander)
         {
@@ -335,7 +229,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         }
         private bool LoginProcedure()
         {
-
             string userName = Environment.UserName;
             string userDomain = Environment.UserDomainName;
 
@@ -369,55 +262,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             return false;
 
-
-            #region OldLoginProcedure
-            /*
-             * This method shall be used for the login procedure as follows;
-             * 1-DB: Send user name and password to database
-             * 2-[Obsolete]Return login credentials feedback
-             * 3-UI: If not matching: report to user via the text block :LoginFeedbackTxt, Credentials.IsAuthorized=False
-             * 4-UI: If yes, set static members of CurrentUser
-             * 5-Assembly: Set the variables in step #4 to assembly resources
-             * 6-UI: handle the process of activate project expander
-             * 7-UI: handle the process of deactivate login expander [or hide it entirely]
-             * 8-UI: study to present the username into a text block within the header/footer
-             * 9-DB: Get list of projects assigned to the user from the database
-             */
-
-
-            /*
-            //TODO: Bary, update data to be written into the Assembly
-            string userName = UserNameTxt.Text.Trim();
-            string userDomain = UserDomainTxt.Text.Trim();
-
-            if (userName != string.Empty && userDomain != string.Empty)
-            {
-                ViewsHandler.CurrentUser = new User(userName, userDomain);
-                List<Project> projects = ViewsHandler.CurrentUser.Projects;
-                string tradeAbb = ViewsHandler.CurrentUser.TradeAbb;
-
-                if (projects == null)
-                {
-                    System.Windows.Forms.MessageBox.Show("Failed to get projects from database.");
-                    return false;
-                }
-
-                if (ViewsHandler.CurrentUser.Projects != null || ViewsHandler.CurrentUser.Projects.Count > 0)
-                {
-                    ActivateExpander(SelectProjectExpander);
-                    DeactivateExpander(LoginExpander);
-                    ObservableCollection<string> projectCbxDataSource = new ObservableCollection<string>
-                        (ViewsHandler.CurrentUser.Projects.Select(x => x.Name + ": " + x.Code).ToList());
-                    ProjectCbx.ItemsSource = projectCbxDataSource;
-                    ProjectCbx.Focus();
-                    return true;
-                }
-            }
-
-            return false;
-            */
-            #endregion
-
         }
 
         /*
@@ -429,7 +273,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         */
         private bool ProjectSelectedProcedure()
         {
-            //TODO: Bary Assembly: Create and store Project Class
             int currentProjectIndex = ProjectCbx.SelectedIndex;
 
             if (ViewsHandler.CurrentUserProjects.Count > currentProjectIndex && currentProjectIndex >= 0)
@@ -441,10 +284,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     ProjectNameTxtBox.Text = ViewsHandler.CurrentProject.Name;
 
                     if (ViewsHandler.CurrentProjectClashMatrices.Count > 0)
-                    {/*
-                        ActivateExpander(SelectClashMatrixExpander);
-                        DeactivateExpander(SelectProjectExpander);
-                        */
+                    {
                         ClashMatrixCbx.IsEnabled = true;
                         ClashMatrixCbx.ItemsSource = ViewsHandler.CurrentProjectClashMatrices.Select(x => x.Name + ": " + x.Id.ToString());
                         ClashMatrixCbx.Focus();
@@ -488,10 +328,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             return false;
         }
 
-        /*
-        * This method shall be used for the Handle the event of function selection as follows;
-        * 
-        */
         private bool FunctionSelectedProcedure()
         {
 
@@ -635,84 +471,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         }
 
-
-
-
-        /*
-        private bool FunctionSelectedPreviewProcedure(Button button)
-        {
-            if (FunctionSearchSetsRBtn.IsChecked == true)
-            {
-                List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
-                if (nwSearchSets != null || nwSearchSets.Count > 0)
-                {
-                    if (nwSearchSets.Count > 0)
-                    {
-                        return PresentSearchSetsOnDataGrid(PresenterDataGrid, nwSearchSets);
-                    }
-                }
-            }
-            if (FunctionClashTestsRBtn.IsChecked == true)
-            {
-                try
-                {
-                    List<AClashTest> nwAClashTests = NW.NWHandler.NWAClashTests;
-
-                    PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwAClashTests);
-                }
-                catch (Exception e)
-                {
-                    System.Windows.Forms.MessageBox.Show(e.Message);
-                    return false;
-                }
-
-                return true;
-            }
-            if (FunctionClashResultsRBtn.IsChecked == true)
-            {
-                //List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests.Where(clashTest => !clashTest.IsSelected).ToList();
-
-                //bool isSynced = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, nwClashTests);
-                //this.ClashMatrixFeedbackTxt.Visibility = Visibility.Hidden;
-                if (IsRunClicked)
-                {
-                    IsRunClicked = false;
-
-                    ViewsHandler.SelectedClashTests = (PresenterDataGrid.ItemsSource as List<AClashTest>).Where(x => x.IsSelected).ToList();
-
-                    if (!NW.NWHandler.IsClashTestsCalled)
-                    {
-                        System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized or not found.");
-                        return false;
-                    }
-                    List<AClashTest> selectedClashTests = ViewsHandler.SelectedClashTests;
-
-                    //List<AClashTest> selectedClashTests = aClashTests.Where(x => x.IsSelected).ToList();
-                    if (selectedClashTests.Count < 1)
-                    {
-                        return true;
-                    }
-                    try
-                    {
-
-                        return DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests);
-
-                    }
-                    catch (Exception e)
-                    {
-                        System.Windows.Forms.MessageBox.Show("Sync With Database Exception: " + e.Message);
-                        return false;
-                    }
-
-                }
-                List<AClashTest> aClashTests = NW.NWHandler.NWAClashTests;
-                PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref aClashTests);
-                return true;
-            }
-            return false;
-
-        }
-        */
         private bool RunSyncButton()
         {
             IsRunClicked = true;
@@ -788,13 +546,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         private void ProjectCbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bool selectProjectStatus = ProjectSelectedProcedure();
-            //UpdateFeedbackTextBlock(ProjectsFeedbackTxt, selectProjectStatus);
         }
 
         private void ClashMatrixCbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bool selectClashMatrixStatus = ClashMatrixSelectedProcedure();
-            //UpdateFeedbackTextBlock(ClashMatrixFeedbackTxt, selectClashMatrixStatus);
         }
 
         void UpdateStatusBarMessage(TextBlock textBlock, string message)
@@ -802,9 +558,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             textBlock.Visibility = Visibility.Visible;
             textBlock.Text = message;
             Refresh.RefreshUI(this);
-            //((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
-
-            //System.Windows.Forms.MessageBox.Show("StatusBar Message Updated");
             return;
         }
         bool FunctionSelectionChangedReaction()
@@ -821,7 +574,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             bool selectFunctionStatus = FunctionSelectionChangedReaction();
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
-                selectFunctionStatus=true;
+                selectFunctionStatus = true;
             }
 
             UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
@@ -884,11 +637,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             PresenterDataGrid.ItemsSource = items;
         }
 
-        
-        
+
+
         private void RunBtn_GotFocus(object sender, RoutedEventArgs e)
         {
-            //System.Windows.Forms.MessageBox.Show("StatusBar Message is going to be hidden");
             StatusBarMessage.Visibility = Visibility.Hidden;
 
             Refresh.RefreshUI(this);
@@ -896,7 +648,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private void FunctionClashTestsRBtn_GotFocus(object sender, RoutedEventArgs e)
         {
-           StatusBarMessage.Text = "Collecting data from Navisworks in progress...";
+            StatusBarMessage.Text = "Collecting data from Navisworks in progress...";
 
             StatusBarMessage.Visibility = Visibility.Visible;
         }
