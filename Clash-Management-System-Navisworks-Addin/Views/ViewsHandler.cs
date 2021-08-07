@@ -37,23 +37,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
 
         #region Static Methods
-        static bool WriteCredentialsToAssembly(string name, string password)
-        {
-            throw new Exception("Method WriteCredentialsToAssembly: Work in progress");
-            return false;
-        }
-
-        static bool WriteCurrentProjectNameToAssembly(string currentProjectName)
-        {
-            throw new Exception("Method WriteCurrentProjectNameToAssembly: Work in progress");
-            return false;
-        }
-
-        static bool WriteCurrentClashMatrixtNameToAssembly(string clashMatrixName)
-        {
-            throw new Exception("Method WriteCurrentClashMatrixtNameToAssembly: Work in progress");
-            return false;
-        }
+        
 
         #endregion
 
