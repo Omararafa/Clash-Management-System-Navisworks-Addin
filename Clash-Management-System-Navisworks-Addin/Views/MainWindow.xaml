@@ -265,15 +265,15 @@
                     <RadioButton Name="FunctionSearchSetsRBtn"
                                  Content="Sync Search Sets"
                                  Margin="5,5,5,5" 
-                                 Checked="SelectedFunctionChanged"/>
+                                 Checked="SelectedFunctionChanged" GotFocus="FunctionClashTestsRBtn_GotFocus"/>
                     <RadioButton Name="FunctionClashTestsRBtn"
                                  Content="Get Clash Tests"
                                  Margin="5,5,5,5" 
-                                 Checked="SelectedFunctionChanged"/>
+                                 Checked="SelectedFunctionChanged" GotFocus="FunctionClashTestsRBtn_GotFocus"/>
                     <RadioButton Name="FunctionClashResultsRBtn"
                                  Content="Sync Clash Results"
                                  Margin="5,5,5,5" 
-                                 Checked="SelectedFunctionChanged"/>
+                                 Checked="SelectedFunctionChanged" GotFocus="FunctionClashTestsRBtn_GotFocus"/>
                     <TextBlock  Name="FunctionFeedbackTxt"
                                 Foreground="WhiteSmoke"
                                 Text="Function Status"

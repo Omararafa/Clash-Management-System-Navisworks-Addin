@@ -893,6 +893,13 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             Refresh.RefreshUI(this);
         }
+
+        private void FunctionClashTestsRBtn_GotFocus(object sender, RoutedEventArgs e)
+        {
+           StatusBarMessage.Text = "Collecting data from Navisworks in progress...";
+
+            StatusBarMessage.Visibility = Visibility.Visible;
+        }
     }
     public static class Refresh
     {
