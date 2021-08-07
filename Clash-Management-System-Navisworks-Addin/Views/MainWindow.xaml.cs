@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Clash_Management_System_Navisworks_Addin.Views
 {
@@ -71,8 +72,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             RunBtn.Visibility = Visibility.Hidden;
             StatusBarMessage.Visibility = Visibility.Hidden;
             PresenterDataGrid.Visibility = Visibility.Hidden;
-            SelectAllBtn.Visibility = Visibility.Hidden;
-            DeselectAllBtn.Visibility = Visibility.Hidden;
+            //SelectAllBtn.Visibility = Visibility.Hidden;
+            //DeselectAllBtn.Visibility = Visibility.Hidden;
+            HeaderDockPanel1.Visibility = Visibility.Hidden;
+            HeaderDockPanel2.Visibility = Visibility.Hidden;
+
         }
 
 
@@ -90,8 +94,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             PresenterDataGrid.Visibility = Visibility.Visible;
 
             datagrid.Columns.ElementAt(0).Visibility = Visibility.Hidden;
-            SelectAllBtn.Visibility = Visibility.Hidden;
-            DeselectAllBtn.Visibility = Visibility.Hidden;
+            //SelectAllBtn.Visibility = Visibility.Hidden;
+            //DeselectAllBtn.Visibility = Visibility.Hidden;
 
             List<string> searchSetBindingProperties = new List<string>
             {
@@ -140,14 +144,14 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             datagrid.ItemsSource = data;
             PresenterDataGrid.Visibility = Visibility.Visible;
             datagrid.Columns.ElementAt(0).Visibility = Visibility.Hidden;
-            SelectAllBtn.Visibility = Visibility.Hidden;
-            DeselectAllBtn.Visibility = Visibility.Hidden;
+            //SelectAllBtn.Visibility = Visibility.Hidden;
+            //DeselectAllBtn.Visibility = Visibility.Hidden;
 
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
                 datagrid.Columns.ElementAt(0).Visibility = Visibility.Visible;
-                SelectAllBtn.Visibility = Visibility.Visible;
-                DeselectAllBtn.Visibility = Visibility.Visible;
+               //SelectAllBtn.Visibility = Visibility.Visible;
+                //DeselectAllBtn.Visibility = Visibility.Visible;
             }
 
 
@@ -320,11 +324,13 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 feedbackTextBlock.Text = "Success!";
                 feedbackTextBlock.Background = Brushes.Green;
+
                 return;
             }
 
             feedbackTextBlock.Text = "Invalid User Input!";
             feedbackTextBlock.Background = Brushes.Red;
+
             return;
         }
         private bool LoginProcedure()
@@ -431,6 +437,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 ViewsHandler.CurrentProject = ViewsHandler.CurrentUser.Projects.ElementAt(currentProjectIndex);
                 if (ViewsHandler.CurrentProject != null && ViewsHandler.CurrentProjectClashMatrices != null)
                 {
+                    HeaderDockPanel1.Visibility = Visibility.Visible;
+                    ProjectNameTxtBox.Text = ViewsHandler.CurrentProject.Name;
+
                     if (ViewsHandler.CurrentProjectClashMatrices.Count > 0)
                     {/*
                         ActivateExpander(SelectClashMatrixExpander);
@@ -463,6 +472,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
 
                 ViewsHandler.CurrentAClashMatrix = ViewsHandler.CurrentProjectClashMatrices.ElementAt(currentClashMatrixIndex);
+                HeaderDockPanel2.Visibility = Visibility.Visible;
+                ClashMatrixTxtBox.Text = ViewsHandler.CurrentAClashMatrix.Name;
 
                 if (ViewsHandler.CurrentAClashMatrix != null)
                 {
@@ -481,7 +492,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         * This method shall be used for the Handle the event of function selection as follows;
         * 
         */
-        private bool FunctionSelectedProcedure(Button button)
+        private bool FunctionSelectedProcedure()
         {
 
             if (FunctionSearchSetsRBtn.IsChecked == true)
@@ -705,9 +716,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         private bool RunSyncButton()
         {
             IsRunClicked = true;
-
-            bool result = FunctionSelectedProcedure(RunBtn);
-            StatusBarMessage.Visibility = Visibility.Hidden;
+            StatusBarMessage.Visibility = Visibility.Visible;
+            bool result = FunctionSelectedProcedure();
             return result;
         }
 
@@ -787,18 +797,33 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             //UpdateFeedbackTextBlock(ClashMatrixFeedbackTxt, selectClashMatrixStatus);
         }
 
+        void UpdateStatusBarMessage(TextBlock textBlock, string message)
+        {
+            textBlock.Visibility = Visibility.Visible;
+            textBlock.Text = message;
+            Refresh.RefreshUI(this);
+            //((MainWindow)System.Windows.Application.Current.MainWindow).UpdateLayout();
 
+            //System.Windows.Forms.MessageBox.Show("StatusBar Message Updated");
+            return;
+        }
+        bool FunctionSelectionChangedReaction()
+        {
+            return FunctionSelectedProcedure();
+
+        }
         private void SelectedFunctionChanged(object sender, RoutedEventArgs e)
         {
+            string statusBarMessage = "Collecting data from Navisworks in progress...";
+            UpdateStatusBarMessage(StatusBarMessage, statusBarMessage);
             RunBtn.Visibility = Visibility.Visible;
-            StatusBarMessage.Text = "Collecting data from Navisworks in progress...";
-            StatusBarMessage.Visibility = Visibility.Visible;
-            bool selectFunctionStatus = FunctionSelectedProcedure(sender as Button);
-            StatusBarMessage.Visibility = Visibility.Hidden;
+
+            bool selectFunctionStatus = FunctionSelectionChangedReaction();
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
-                return;
+                selectFunctionStatus=true;
             }
+
             UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
             RunBtn.Focus();
         }
@@ -858,5 +883,26 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             PresenterDataGrid.ItemsSource = null;
             PresenterDataGrid.ItemsSource = items;
         }
+
+        
+        
+        private void RunBtn_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //System.Windows.Forms.MessageBox.Show("StatusBar Message is going to be hidden");
+            StatusBarMessage.Visibility = Visibility.Hidden;
+
+            Refresh.RefreshUI(this);
+        }
+    }
+    public static class Refresh
+    {
+        static Action EmptyDelegate = delegate () { };
+
+
+        public static void RefreshUI(this UIElement uiElement)
+        {
+            uiElement.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
+        }
+
     }
 }

@@ -7,15 +7,20 @@
         xmlns:local="clr-namespace:Clash_Management_System_Navisworks_Addin.Views"
         mc:Ignorable="d"
         x:ClassModifier="public"
-        Title="Clash Management" Height="500" Width="800" WindowStartupLocation="CenterScreen" KeyUp="Window_KeyUp">
+        Title="Clash Management" 
+        Height="500" 
+        Width="800" 
+        WindowStartupLocation="CenterScreen" 
+        KeyUp="Window_KeyUp"
+        Icon="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\darLogo.png">
     <Window.Resources>
         <DropShadowEffect x:Key="MyEffect" ShadowDepth="0" Color="Blue" Opacity="1" BlurRadius="20"/>
     </Window.Resources>
     <Grid x:Name="WindowGrid" x:FieldModifier="public" Background="Gainsboro">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="5"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -43,6 +48,63 @@
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <!--Header Data-->
+        <DockPanel
+            Name="HeaderDockPanel1"
+            Background="Gainsboro" 
+            Grid.Column="1"
+            Grid.ColumnSpan="5"
+            Grid.Row="1"
+            Grid.RowSpan="1"
+            Height="30"
+            VerticalAlignment="Top"
+            >
+            <TextBlock
+                Text="Project Name: "
+                FontFamily="Century Gothic, Courier New" 
+                >
+            </TextBlock>
+            <TextBlock
+                x:Name="ProjectNameTxtBox"
+                Text="ProjectName"
+                FontFamily="Century Gothic, Courier New" 
+                >
+            </TextBlock>
+        </DockPanel>
+        <DockPanel 
+            Name="HeaderDockPanel2"
+            Background="Gainsboro" 
+            Grid.Column="8"
+            Grid.ColumnSpan="6"
+            Grid.Row="1"
+            Grid.RowSpan="1"
+            Height="30"
+            VerticalAlignment="Top"
+            >
+            <TextBlock
+                Text="Clash Matrix Name: "
+                FontFamily="Century Gothic, Courier New" 
+                >
+            </TextBlock>
+            <TextBlock
+                x:Name="ClashMatrixTxtBox"
+                Text="ClashMatrix"
+                FontFamily="Century Gothic, Courier New" 
+                >
+
+            </TextBlock>
+        </DockPanel>
+        <!--
+        <TextBlock
+            Name="HeaderProjectName"
+            Text="Project Name"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Grid.Row="1"
+            Grid.RowSpan="1" 
+            Margin="10,10,10,10" 
+            >
+        </TextBlock>
+        
         <Image
             Name="CompanyImage"
             Grid.Column="1"
@@ -51,8 +113,8 @@
             Grid.RowSpan="2" 
             Margin="10,10,10,10" 
             Source="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\darLogo.png">
-            <!-- "pack://application:,,,/Views/darLogo.png" -->  
         </Image>
+        
         <TextBlock
             Text="Clash Management"
             FontSize="25"
@@ -65,9 +127,8 @@
             VerticalAlignment="Center"
             FontFamily="Century Gothic, Courier New" 
             >
-
         </TextBlock>
-
+-->
         <!--Sidebar Data-->
         <StackPanel Name="SidebarExpandersStackPanel"
             Grid.ColumnSpan="2" 
@@ -79,7 +140,7 @@
             VerticalAlignment="Stretch" 
             Background="Gainsboro"
             >
-            
+
             <!--
             <Expander Name="LoginExpander"
                       Grid.ColumnSpan="5" 
@@ -131,7 +192,6 @@
                       x:FieldModifier="public"
                       Grid.ColumnSpan="5" 
                       Grid.Column="0" 
-                      
                       HorizontalAlignment="Stretch"
                       Margin="1,0,1,0"
                       Grid.Row="4" 
@@ -159,7 +219,7 @@
             </Expander>
             <Separator
                 Margin="10">
-                
+
             </Separator>
             <!--    
             <Expander Name="SelectClashMatrixExpander"
@@ -196,33 +256,30 @@
                       VerticalAlignment="Top"
                       FontFamily="Century Gothic, Courier New"
                       Expanded="Expander_PreviewMouseUp" >
-            <Expander.Header>
-                <TextBlock Text="Function" FontWeight="Bold"/>
-            </Expander.Header>
+                <Expander.Header>
+                    <TextBlock Text="Function" FontWeight="Bold"/>
+                </Expander.Header>
                 <StackPanel>
                     <TextBlock Text="Select a Function"
                                Margin="5,25,5,5"/>
                     <RadioButton Name="FunctionSearchSetsRBtn"
                                  Content="Sync Search Sets"
-                                 Margin="5,5,5,5" Checked="SelectedFunctionChanged"/>
+                                 Margin="5,5,5,5" 
+                                 Checked="SelectedFunctionChanged"/>
                     <RadioButton Name="FunctionClashTestsRBtn"
                                  Content="Get Clash Tests"
-                                 Margin="5,5,5,5" Checked="SelectedFunctionChanged"/>
+                                 Margin="5,5,5,5" 
+                                 Checked="SelectedFunctionChanged"/>
                     <RadioButton Name="FunctionClashResultsRBtn"
                                  Content="Sync Clash Results"
-                                 Margin="5,5,5,5" Checked="SelectedFunctionChanged"/>
-                    <!--
-                    <Button Name="SelectFunctionBtn" 
-                            Content="Update"
-                            Margin="65,15,15,5"
-                            Click="SelectFunctionBtn_Click"/>
-                    -->
-                    <TextBlock Name="FunctionFeedbackTxt"
-                               Foreground="WhiteSmoke"
-                            Text="Function Status"
-                            Visibility="Hidden"
-                            Margin="5,5,5,5"
-                            HorizontalAlignment="Center"/>
+                                 Margin="5,5,5,5" 
+                                 Checked="SelectedFunctionChanged"/>
+                    <TextBlock  Name="FunctionFeedbackTxt"
+                                Foreground="WhiteSmoke"
+                                Text="Function Status"
+                                Visibility="Hidden"
+                                Margin="5,5,5,5"
+                                HorizontalAlignment="Center"/>
                 </StackPanel>
             </Expander>
         </StackPanel>
@@ -237,7 +294,8 @@
             Grid.RowSpan="7" />
 
 
-        <DataGrid Name="PresenterDataGrid"
+        <DataGrid 
+            Name="PresenterDataGrid"
             Grid.ColumnSpan="8" 
             Grid.Column="4" 
             HorizontalAlignment="Stretch" 
@@ -256,16 +314,25 @@
             Foreground="DimGray"
             BorderBrush="DimGray">
             
+            <!-- Header="✓"   -->
             <DataGrid.Columns>
                 <DataGridTemplateColumn 
                     x:Name="CheckBoxColumn"
                     x:FieldModifier="public"
-                    Header="✓" 
                     IsReadOnly="False"
-                    Width="10">
+                    Width="Auto"
+                    >
+                    <DataGridTemplateColumn.Header>
+                            <CheckBox Name="SelectAllChkBox"
+                                      HorizontalAlignment="Center"
+                                      Checked="SelectAllBtn_Click" 
+                                      Unchecked="DeselectAllBtn_Click"></CheckBox>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataTemplate >
+                            <CheckBox 
+                                IsChecked="{Binding Path=IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                HorizontalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -314,7 +381,6 @@
                 Foreground="LightSlateGray"
                 FontFamily="Century Gothic, Courier New"
                 />
-        -->
         <Button Name="SelectAllBtn"
                 Grid.ColumnSpan="2" 
                 Content="Select All" 
@@ -345,6 +411,7 @@
                 FontFamily="Century Gothic, Courier New" 
                 Click="DeselectAllBtn_Click"
                 />
+        -->
         <Button Name="RunBtn"
                 Grid.ColumnSpan="2" 
                 Content="Run" 
@@ -358,7 +425,7 @@
                 Background="Gainsboro"
                 Foreground="DimGray"
                 FontFamily="Century Gothic, Courier New" 
-                Click="Run_Click"
+                Click="Run_Click" GotFocus="RunBtn_GotFocus"
                 />
 
         <StatusBar 
@@ -390,7 +457,7 @@
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
-            
+
             <StatusBarItem
                 Grid.Column="0"
                 Margin="10,0,0,0"
@@ -402,10 +469,11 @@
                     Height="20"
                     VerticalAlignment="Center" 
                     MouseUp="HelpDeskBtn_Click"
+                    ToolTip="Contact Help Desk"
                     Source="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\HelpDeskIcon.png">
                 </Image>
             </StatusBarItem>
-            
+
             <Separator 
                 Grid.Column="1">
             </Separator>
@@ -418,15 +486,17 @@
                     HorizontalAlignment="Center" 
                     Width="20"
                     Height="20"
-                    VerticalAlignment="Center" MouseUp="HelpFileBtn_Click"
+                    VerticalAlignment="Center" 
+                    MouseUp="HelpFileBtn_Click"
+                    ToolTip="Open Help File"
                     Source="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\HelpFileIcon.png">
                 </Image>
             </StatusBarItem>
-            
+
             <Separator 
                 Grid.Column="3">
             </Separator>
-            
+
             <StatusBarItem
                 Grid.Column="4"
                 HorizontalContentAlignment="Center">
@@ -437,6 +507,7 @@
                     Height="20"
                     VerticalAlignment="Center" 
                     MouseUp="AboutBtn_Click"
+                    ToolTip="About this tool"
                     Source="C:\Program Files\Autodesk\Navisworks Manage 2020\Plugins\Clash-Management-System-Navisworks-Addin\Images\HelpIcon.png">
                 </Image>
             </StatusBarItem>
@@ -459,9 +530,9 @@
                     Foreground="Gray">
                 </TextBlock>
             </StatusBarItem>
-            
+
         </StatusBar>
-<!--
+        <!--
         <MediaElement  
             Grid.ColumnSpan="8" 
             Grid.Column="4" 
