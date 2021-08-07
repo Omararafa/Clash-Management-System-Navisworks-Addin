@@ -40,6 +40,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             List<string> metaData = GetMetaData();
             string reportHeader = AClashTest.GetReportHeaders();
             List<string> reportData = GetClashTestReportData(aClashTests);
+            List<string> failedClashTestsData = GetFailedCreatedClashTestsData(DB.DBHandler.DBFailedClashTests);
 
             try
             {
@@ -57,6 +58,11 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
                         streamWriter.WriteLine(line);
                     }
 
+                    foreach (string line in failedClashTestsData)
+                    {
+                        streamWriter.WriteLine(line);
+                    }
+
                     return true;
                 }
             }
@@ -70,14 +76,31 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
         private static List<string> GetClashTestReportData(List<AClashTest> AClashTests)
         {
             List<string> data = new List<string>();
-            string project = Views.ViewsHandler.CurrentProject.Name;
-            string clashMatrix = Views.ViewsHandler.CurrentAClashMatrix.Name;
 
             foreach (AClashTest aClashTest in AClashTests)
             {
-                data.Add(project + "," + clashMatrix + "," +
-                         aClashTest.Name + "," + aClashTest.Condition.ToString() + "," +
+                data.Add(aClashTest.Name + "," + aClashTest.Condition.ToString() + "," +
                          aClashTest.SearchSet1.Name + "," + aClashTest.SearchSet2.Name);
+            }
+
+            return data;
+        }
+
+        private static List<string> GetFailedCreatedClashTestsData(List<WebService.ClashTest> ClashTests)
+        {
+            List<string> data = new List<string>();
+
+            data.Add(string.Empty);
+            data.Add("The following clash tests had not been created as their search sets is missing in the navisworks document");
+            data.Add(string.Empty);
+
+            foreach (WebService.ClashTest ClashTest in ClashTests)
+            {
+                string searchSet1Name = ClashTest.SearchSet1.TradeAbbr + "-" + ClashTest.SearchSet1.Name;
+                string searchSet2Name = ClashTest.SearchSet2.TradeAbbr + "-" + ClashTest.SearchSet2.Name;
+
+                data.Add(ClashTest.Name + "," + "NOT CREATED" + "," +
+                         searchSet1Name + "," + searchSet2Name);
             }
 
             return data;
@@ -92,6 +115,8 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             metaData.Add(string.Format("Project:,{0}", Views.ViewsHandler.CurrentProject.Name));
             metaData.Add(string.Format("Clash Matrix:,{0}", Views.ViewsHandler.CurrentAClashMatrix.Name));
             metaData.Add(string.Format("Time:,{0}", DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss")));
+
+            metaData.Add(string.Empty);
             metaData.Add("Sync Clash Tests Report");
             metaData.Add(string.Empty);
 

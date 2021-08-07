@@ -397,15 +397,20 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         Reporting.ReportHandler.WriteReport(comparedAClashTests);
 
                         int comparedClashTestsCount = comparedAClashTests.Count();
+
                         string msg = string.Format("Clash Tests: {0} Total synchronized successfully", comparedClashTestsCount);
+
                         msg += Environment.NewLine;
-                        msg += "Make sure to update clash tests in the current document before sync clash tests results.";
+                        msg += "  - The clash tests report has been created successfully";
+                        msg += Environment.NewLine;
+                        msg += "  - Make sure to update clash tests in the current document before sync clash tests results.";
+
                         System.Windows.Forms.MessageBox.Show(
                             msg, "Clash Management",
                             System.Windows.Forms.MessageBoxButtons.OK,
                             System.Windows.Forms.MessageBoxIcon.Information);
-                        nwClashTest = NW.NWHandler.NWAClashTests;
 
+                        nwClashTest = NW.NWHandler.NWAClashTests;
                         return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
                     }
                     return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);

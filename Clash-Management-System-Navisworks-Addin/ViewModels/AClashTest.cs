@@ -89,7 +89,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
 
         public static string GetReportHeaders()
         {
-            string[] headers = { "Project", "Clash Matrix", "Name", "Status", "Search Set 1", "Search Set 2" };
+            string[] headers = { "Name", "Status", "Search Set 1", "Search Set 2" };
 
             return string.Join(",", headers);
         }
