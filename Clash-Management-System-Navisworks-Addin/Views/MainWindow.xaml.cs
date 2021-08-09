@@ -405,7 +405,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         msg += Environment.NewLine;
                         msg += "  - Make sure to update clash tests in the current document before sync clash tests results.";
                         msg += Environment.NewLine;
-                        msg += "Click OK to open report.";
+                        msg += "Do you want to open the report?";
 
                         System.Windows.Forms.DialogResult dialogResult = System.Windows.Forms.MessageBox.Show(
                             msg, "Clash Management",
