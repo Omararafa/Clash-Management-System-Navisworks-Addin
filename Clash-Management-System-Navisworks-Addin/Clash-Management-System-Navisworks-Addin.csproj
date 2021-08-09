@@ -187,6 +187,10 @@
     <Folder Include="Logging\" />
     <Folder Include="Resouces\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\16x16.png" />
+    <Resource Include="Views\32x32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>set path=$(ProjectDir)\NW\Clash-Management-System-Navisworks-Addin.xaml
