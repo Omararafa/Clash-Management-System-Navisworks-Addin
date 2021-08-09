@@ -401,17 +401,28 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         string msg = string.Format("Clash Tests: {0} Total synchronized successfully", comparedClashTestsCount);
 
                         msg += Environment.NewLine;
-                        msg += "  - The clash tests report has been created successfully";
+                        msg += "  - The clash tests report has been created successfully:";
                         msg += Environment.NewLine;
                         msg += "  - Make sure to update clash tests in the current document before sync clash tests results.";
+                        msg += Environment.NewLine;
+                        msg += "Click OK to open report.";
 
-                        System.Windows.Forms.MessageBox.Show(
+                        System.Windows.Forms.DialogResult dialogResult = System.Windows.Forms.MessageBox.Show(
                             msg, "Clash Management",
-                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxButtons.YesNo,
                             System.Windows.Forms.MessageBoxIcon.Information);
 
+
                         nwClashTest = NW.NWHandler.NWAClashTests;
-                        return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
+                        var result = PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
+
+                        if (dialogResult == System.Windows.Forms.DialogResult.Yes &&
+                            System.IO.File.Exists(Reporting.ReportHandler.Path))
+                        {
+                            Process.Start(Reporting.ReportHandler.Path);
+                        }
+
+                        return result;
                     }
                     return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTest);
 

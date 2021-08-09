@@ -9,20 +9,12 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
     public static class ReportHandler
     {
         #region Static Members
-        private static string _path;
-
-        public static string Path
-        {
-            get { return _path; }
-            set { _path = value; }
-        }
+        public static string Path { get; set; }
 
 
         #endregion
 
         #region Reporting Methods
-
-
         public static bool WriteReport(List<AClashTest> aClashTests)
         {
             string appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -36,7 +28,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             }
 
             //TODO Deploy: change file naming convention
-            string reportPath = reportFolder + @"\Report-" + DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + ".csv";
+            Path = reportFolder + @"\Report-" + DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + ".csv";
             List<string> metaData = GetMetaData();
             string reportHeader = AClashTest.GetReportHeaders();
             List<string> reportData = GetClashTestReportData(aClashTests);
@@ -44,7 +36,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
 
             try
             {
-                using (StreamWriter streamWriter = new StreamWriter(reportPath, false))
+                using (StreamWriter streamWriter = new StreamWriter(Path, false))
                 {
                     foreach (string line in metaData)
                     {
