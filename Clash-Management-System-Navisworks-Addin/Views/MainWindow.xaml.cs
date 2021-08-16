@@ -64,7 +64,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             PresenterDataGrid.Visibility = Visibility.Hidden;
             HeaderDockPanel1.Visibility = Visibility.Hidden;
             HeaderDockPanel2.Visibility = Visibility.Hidden;
-
         }
 
 
