@@ -95,6 +95,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="DBNWHandler\DBNWComparison.cs" />
+    <Compile Include="DB\AddressHandler.cs" />
     <Compile Include="DB\AssemblyResourcesHandler.cs" />
     <Compile Include="DB\DBHandler.cs" />
     <Compile Include="NW\NWCmd.cs" />

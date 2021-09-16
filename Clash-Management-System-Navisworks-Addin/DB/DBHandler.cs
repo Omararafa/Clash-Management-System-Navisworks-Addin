@@ -107,7 +107,11 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
         }
 
-        static EndpointAddress address = new EndpointAddress("http://localhost:9090/ClashService.asmx");
+        static string endPointAddress = AddressHandler.GetConfigAddress();
+
+        static EndpointAddress address = new EndpointAddress(endPointAddress);
+
+        //static EndpointAddress address = new EndpointAddress("http://localhost:9090/ClashService.asmx");
         static WebService.ClashServiceSoapClient service = new WebService.ClashServiceSoapClient(new BasicHttpBinding
         {
             Name = "ClashServiceSoap",
