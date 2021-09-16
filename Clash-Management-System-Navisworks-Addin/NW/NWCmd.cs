@@ -2,8 +2,6 @@
 using Autodesk.Navisworks.Api.Plugins;
 using System.Windows.Forms.Integration;
 using Clash_Management_System_Navisworks_Addin.Views;
-
-
 namespace Clash_Management_System_Navisworks_Addin
 {
     [Plugin("Clash-Management-System-Navisworks-Addin", "AAW", DisplayName = "Clash Management")]
@@ -11,7 +9,7 @@ namespace Clash_Management_System_Navisworks_Addin
     [RibbonTab("ID_CustomTab_1", DisplayName = "Clash Management")]
     [Command("ClashManagement", Icon = "16x16.png", LargeIcon = "32x32.png",
               CanToggle = true, DisplayName = "Clash Management",
-              ToolTip ="Sync search sets, clash tests and clash resutls")]
+              ToolTip = "Sync search sets, clash tests and clash resutls")]
 
     class NWCmd : CommandHandlerPlugin
     {
@@ -20,6 +18,11 @@ namespace Clash_Management_System_Navisworks_Addin
             switch (commandId)
             {
                 case "ClashManagement":
+
+                    DB.DBHandler.endPointAddress = DB.AddressHandler.GetConfigAddress();
+
+                    DB.DBHandler.address = new System.ServiceModel.EndpointAddress(DB.DBHandler.endPointAddress);
+
                     if (DB.DBHandler.IsServiceAwake)
                     {
                         if (Autodesk.Navisworks.Api.Application.ActiveDocument.Models.Count > 0)

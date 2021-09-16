@@ -19,7 +19,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             string ConfigFilePath = assemblyAdrs + ".config";
 
             XmlDocument document = new XmlDocument();
-            document.LoadXml(ConfigFilePath);
+            document.Load(ConfigFilePath);
 
             XmlNodeList elemList = document.GetElementsByTagName("endpoint");
             for (int i = 0; i < elemList.Count; i++)
