@@ -12,6 +12,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
         public static string Path { get; set; }
 
 
+
         #endregion
 
         #region Reporting Methods
@@ -29,7 +30,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
 
             //TODO Deploy: change file naming convention
             Path = reportFolder + @"\Report-" + DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + ".csv";
-            List<string> metaData = GetMetaData();
+            List<string> metaData = GetMetaData("Sync Clash Tests Report");
             string reportHeader = AClashTest.GetReportHeaders();
             List<string> reportData = GetClashTestReportData(aClashTests);
             List<string> failedClashTestsData = GetFailedCreatedClashTestsData(DB.DBHandler.DBFailedClashTests);
@@ -61,6 +62,52 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             catch (Exception ex)
             {
                 MessageBox.Show("An error occured, please retry!" + Environment.NewLine + ex.Message);
+                return false;
+            }
+        }
+
+        public static bool WriteExceptionLog(string title, string reportContent)
+        {
+            string appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            //TODO Deploy: change report folder directory
+            string reportFolder = appFolder + @"\Navisworks Reports\Exception";
+
+            if (!Directory.Exists(reportFolder))
+            {
+                Directory.CreateDirectory(reportFolder);
+            }
+
+            //TODO Deploy: change file naming convention
+            Path = reportFolder + @"\ExceptionReport-" + DateTime.Now.ToString("yyyy-dd-M--HH-mm") + ".txt";
+            List<string> metaDataComma = GetMetaData(title);
+            List<string> metaData = new List<string>();
+            for (int i = 0; i < metaDataComma.Count; i++)
+            {
+                string item = metaDataComma[i];
+                item = item.Replace(",", " ");
+                metaData.Add(item);
+            }
+
+            try
+            {
+                using (StreamWriter streamWriter = new StreamWriter(Path, true))
+                {
+                    foreach (string line in metaData)
+                    {
+                        streamWriter.WriteLine(line);
+                    }
+
+                    streamWriter.WriteLine(title);
+
+                    streamWriter.WriteLine(reportContent);
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occured while writing exception report: " + System.IO.Path.GetFileNameWithoutExtension(Path) + Environment.NewLine + ex.Message);
                 return false;
             }
         }
@@ -98,7 +145,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             return data;
         }
 
-        private static List<string> GetMetaData()
+        private static List<string> GetMetaData(string title)
         {
             List<string> metaData = new List<string>();
 
@@ -109,7 +156,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             metaData.Add(string.Format("Time:,{0}", DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss")));
 
             metaData.Add(string.Empty);
-            metaData.Add("Sync Clash Tests Report");
+            metaData.Add(title);
             metaData.Add(string.Empty);
 
             return metaData;
