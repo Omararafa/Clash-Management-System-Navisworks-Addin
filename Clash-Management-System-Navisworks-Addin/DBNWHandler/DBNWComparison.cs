@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Clash_Management_System_Navisworks_Addin.DB;
 using Clash_Management_System_Navisworks_Addin.NW;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
+using System;
 
 namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
 {
@@ -44,41 +45,49 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             // 4. Iterate over the dbDic and set Status property to Deleted
             // 5. Create combined list = dbDic + nwLst
 
-
-            List<ASearchSet> dbASearchSets = DBHandler.DBASearchSets;
-            List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
-            Dictionary<string, ASearchSet> dbASearchSetsDic = new Dictionary<string, ASearchSet>();
-
-            foreach (ASearchSet aDBSearchSet in dbASearchSets)
+            try
             {
-                if (dbASearchSetsDic.ContainsKey(aDBSearchSet.Name) != false)
+                List<ASearchSet> dbASearchSets = DBHandler.DBASearchSets;
+                List<ASearchSet> combinedASearchSets = new List<ASearchSet>();
+                Dictionary<string, ASearchSet> dbASearchSetsDic = new Dictionary<string, ASearchSet>();
+
+                foreach (ASearchSet aDBSearchSet in dbASearchSets)
                 {
-                    dbASearchSetsDic.Add(aDBSearchSet.Name, aDBSearchSet);
+                    if (dbASearchSetsDic.ContainsKey(aDBSearchSet.Name) != false)
+                    {
+                        dbASearchSetsDic.Add(aDBSearchSet.Name, aDBSearchSet);
+                    }
                 }
-            }
 
-            foreach (ASearchSet nwSearchSet in NWHandler.NWASearchSets)
-            {
-                if (dbASearchSetsDic.ContainsKey(nwSearchSet.Name))
+                foreach (ASearchSet nwSearchSet in NWHandler.NWASearchSets)
                 {
-                    nwSearchSet.Conditon = EntityComparisonResult.NotEdited;
-                    dbASearchSetsDic.Remove(nwSearchSet.Name);
+                    if (dbASearchSetsDic.ContainsKey(nwSearchSet.Name))
+                    {
+                        nwSearchSet.Conditon = EntityComparisonResult.NotEdited;
+                        dbASearchSetsDic.Remove(nwSearchSet.Name);
+                    }
+                    else
+                    {
+                        nwSearchSet.Conditon = EntityComparisonResult.New;
+                    }
                 }
-                else
+
+                foreach (string searchSetName in dbASearchSetsDic.Keys)
                 {
-                    nwSearchSet.Conditon = EntityComparisonResult.New;
+                    dbASearchSetsDic[searchSetName].Conditon = EntityComparisonResult.Deleted;
                 }
-            }
 
-            foreach (string searchSetName in dbASearchSetsDic.Keys)
-            {
-                dbASearchSetsDic[searchSetName].Conditon = EntityComparisonResult.Deleted;
-            }
-
-            combinedASearchSets.AddRange(NWHandler.NWASearchSets);
-            combinedASearchSets.AddRange(dbASearchSetsDic.Values.ToList());
-
+                combinedASearchSets.AddRange(NWHandler.NWASearchSets);
+                combinedASearchSets.AddRange(dbASearchSetsDic.Values.ToList());
             return combinedASearchSets;
+            }
+            catch (Exception e)
+            {
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+            }
+            return null;
         }
 
         public static List<AClashTest> CompareNWDBAClashTests()
@@ -97,52 +106,83 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             //                  Create the clash test in NW
             // 4. Iterate over the NWDic and set Status property to Deleted
             // 5. Create combined list = dbLst + nwLst
-
-
-            List<ASearchSet> nwASearchSet = NWHandler.NWASearchSets;
-            List<AClashTest> nwClashTests = NWHandler.NWAClashTests;
-            List<AClashTest> dbAClashTests = DBHandler.DBAClashTests;
-            List<AClashTest> combinedAClashTests = new List<AClashTest>();
-
-            Dictionary<string, AClashTest> nwAClashTestsDic = nwClashTests.ToDictionary(x => x.Name);
-
-            foreach (AClashTest dbAClashTest in dbAClashTests)
+            try
             {
-                if (nwAClashTestsDic.ContainsKey(dbAClashTest.Name))
-                {
-                    if (IsAClashTestsEqual(nwAClashTestsDic[dbAClashTest.Name], dbAClashTest))
-                    {
-                        UpdateDBAClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
-                        dbAClashTest.Condition = EntityComparisonResult.NotEdited;
 
-                        nwAClashTestsDic.Remove(dbAClashTest.Name);
+
+                List<ASearchSet> nwASearchSet = NWHandler.NWASearchSets;
+                List<AClashTest> nwClashTests = NWHandler.NWAClashTests;
+                List<AClashTest> dbAClashTests = DBHandler.DBAClashTests;
+                List<AClashTest> combinedAClashTests = new List<AClashTest>();
+
+                Dictionary<string, AClashTest> nwAClashTestsDic = nwClashTests.ToDictionary(x => x.Name);
+
+                foreach (AClashTest dbAClashTest in dbAClashTests)
+                {
+                    if (nwAClashTestsDic.ContainsKey(dbAClashTest.Name))
+                    {
+                        if (IsAClashTestsEqual(nwAClashTestsDic[dbAClashTest.Name], dbAClashTest))
+                        {
+                            UpdateDBAClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
+                            dbAClashTest.Condition = EntityComparisonResult.NotEdited;
+
+                            nwAClashTestsDic.Remove(dbAClashTest.Name);
+                        }
+                        else
+                        {
+                            dbAClashTest.Condition = EntityComparisonResult.Edited;
+                            NWHandler.ModifyClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name], nwASearchSet);
+                            UpdateDBAClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
+
+                            nwAClashTestsDic.Remove(dbAClashTest.Name);
+                        }
                     }
                     else
                     {
-                        dbAClashTest.Condition = EntityComparisonResult.Edited;
-                        NWHandler.ModifyClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name], nwASearchSet);
-                        UpdateDBAClashTest(dbAClashTest, nwAClashTestsDic[dbAClashTest.Name]);
+                        try
+                        {
 
-                        nwAClashTestsDic.Remove(dbAClashTest.Name);
+                            NWHandler.CreateNewClashTest(dbAClashTest);
+                            dbAClashTest.Condition = EntityComparisonResult.New;
+
+                        }
+                        catch (Exception e)
+                        {
+                            string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                            reportContent += e.Message;
+                            Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+                        }
                     }
                 }
-                else
+
+                foreach (string clashTestName in nwAClashTestsDic.Keys)
                 {
-                    NWHandler.CreateNewClashTest(dbAClashTest);
-                    dbAClashTest.Condition = EntityComparisonResult.New;
+                    try
+                    {
+
+                        NWHandler.RemoveClashTest(nwAClashTestsDic[clashTestName]);
+                        nwAClashTestsDic[clashTestName].Condition = EntityComparisonResult.Deleted;
+                    }
+                    catch (Exception e)
+                    {
+                        string reportContent = "Method Name: Login: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                        reportContent += e.Message;
+                        Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+                    }
                 }
-            }
 
-            foreach (string clashTestName in nwAClashTestsDic.Keys)
+                combinedAClashTests.AddRange(dbAClashTests);
+                combinedAClashTests.AddRange(nwAClashTestsDic.Values.ToList());
+
+                return combinedAClashTests;
+            }
+            catch (Exception e)
             {
-                NWHandler.RemoveClashTest(nwAClashTestsDic[clashTestName]);
-                nwAClashTestsDic[clashTestName].Condition = EntityComparisonResult.Deleted;
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
             }
-
-            combinedAClashTests.AddRange(dbAClashTests);
-            combinedAClashTests.AddRange(nwAClashTestsDic.Values.ToList());
-
-            return combinedAClashTests;
+            return null;
         }
 
         private static bool IsAClashTestsEqual(AClashTest nwAClashTest, AClashTest dbAClashTest)
