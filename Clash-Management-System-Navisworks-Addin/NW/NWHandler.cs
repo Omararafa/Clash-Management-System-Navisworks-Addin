@@ -6,6 +6,7 @@ using Autodesk.Navisworks.Api.Clash;
 using Autodesk.Navisworks.Api.DocumentParts;
 using App = Autodesk.Navisworks.Api.Application;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
+using System;
 
 namespace Clash_Management_System_Navisworks_Addin.NW
 
@@ -74,27 +75,39 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         private static List<ASearchSet> GetSearchSets()
         {
-            DocumentSelectionSets selectionSearchSets = Document.SelectionSets;
-
-            if (selectionSearchSets != null && selectionSearchSets.Value.Count > 0)
+            try
             {
-                List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSearchSets);
 
-                if (documentSearchSets != null && documentSearchSets.Count > 0)
+
+                DocumentSelectionSets selectionSearchSets = Document.SelectionSets;
+
+                if (selectionSearchSets != null && selectionSearchSets.Value.Count > 0)
                 {
-                    List<ASearchSet> aSearchSets = GetASearchSetsList(documentSearchSets);
-                    return aSearchSets;
-                }
-                else
-                {
-                    MessageBox.Show("Error, No search sets defined in the document!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return null;
+                    List<SelectionSet> documentSearchSets = GetDocumentSearchSets(selectionSearchSets);
+
+                    if (documentSearchSets != null && documentSearchSets.Count > 0)
+                    {
+                        List<ASearchSet> aSearchSets = GetASearchSetsList(documentSearchSets);
+                        return aSearchSets;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error, No search sets defined in the document!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return null;
+                    }
+
                 }
 
+                MessageBox.Show("Error, No search sets defined in the document!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
             }
-
-            MessageBox.Show("Error, No search sets defined in the document!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return null;
+            catch (Exception e)
+            {
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+                return null;
+            }
         }
 
         static List<SelectionSet> GetDocumentSearchSets(DocumentSelectionSets documentSelectionSets)
@@ -189,92 +202,147 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         private static AClashTest GetAClashTest(ClashTest clashTest, List<ASearchSet> nwASearchSets)
         {
-            ASearchSet aSearhSetA = nwASearchSets.Find(set =>
-                set.Name == GetSelectionSetFromSelectionSource(clashTest.SelectionA.Selection.SelectionSources.FirstOrDefault()).DisplayName);
+            try
+            {
+                if (clashTest == null || nwASearchSets == null)
+                {
+                    return null;
+                }
+                if (nwASearchSets.Count > 0)
+                {
+                    ASearchSet aSearhSetA = nwASearchSets.Find(set =>
+                        set.Name == GetSelectionSetFromSelectionSource(clashTest.SelectionA.Selection.SelectionSources.FirstOrDefault()).DisplayName);
 
-            ASearchSet aSearhSetB = nwASearchSets.Find(set =>
-                set.Name == GetSelectionSetFromSelectionSource(clashTest.SelectionB.Selection.SelectionSources.FirstOrDefault()).DisplayName);
+                    ASearchSet aSearhSetB = nwASearchSets.Find(set =>
+                        set.Name == GetSelectionSetFromSelectionSource(clashTest.SelectionB.Selection.SelectionSources.FirstOrDefault()).DisplayName);
 
-            AClashTest aClashTest = new AClashTest(
-                name: clashTest.DisplayName,
-                condition: EntityComparisonResult.NotChecked,
-                typeName: GetClashTestType(clashTest.TestType),
-                tolerance: clashTest.Tolerance,
-                isFromNavis: true,
-                clashTest: clashTest,
-                searchSet1: aSearhSetA,
-                searchSet2: aSearhSetB);
+                    AClashTest aClashTest = new AClashTest(
+                        name: clashTest.DisplayName,
+                        condition: EntityComparisonResult.NotChecked,
+                        typeName: GetClashTestType(clashTest.TestType),
+                        tolerance: clashTest.Tolerance,
+                        isFromNavis: true,
+                        clashTest: clashTest,
+                        searchSet1: aSearhSetA,
+                        searchSet2: aSearhSetB);
 
-            return aClashTest;
+                    return aClashTest;
+                }
+
+            }
+            catch (Exception e)
+            {
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+            }
+            return null;
         }
 
         public static ClashTest CreateNewClashTest(AClashTest aClashTest)
         {
-            ClashTest clashTest = new ClashTest();
-
-            clashTest.DisplayName = aClashTest.Name;
-            clashTest.CustomTestName = aClashTest.Name;
-            clashTest.TestType = GetClashTestType(aClashTest.TypeName);
-            clashTest.Tolerance = aClashTest.Tolerance;
+            try
+            {
 
 
-            SelectionSet searchSetA = aClashTest.SearchSet1.SelectionSet;
-            SelectionSet searchSetB = aClashTest.SearchSet2.SelectionSet;
+                ClashTest clashTest = new ClashTest();
 
-            SelectionSource selectionSourceA = Document.SelectionSets.CreateSelectionSource(searchSetA);
-            SelectionSource selectionSourceB = Document.SelectionSets.CreateSelectionSource(searchSetB);
-            SelectionSourceCollection selectionSourceCollectionA = new SelectionSourceCollection();
-            SelectionSourceCollection selectionSourceCollectionB = new SelectionSourceCollection();
-            selectionSourceCollectionA.Add(selectionSourceA);
-            selectionSourceCollectionB.Add(selectionSourceB);
+                clashTest.DisplayName = aClashTest.Name;
+                clashTest.CustomTestName = aClashTest.Name;
+                clashTest.TestType = GetClashTestType(aClashTest.TypeName);
+                clashTest.Tolerance = aClashTest.Tolerance;
 
-            clashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
-            clashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
 
-            DocumentClash.TestsData.TestsAddCopy(clashTest);
-            return clashTest;
+                SelectionSet searchSetA = aClashTest.SearchSet1.SelectionSet;
+                SelectionSet searchSetB = aClashTest.SearchSet2.SelectionSet;
+
+                SelectionSource selectionSourceA = Document.SelectionSets.CreateSelectionSource(searchSetA);
+                SelectionSource selectionSourceB = Document.SelectionSets.CreateSelectionSource(searchSetB);
+                SelectionSourceCollection selectionSourceCollectionA = new SelectionSourceCollection();
+                SelectionSourceCollection selectionSourceCollectionB = new SelectionSourceCollection();
+                selectionSourceCollectionA.Add(selectionSourceA);
+                selectionSourceCollectionB.Add(selectionSourceB);
+
+                clashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
+                clashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
+
+                DocumentClash.TestsData.TestsAddCopy(clashTest);
+                return clashTest;
+
+            }
+            catch (Exception e)
+            {
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+                return null;
+            }
         }
 
         public static AClashTest ModifyClashTest(AClashTest sourceAClashTest, AClashTest targetAClashTest, List<ASearchSet> nwASearchSets)
         {
-            // sourceClashTest: The ClashTest to copy properties from
-            // targetClashTest: The ClashTest to edit
+            try
+            {
 
-            ClashTest tempClashTest = new ClashTest();
 
-            tempClashTest.DisplayName = sourceAClashTest.Name;
-            tempClashTest.CustomTestName = sourceAClashTest.Name;
-            tempClashTest.TestType = GetClashTestType(sourceAClashTest.TypeName.ToLower());
-            tempClashTest.Tolerance = sourceAClashTest.Tolerance;
+                // sourceClashTest: The ClashTest to copy properties from
+                // targetClashTest: The ClashTest to edit
 
-            targetAClashTest.Id = sourceAClashTest.Id;
+                ClashTest tempClashTest = new ClashTest();
 
-            SelectionSet searchSetA = nwASearchSets.Where(searchSet => searchSet.Name == sourceAClashTest.SearchSet1.Name).First().SelectionSet;
-            SelectionSet searchSetB = nwASearchSets.Where(searchSet => searchSet.Name == sourceAClashTest.SearchSet2.Name).First().SelectionSet;
+                tempClashTest.DisplayName = sourceAClashTest.Name;
+                tempClashTest.CustomTestName = sourceAClashTest.Name;
+                tempClashTest.TestType = GetClashTestType(sourceAClashTest.TypeName.ToLower());
+                tempClashTest.Tolerance = sourceAClashTest.Tolerance;
 
-            SelectionSource selectionSourceA = Document.SelectionSets.CreateSelectionSource(searchSetA);
-            SelectionSource selectionSourceB = Document.SelectionSets.CreateSelectionSource(searchSetB);
-            SelectionSourceCollection selectionSourceCollectionA = new SelectionSourceCollection();
-            SelectionSourceCollection selectionSourceCollectionB = new SelectionSourceCollection();
-            selectionSourceCollectionA.Add(selectionSourceA);
-            selectionSourceCollectionB.Add(selectionSourceB);
+                targetAClashTest.Id = sourceAClashTest.Id;
 
-            tempClashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
-            tempClashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
+                SelectionSet searchSetA = nwASearchSets.Where(searchSet => searchSet.Name == sourceAClashTest.SearchSet1.Name).First().SelectionSet;
+                SelectionSet searchSetB = nwASearchSets.Where(searchSet => searchSet.Name == sourceAClashTest.SearchSet2.Name).First().SelectionSet;
 
-            DocumentClash.TestsData.TestsEditTestFromCopy(targetAClashTest.ClashTest, tempClashTest);
-            return targetAClashTest;
+                SelectionSource selectionSourceA = Document.SelectionSets.CreateSelectionSource(searchSetA);
+                SelectionSource selectionSourceB = Document.SelectionSets.CreateSelectionSource(searchSetB);
+                SelectionSourceCollection selectionSourceCollectionA = new SelectionSourceCollection();
+                SelectionSourceCollection selectionSourceCollectionB = new SelectionSourceCollection();
+                selectionSourceCollectionA.Add(selectionSourceA);
+                selectionSourceCollectionB.Add(selectionSourceB);
+
+                tempClashTest.SelectionA.Selection.CopyFrom(selectionSourceCollectionA);
+                tempClashTest.SelectionB.Selection.CopyFrom(selectionSourceCollectionB);
+
+                DocumentClash.TestsData.TestsEditTestFromCopy(targetAClashTest.ClashTest, tempClashTest);
+                return targetAClashTest;
+            }
+            catch (Exception e)
+            {
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+                return null;
+            }
         }
 
         public static ClashTest RemoveClashTest(AClashTest aClashTest)
         {
-            DocumentClashTests documentClashTests = DocumentClash.TestsData;
-            ClashTest targetClashTest = documentClashTests.Tests.
-                FirstOrDefault(clashTest => clashTest.DisplayName == aClashTest.Name) as ClashTest;
+            try
+            {
+
+                DocumentClashTests documentClashTests = DocumentClash.TestsData;
+                ClashTest targetClashTest = documentClashTests.Tests.
+                    FirstOrDefault(clashTest => clashTest.DisplayName == aClashTest.Name) as ClashTest;
 
 
-            DocumentClash.TestsData.TestsRemove(targetClashTest);
-            return targetClashTest;
+                DocumentClash.TestsData.TestsRemove(targetClashTest);
+                return targetClashTest;
+
+            }
+            catch (Exception e)
+            {
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+            }
+            return null;
         }
 
         private static ClashTestType GetClashTestType(string typeName)
@@ -313,6 +381,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         private static SelectionSet GetSelectionSetFromSelectionSource(SelectionSource selectionSource)
         {
+
             return Document.SelectionSets.ResolveSelectionSource(selectionSource) as SelectionSet;
         }
 
@@ -322,29 +391,61 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
         public static List<AClashTest> UpdateAClashTestsResults(List<AClashTest> nwAClashTests)
         {
-
-            foreach (AClashTest aClashTest in nwAClashTests)
+            try
             {
-                List<AClashTestResult> aClashTestResults = new List<AClashTestResult>();
-                List<ClashResult> clashResults = GetClashResults(aClashTest.ClashTest);
-
-                foreach (ClashResult clashResult in clashResults)
+                if (nwAClashTests == null || nwAClashTests.Count < 1)
                 {
-                    AClashTestResult aClashTestResult = new AClashTestResult(aClashTest, clashResult);
-                    aClashTestResults.Add(aClashTestResult);
+                    return null;
                 }
 
-                aClashTest.AClashTestResults = aClashTestResults;
-            }
+                foreach (AClashTest aClashTest in nwAClashTests)
+                {
+                    if (aClashTest==null|| aClashTest.ClashTest==null)
+                    {
+                        continue;
+                    }
+                    List<AClashTestResult> aClashTestResults = new List<AClashTestResult>();
+                    List<ClashResult> clashResults = GetClashResults(aClashTest.ClashTest);
 
+                    if (clashResults == null || clashResults.Count < 1)
+                    {
+                        continue;
+                    }
+                    foreach (ClashResult clashResult in clashResults)
+                    {
+                        AClashTestResult aClashTestResult = new AClashTestResult(aClashTest, clashResult);
+                        aClashTestResults.Add(aClashTestResult);
+                    }
+
+                    aClashTest.AClashTestResults = aClashTestResults;
+                }
+            }
+            catch (Exception e)
+            {
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+            }
             return nwAClashTests;
         }
 
         private static List<ClashResult> GetClashResults(ClashTest clashTest)
         {
-            List<ClashResult> clashTestResultsLst = clashTest.Children.Cast<ClashResult>().ToList();
+            try
+            {
 
-            return clashTestResultsLst;
+
+                List<ClashResult> clashTestResultsLst = clashTest.Children.Cast<ClashResult>().ToList();
+
+                return clashTestResultsLst;
+            }
+            catch (Exception e)
+            {
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+                return null;
+            }
         }
 
         #endregion

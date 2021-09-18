@@ -2,6 +2,8 @@
 using Autodesk.Navisworks.Api.Plugins;
 using System.Windows.Forms.Integration;
 using Clash_Management_System_Navisworks_Addin.Views;
+using System;
+
 namespace Clash_Management_System_Navisworks_Addin
 {
     [Plugin("Clash-Management-System-Navisworks-Addin", "AAW", DisplayName = "Clash Management")]
@@ -29,9 +31,17 @@ namespace Clash_Management_System_Navisworks_Addin
                         {
                             MainWindow mainWindow = new MainWindow();
                             ElementHost.EnableModelessKeyboardInterop(mainWindow);
-
-                            mainWindow.ShowDialog();
-                            mainWindow.Topmost = true;
+                            try
+                            {
+                                mainWindow.ShowDialog();
+                                mainWindow.Topmost = true;
+                            }
+                            catch (Exception e)
+                            {
+                                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                                reportContent += e.Message;
+                                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+                            }
                         }
                         else
                         {
