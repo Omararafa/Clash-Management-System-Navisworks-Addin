@@ -8,7 +8,11 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public string Name { get; set; }
 
         public string Domain { get; set; }
+        public string EmployeeId { get; set; }
 
+        public int ProjectCode { get; set; }
+
+        public int RoleId { get; set; }
         public string TradeAbb
         {
             get
@@ -43,6 +47,10 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         {
             this.Name = name;
             this.Domain = domain;
+        }
+        public User(string employeeId, int projectCode =-1, int roleId =-1)
+        {
+            this.EmployeeId = employeeId;
         }
     }
 }

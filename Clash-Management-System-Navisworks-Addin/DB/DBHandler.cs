@@ -164,7 +164,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             return false;
         }
 
-        static bool GetProjects(User user, ref List<Project> userProjects)
+
+        static bool OldGetProjects(User user, ref List<Project> userProjects)
         {
             try
             {
@@ -232,7 +233,75 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
         }
 
+        static bool GetProjects(User user, ref List<Project> userProjects)
+        {
+            try
+            {
+                string employeeId = user.EmployeeId;
+                string roleId = user.RoleId.ToString();
+                string userProjectCode = user.ProjectCode.ToString();
 
+
+                userProjects = new List<Project>();
+
+                var serviceResponse = service.GetProjects(userProjectCode, employeeId, roleId);
+
+                switch (serviceResponse.State)
+                {
+                    case WebService.ResponseState.SUCCESS:
+
+                        var projectsResults = serviceResponse as WebService.ProjectsResults;
+
+
+                        string projectName;
+                        string projectCode;
+                        List<AClashMatrix> projectClashMatrcies;
+
+
+                        foreach (var dbProject in projectsResults.Projects)
+                        {
+                            projectClashMatrcies = new List<AClashMatrix>();
+                            Project project = new Project();
+
+                            projectName = dbProject.Name;
+                            projectCode = dbProject.Code;
+
+                            foreach (var dbClashMatrix in dbProject.Matrices)
+                            {
+                                AClashMatrix clashMatrix = new AClashMatrix
+                                {
+                                    Name = dbClashMatrix.Name,
+                                    Id = dbClashMatrix.Id,
+                                    Project = project
+                                };
+                                projectClashMatrcies.Add(clashMatrix);
+                            }
+                            project.Name = projectName;
+                            project.Code = projectCode;
+                            project.ClashMatrices = projectClashMatrcies;
+                            userProjects.Add(project);
+                        }
+
+                        return true;
+
+                    case WebService.ResponseState.FAILD:
+                        WebService.Error error = serviceResponse as WebService.Error;
+                        System.Windows.Forms.MessageBox.Show("Database Exception: " + error.Meesage);
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+            catch (Exception e)
+            {
+                System.Windows.Forms.MessageBox.Show("Database Exception: " + e.Message);
+                string reportContent = "Method Name: " + System.Reflection.MethodBase.GetCurrentMethod().Name;
+                reportContent += e.Message;
+                Reporting.ReportHandler.WriteExceptionLog(e.GetType().Name, reportContent);
+
+                return false;
+            }
+        }
         #endregion  
 
         #region SearchSetsHandlers

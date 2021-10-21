@@ -253,12 +253,18 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         }
         private bool LoginProcedure()
         {
+            //TODO: Meeting 
+            string employeeId = System.DirectoryServices.AccountManagement.UserPrincipal.Current.EmployeeId;
+
             string userName = Environment.UserName;
             string userDomain = Environment.UserDomainName;
 
             //TODO deploy: remove two lines below for dynamic login access
+            /*
+
             userName = "AMM";
             userDomain = "CIVIL";
+            
 
 
             if (userName != string.Empty && userDomain != string.Empty)
@@ -284,9 +290,37 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     return true;
                 }
             }
+            */
 
+            if ( employeeId!=null||employeeId!=string.Empty)
+            {
+                ViewsHandler.CurrentUser = new User(employeeId);
+                var projects = ViewsHandler.CurrentUser.Projects;
+                string tradeAbb = ViewsHandler.CurrentUser.TradeAbb;
+
+                if (projects == null)
+                {
+                    System.Windows.Forms.MessageBox.Show("Failed to get projects from database.");
+                    return false;
+                }
+
+                if (ViewsHandler.CurrentUser.Projects != null || ViewsHandler.CurrentUser.Projects.Count > 0)
+                {
+                    ActivateExpander(SelectProjectExpander);
+
+                    ObservableCollection<string> projectCbxDataSource = new ObservableCollection<string>
+                        (ViewsHandler.CurrentUser.Projects.Select(x => x.Name + ": " + x.Code).ToList());
+                    ProjectCbx.ItemsSource = projectCbxDataSource;
+                    ProjectCbx.Focus();
+                    return true;
+                }
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Failed to Employee Id.");
+                return false;
+            }
             return false;
-
         }
 
         /*
