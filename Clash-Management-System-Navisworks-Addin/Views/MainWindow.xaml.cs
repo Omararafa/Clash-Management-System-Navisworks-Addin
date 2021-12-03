@@ -140,7 +140,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         public bool PresentClashTestsOnDataGrid(DataGrid datagrid, ref List<AClashTest> data)
         {
-            if (data.Count < 1)
+            if (data == null)
             {
                 return false;
             }
@@ -410,15 +410,12 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 try
                 {
                     List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
-                    if (nwSearchSets==null||nwSearchSets.Count<1)
+                    if (nwSearchSets == null || nwSearchSets.Count < 1)
                     {
                         return false;
                     }
+
                     List<AClashTest> nwClashTests = NW.NWHandler.NWAClashTests;
-                    if (nwClashTests == null || nwClashTests.Count < 1)
-                    {
-                        return false;
-                    }
 
                     if (IsRunClicked)
                     {
@@ -444,39 +441,49 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                             return false;
                         }
 
-                        Reporting.ReportHandler.WriteReport(comparedAClashTests);
 
                         int comparedClashTestsCount = comparedAClashTests.Count();
 
-                        string msg = string.Format("Clash Tests: {0} Total synchronized successfully:", comparedClashTestsCount);
+                        string msg = string.Format("{0} clash tests have been synchronized successfully:", comparedClashTestsCount);
 
                         msg += Environment.NewLine;
-                        msg += "  - The clash tests report has been created successfully.";
-                        msg += Environment.NewLine;
-                        msg += "  - Make sure to update clash tests in the current document before sync clash tests results.";
-                        msg += Environment.NewLine;
-                        msg += Environment.NewLine;
-                        msg += "Do you want to open the report?";
+                        msg += "Do you want to open the log file?";
 
                         System.Windows.Forms.DialogResult dialogResult = System.Windows.Forms.MessageBox.Show(
                             msg, "Clash Management",
                             System.Windows.Forms.MessageBoxButtons.YesNo,
                             System.Windows.Forms.MessageBoxIcon.Information);
 
-
                         nwClashTests = NW.NWHandler.NWAClashTests;
                         var result = PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTests);
 
-                        if (dialogResult == System.Windows.Forms.DialogResult.Yes &&
-                            System.IO.File.Exists(Reporting.ReportHandler.Path))
+
+                        System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+                        saveFileDialog.DefaultExt = "csv";
+                        saveFileDialog.CheckPathExists = true;
+                        saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                        saveFileDialog.Filter = "Comma Separated Values (*.csv)|*.csv";
+                        saveFileDialog.Title = "Save Clash Tests Report";
+                        saveFileDialog.FileName = DateTime.Now.ToString("yyyy-dd-M") + " - Clash Tests Report";
+
+                        var saveDialogResult = saveFileDialog.ShowDialog();
+
+                        if (saveDialogResult == System.Windows.Forms.DialogResult.OK)
                         {
-                            Process.Start(Reporting.ReportHandler.Path);
+                            Reporting.ReportHandler.Path = saveFileDialog.FileName;
+                            Reporting.ReportHandler.WriteReport(comparedAClashTests);
+
+                            if (dialogResult == System.Windows.Forms.DialogResult.Yes)
+                            {
+                                Process.Start(Reporting.ReportHandler.Path);
+                            }
                         }
+
 
                         return result;
                     }
-                    return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTests);
 
+                    return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTests);
                 }
                 catch (Exception e)
                 {
@@ -488,7 +495,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 try
                 {
-                   
+
                     List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
                     if (nwSearchSets == null || nwSearchSets.Count < 1)
                     {
@@ -547,7 +554,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
                     }
                     return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTests);
-                    
+
                 }
                 catch (Exception e)
                 {

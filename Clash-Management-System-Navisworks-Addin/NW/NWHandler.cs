@@ -43,11 +43,17 @@ namespace Clash_Management_System_Navisworks_Addin.NW
                 List<AClashTest> aClashTests = GetClashTests();
                 _nwAClashTests = UpdateAClashTestsResults(aClashTests);
 
-                if (aClashTests.Count > 0)
+
+                if (aClashTests != null)
                 {
-                    IsClashTestsCalled = true;
+                    if (aClashTests.Count > 0)
+                    {
+                        IsClashTestsCalled = true;
+                    }
+                    return _nwAClashTests;
                 }
-                return _nwAClashTests;
+
+                return null;
             }
 
             set
@@ -243,14 +249,12 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         {
             try
             {
-
-
                 ClashTest clashTest = new ClashTest();
 
                 clashTest.DisplayName = aClashTest.Name;
                 clashTest.CustomTestName = aClashTest.Name;
                 clashTest.TestType = GetClashTestType(aClashTest.TypeName);
-                clashTest.Tolerance = aClashTest.Tolerance;
+                clashTest.Tolerance = aClashTest.Tolerance * 3.28084; // to convert to the internal unit (ft).
 
 
                 SelectionSet searchSetA = aClashTest.SearchSet1.SelectionSet;
@@ -268,7 +272,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
                 DocumentClash.TestsData.TestsAddCopy(clashTest);
                 return clashTest;
-
             }
             catch (Exception e)
             {
@@ -283,8 +286,6 @@ namespace Clash_Management_System_Navisworks_Addin.NW
         {
             try
             {
-
-
                 // sourceClashTest: The ClashTest to copy properties from
                 // targetClashTest: The ClashTest to edit
 
@@ -293,7 +294,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
                 tempClashTest.DisplayName = sourceAClashTest.Name;
                 tempClashTest.CustomTestName = sourceAClashTest.Name;
                 tempClashTest.TestType = GetClashTestType(sourceAClashTest.TypeName.ToLower());
-                tempClashTest.Tolerance = sourceAClashTest.Tolerance;
+                tempClashTest.Tolerance = sourceAClashTest.Tolerance * 3.28084; // to convert to the internal unit (ft).
 
                 targetAClashTest.Id = sourceAClashTest.Id;
 
@@ -400,7 +401,7 @@ namespace Clash_Management_System_Navisworks_Addin.NW
 
                 foreach (AClashTest aClashTest in nwAClashTests)
                 {
-                    if (aClashTest==null|| aClashTest.ClashTest==null)
+                    if (aClashTest == null || aClashTest.ClashTest == null)
                     {
                         continue;
                     }

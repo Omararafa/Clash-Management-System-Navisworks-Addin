@@ -20,16 +20,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
         {
             string appFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-            //TODO Deploy: change report folder directory
-            string reportFolder = appFolder + @"\Navisworks Reports";
-
-            if (!Directory.Exists(reportFolder))
-            {
-                Directory.CreateDirectory(reportFolder);
-            }
-
             //TODO Deploy: change file naming convention
-            Path = reportFolder + @"\Report-" + DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + ".csv";
             List<string> metaData = GetMetaData("Sync Clash Tests Report");
             string reportHeader = AClashTest.GetReportHeaders();
             List<string> reportData = GetClashTestReportData(aClashTests);
@@ -79,7 +70,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             }
 
             //TODO Deploy: change file naming convention
-            Path = reportFolder + @"\ExceptionReport-" + DateTime.Now.ToString("yyyy-dd-M--HH-mm") + ".txt";
+            string exeptionPath = reportFolder + @"\ExceptionReport-" + DateTime.Now.ToString("yyyy-dd-M--HH-mm") + ".txt";
             List<string> metaDataComma = GetMetaData(title);
             List<string> metaData = new List<string>();
             for (int i = 0; i < metaDataComma.Count; i++)
@@ -91,7 +82,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
 
             try
             {
-                using (StreamWriter streamWriter = new StreamWriter(Path, true))
+                using (StreamWriter streamWriter = new StreamWriter(exeptionPath, true))
                 {
                     foreach (string line in metaData)
                     {
@@ -107,7 +98,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occured while writing exception report: " + System.IO.Path.GetFileNameWithoutExtension(Path) + Environment.NewLine + ex.Message);
+                MessageBox.Show("An error occured while writing exception report: " + System.IO.Path.GetFileNameWithoutExtension(exeptionPath) + Environment.NewLine + ex.Message);
                 return false;
             }
         }
@@ -119,7 +110,8 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             foreach (AClashTest aClashTest in AClashTests)
             {
                 data.Add(aClashTest.Name + "," + aClashTest.Condition.ToString() + "," +
-                         aClashTest.SearchSet1.Name + "," + aClashTest.SearchSet2.Name);
+                         aClashTest.SearchSet1.Name + "," + aClashTest.SearchSet2.Name + "," +
+                         aClashTest.ClashTest.TestType.ToString() + "," + (aClashTest.Tolerance * 3.28084).ToString());
             }
 
             return data;
@@ -153,7 +145,8 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             metaData.Add(string.Format("Username:,{0}", Views.ViewsHandler.CurrentUser.Name));
             metaData.Add(string.Format("Project:,{0}", Views.ViewsHandler.CurrentProject.Name));
             metaData.Add(string.Format("Clash Matrix:,{0}", Views.ViewsHandler.CurrentAClashMatrix.Name));
-            metaData.Add(string.Format("Time:,{0}", DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss")));
+            metaData.Add(string.Format("Time:,{0}", DateTime.Now.ToString("hh:mm:ss tt}")));
+            metaData.Add(string.Format("Date:,{0}", DateTime.Now.ToString("yyyy-M-dd")));
 
             metaData.Add(string.Empty);
             metaData.Add(title);

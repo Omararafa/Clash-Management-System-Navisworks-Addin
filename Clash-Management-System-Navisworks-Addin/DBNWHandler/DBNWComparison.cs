@@ -79,7 +79,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
 
                 combinedASearchSets.AddRange(NWHandler.NWASearchSets);
                 combinedASearchSets.AddRange(dbASearchSetsDic.Values.ToList());
-            return combinedASearchSets;
+                return combinedASearchSets;
             }
             catch (Exception e)
             {
@@ -114,6 +114,16 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
                 List<AClashTest> nwClashTests = NWHandler.NWAClashTests;
                 List<AClashTest> dbAClashTests = DBHandler.DBAClashTests;
                 List<AClashTest> combinedAClashTests = new List<AClashTest>();
+
+                if (nwClashTests == null || nwClashTests.Count == 0)
+                {
+                    foreach (var aClashTest in dbAClashTests)
+                    {
+                        aClashTest.Condition = EntityComparisonResult.New;
+                        combinedAClashTests.Add(aClashTest);
+                        return combinedAClashTests;
+                    }
+                }
 
                 Dictionary<string, AClashTest> nwAClashTestsDic = nwClashTests.ToDictionary(x => x.Name);
 
@@ -187,7 +197,7 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
 
         private static bool IsAClashTestsEqual(AClashTest nwAClashTest, AClashTest dbAClashTest)
         {
-            if (nwAClashTest.Tolerance == dbAClashTest.Tolerance &&
+            if (Math.Abs(nwAClashTest.Tolerance - dbAClashTest.Tolerance * 3.28084) < 0.00328084 && // to convert to internal unit (ft).
                 nwAClashTest.TypeName == dbAClashTest.TypeName &&
                 nwAClashTest.SearchSet1.Name == dbAClashTest.SearchSet1.Name &&
                 nwAClashTest.SearchSet2.Name == dbAClashTest.SearchSet2.Name)

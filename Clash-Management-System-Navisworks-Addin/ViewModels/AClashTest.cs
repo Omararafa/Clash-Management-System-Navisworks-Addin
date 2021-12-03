@@ -91,7 +91,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         //TODO Deploy: change report headers as per company requirements
         public static string GetReportHeaders()
         {
-            string[] headers = { "Name", "Status", "Search Set 1", "Search Set 2" };
+            string[] headers = { "Name", "Status", "Search Set 1", "Search Set 2", "Clash Type", "Tolerance", "Priority" };
 
             return string.Join(",", headers);
         }
