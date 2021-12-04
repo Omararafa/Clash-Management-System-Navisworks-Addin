@@ -253,17 +253,21 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         }
         private bool LoginProcedure()
         {
+            //TODO: Meeting 
+            string employeeId = System.DirectoryServices.AccountManagement.UserPrincipal.Current.EmployeeId;
             string userName = Environment.UserName;
             string userDomain = Environment.UserDomainName;
 
             //TODO deploy: remove two lines below for dynamic login access
-            userName = "AMM";
+            /*
+                userName = "AMM";
             userDomain = "CIVIL";
+            */
 
 
-            if (userName != string.Empty && userDomain != string.Empty)
+            if (employeeId != null || employeeId != string.Empty)
             {
-                ViewsHandler.CurrentUser = new User(userName, userDomain);
+                ViewsHandler.CurrentUser = new User(employeeId);
                 var projects = ViewsHandler.CurrentUser.Projects;
                 string tradeAbb = ViewsHandler.CurrentUser.TradeAbb;
 
@@ -283,6 +287,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     ProjectCbx.Focus();
                     return true;
                 }
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Failed to Employee Id.");
+                return false;
             }
 
             return false;
@@ -410,7 +419,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 try
                 {
                     List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
-                    if (nwSearchSets==null||nwSearchSets.Count<1)
+                    if (nwSearchSets == null || nwSearchSets.Count < 1)
                     {
                         return false;
                     }
@@ -488,7 +497,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 try
                 {
-                   
+
                     List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
                     if (nwSearchSets == null || nwSearchSets.Count < 1)
                     {
@@ -547,7 +556,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
                     }
                     return PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTests);
-                    
+
                 }
                 catch (Exception e)
                 {
