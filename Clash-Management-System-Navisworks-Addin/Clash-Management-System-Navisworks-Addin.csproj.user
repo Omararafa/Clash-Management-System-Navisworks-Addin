@@ -3,6 +3,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\Autodesk\Navisworks Manage 2020\Roamer.exe</StartProgram>
+    <StartArguments>E:\Work\Freelance\dar\01.Navisworks Clash Management Addin\01\IN\Internal\Navisworks Demo\20210804-NWD Sample Edited.nwd</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartAction>Program</StartAction>

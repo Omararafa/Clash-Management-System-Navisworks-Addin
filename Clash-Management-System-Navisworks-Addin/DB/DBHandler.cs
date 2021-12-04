@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Clash_Management_System_Navisworks_Addin.NW;
 using Clash_Management_System_Navisworks_Addin.Views;
 using Clash_Management_System_Navisworks_Addin.ViewModels;
+using System.Windows.Interop;
 
 namespace Clash_Management_System_Navisworks_Addin.DB
 {
@@ -32,6 +33,8 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
             }
         }
+
+        static bool IsTradeAbbChecked=true;
 
         private static List<ASearchSet> _dbASearchSets;
         public static List<ASearchSet> DBASearchSets
@@ -247,6 +250,10 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 string[] searchSetsNames = searchSetsFromNW.Select(x => x.Name).ToArray();
 
                 Dictionary<string, string[]> groupedSearchSetNames = GroupSearchSetsByTradeAbb(searchSetsNames);
+                if (groupedSearchSetNames==null)
+                {
+                    return false;
+                }
                 bool success = false;
                 //We shall create a request for each dictionary key [trade abbreviation]
                 foreach (var group in groupedSearchSetNames)
@@ -437,7 +444,18 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 foreach (var nameWithAbb in namesWithTradeAbb)
                 {
-                    string[] splitedName = nameWithAbb.Split(new char[] { '-' }, 2);
+                    string[] splitedName = new string[2];
+                    if (nameWithAbb.Contains('-'))
+                    {
+                        splitedName = nameWithAbb.Split(new char[] { '-' }, 2);
+                    }
+                    else
+                    {
+                        var msg = string.Format("No trade abbreviation was found for search set: {0}", nameWithAbb);
+                        msg += Environment.NewLine + "Please, make sure to seperate abbreviation and name with '-'";
+                        System.Windows.Forms.MessageBox.Show(msg, "Clash Management", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                        return null;
+                    }
                     splittedNames.Add(splitedName);
                 }
 
@@ -541,7 +559,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                         continue;
                     }
 
-                    int ClashTestResultsCount = nwClashTest.AClashTestResults.Count;
+                    //int ClashTestResultsCount = nwClashTest.AClashTestResults.Count;
                     //Build DB ClashResultSyncRequest object
                     WebService.ClashResultSyncRequest clashResultSyncRequest = new WebService.ClashResultSyncRequest();
                     //[Extractor id]

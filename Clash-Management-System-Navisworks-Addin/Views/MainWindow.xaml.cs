@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -140,9 +141,12 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         public bool PresentClashTestsOnDataGrid(DataGrid datagrid, ref List<AClashTest> data)
         {
-            if (data == null)
+            if (data == null || FunctionClashTestsRBtn.IsChecked == true)
             {
-                datagrid.Columns.Clear();
+                for (int i = 1; i < datagrid.Columns.Count; i++)
+                {
+                    datagrid.Columns.RemoveAt(i);
+                }
                 datagrid.ItemsSource = new List<AClashTest>();
                 return true;
             }
@@ -437,15 +441,19 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         string msg = string.Format("{0} clash tests have been synchronized successfully:", comparedClashTestsCount);
 
                         msg += Environment.NewLine;
-                        msg += "Do you want to open the log file?";
-
+                        //msg += "Do you want to open the log file?";
+                        /*
                         System.Windows.Forms.DialogResult dialogResult = System.Windows.Forms.MessageBox.Show(
                             msg, "Clash Management",
                             System.Windows.Forms.MessageBoxButtons.YesNo,
                             System.Windows.Forms.MessageBoxIcon.Information);
+                        */
 
-                        nwClashTests = NW.NWHandler.NWAClashTests;
-                        var result = PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTests);
+                        System.Windows.Forms.DialogResult dialogResult = System.Windows.Forms.MessageBox.Show(
+                            msg, "Clash Management",
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Information);
+
 
 
                         System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -463,11 +471,18 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                             Reporting.ReportHandler.Path = saveFileDialog.FileName;
                             Reporting.ReportHandler.WriteReport(comparedAClashTests);
 
-                            if (dialogResult == System.Windows.Forms.DialogResult.Yes)
+                            msg = "Do you want to open the log file?";
+                            System.Windows.Forms.DialogResult openConfirmationDialogResult = System.Windows.Forms.MessageBox.Show(
+                                msg, "Clash Management",
+                                System.Windows.Forms.MessageBoxButtons.YesNo,
+                                System.Windows.Forms.MessageBoxIcon.Information);
+                            if (openConfirmationDialogResult == System.Windows.Forms.DialogResult.Yes)
                             {
                                 Process.Start(Reporting.ReportHandler.Path);
                             }
                         }
+                        nwClashTests = NW.NWHandler.NWAClashTests;
+                        var result = PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTests);
 
 
                         return result;
@@ -485,12 +500,13 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             {
                 try
                 {
-
+                    /*
                     List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
                     if (nwSearchSets == null || nwSearchSets.Count < 1)
                     {
                         return false;
                     }
+                    */
                     List<AClashTest> nwClashTests = new List<AClashTest>();
                     if (!IsRunClicked)
                     {
@@ -499,6 +515,8 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         {
                             return false;
                         }
+                        //Make all clash tests selected by default
+                        nwClashTests.ForEach(x => x.IsSelected = true);
                     }
 
                     if (IsRunClicked)
@@ -524,10 +542,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                             {
                                 return false;
                             }
-                            bool syncStatus = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests);
+                            bool syncStatus = DB.DBHandler.SyncClashResultToDB(ViewsHandler.CurrentAClashMatrix, selectedClashTests.Where(x => x.AClashTestResults != null).ToList());
                             bool presentStatus = PresentClashTestsOnDataGrid(this.PresenterDataGrid, ref nwClashTests);
                             int newClashTests = selectedClashTests.Count();
-                            string msg = string.Format("Clash Tests: {0} Total synchronized successfully", newClashTests);
+                            string msg = string.Format("Clash Tests: {0} Total with valid results were synchronized successfully", selectedClashTests.Where(x => x.AClashTestResults != null).ToList().Count);
                             System.Windows.Forms.MessageBox.Show(
                                 msg, "Clash Management",
                                 System.Windows.Forms.MessageBoxButtons.OK,
@@ -558,14 +576,20 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private bool RunSyncButton()
         {
-            IsRunClicked = true;
+            StatusBarMessage.Text = "Sync with database in progress...";
             StatusBarMessage.Visibility = Visibility.Visible;
 
+            IsRunClicked = true;
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.DataBind,
+               new Action(() =>
+               {
+                   StatusBarMessage.Text = "Sync with database in progress...";
+                   StatusBarMessage.Visibility = Visibility.Visible;
+               }));
+            //StatusBarMessage.Visibility = Visibility.Visible;
             bool result = FunctionSelectedProcedure();
             return result;
         }
-
-
 
 
         #endregion
@@ -612,13 +636,12 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
         private void Run_Click(object sender, RoutedEventArgs e)
         {
-            StatusBarMessage.Text = "Sync with database in progress...";
-            StatusBarMessage.Visibility = Visibility.Visible;
+            Debug.WriteLine("Run_Click");
+
             bool result = RunSyncButton();
-            if (result)
-            {
-                StatusBarMessage.Visibility = Visibility.Hidden;
-            }
+            StatusBarMessage.Visibility = Visibility.Hidden;
+            Debug.WriteLine("After : Run_Click");
+
             return;
         }
 
@@ -740,7 +763,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             //StatusBarMessage.Visibility = Visibility.Hidden;
 
-            Refresh.RefreshUI(this);
+            //Refresh.RefreshUI(this);
         }
 
         private void FunctionClashTestsRBtn_GotFocus(object sender, RoutedEventArgs e)
@@ -760,6 +783,14 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             StatusBarMessage.Visibility = Visibility.Hidden;
 
+        }
+
+
+        private void RunBtn_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Debug.WriteLine("RunBtn_PreviewMouseLeftButtonDown");
+            StatusBarMessage.Text = "Sync with database in progress...";
+            StatusBarMessage.Visibility = Visibility.Visible;
         }
     }
     public static class Refresh

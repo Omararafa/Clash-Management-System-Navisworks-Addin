@@ -244,8 +244,8 @@
                 Background="Gainsboro"
                 Foreground="DimGray"
                 FontFamily="Century Gothic, Courier New" 
-                Click="Run_Click" MouseEnter="RunBtn_MouseEnter" MouseLeave="RunBtn_MouseLeave"
-                />
+                Click="Run_Click"
+                PreviewMouseLeftButtonDown="RunBtn_PreviewMouseLeftButtonDown" />
 
         <StatusBar 
             HorizontalAlignment="Center" 
