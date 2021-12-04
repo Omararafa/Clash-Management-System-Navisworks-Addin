@@ -168,12 +168,13 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             try
             {
-                string userDomain = user.Domain;
-                string userName = user.Name;
+                string employeeId = user.EmployeeId;
+                string roleId = user.RoleId.ToString();
+                string userProjectCode = user.ProjectCode.ToString();
 
                 userProjects = new List<Project>();
 
-                var serviceResponse = service.GetProjects(userDomain, userName);
+                var serviceResponse = service.GetProjects(employeeId);
 
                 switch (serviceResponse.State)
                 {
