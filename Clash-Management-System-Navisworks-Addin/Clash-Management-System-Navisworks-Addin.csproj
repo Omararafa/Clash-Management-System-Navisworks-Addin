@@ -152,6 +152,32 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Views\HelpDeskIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\HelpFileIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\HelpIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\darLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
+    <None Include="Resources\C__Users_Bary_source_repos_Clash-Management-System-Navisworks-Addin_Clash-Management-System-Navisworks-Addin_Views.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DBModels\" />
+    <Folder Include="Doc\" />
+    <Folder Include="Logging\" />
+    <Folder Include="Resouces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\16x16.png" />
+    <Resource Include="Views\32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\WebService\" />
   </ItemGroup>
   <ItemGroup>
@@ -168,31 +194,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\HelpDeskIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\HelpFileIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\HelpIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\darLogo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\C__Users_Bary_source_repos_Clash-Management-System-Navisworks-Addin_Clash-Management-System-Navisworks-Addin_Views.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DBModels\" />
-    <Folder Include="Doc\" />
-    <Folder Include="Logging\" />
-    <Folder Include="Resouces\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Views\16x16.png" />
-    <Resource Include="Views\32x32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

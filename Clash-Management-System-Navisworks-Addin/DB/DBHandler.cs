@@ -165,7 +165,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         }
 
 
-        static bool OldGetProjects(User user, ref List<Project> userProjects)
+        /*static bool OldGetProjects(User user, ref List<Project> userProjects)
         {
             try
             {
@@ -231,7 +231,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 return false;
             }
-        }
+        }*/
 
         static bool GetProjects(User user, ref List<Project> userProjects)
         {
@@ -244,7 +244,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
 
                 userProjects = new List<Project>();
 
-                var serviceResponse = service.GetProjects(userProjectCode, employeeId, roleId);
+                var serviceResponse = service.GetProjects( user.Domain,user.EmployeeId);
 
                 switch (serviceResponse.State)
                 {

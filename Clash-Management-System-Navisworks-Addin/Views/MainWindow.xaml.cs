@@ -253,11 +253,6 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         }
         private bool LoginProcedure()
         {
-            //TODO: Meeting 
-            string employeeId = System.DirectoryServices.AccountManagement.UserPrincipal.Current.EmployeeId;
-
-            string userName = Environment.UserName;
-            string userDomain = Environment.UserDomainName;
 
             //TODO deploy: remove two lines below for dynamic login access
             /*
@@ -291,6 +286,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 }
             }
             */
+            //TODO: Meeting 
+            string employeeId = System.DirectoryServices.AccountManagement.UserPrincipal.Current.EmployeeId;
+
+            string userName = Environment.UserName;
+            string userDomain = Environment.UserDomainName;
 
             if ( employeeId!=null||employeeId!=string.Empty)
             {
