@@ -364,8 +364,9 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                                 LastRunDate = dbClashTest.LastRunDate,
                                 AddedBy = dbClashTest.AddedBy,
                                 ProjectCode = dbClashTest.ProjectCode,
+                                Priority = dbClashTest.Priority.Name + " - " + dbClashTest.Priority.Description,
                                 SearchSet1 = nwASearchSets.Where(searchSet => searchSet.Name == ModifyDBSearchSetName(dbClashTest.SearchSet1)).FirstOrDefault(),
-                                SearchSet2 = nwASearchSets.Where(searchSet => searchSet.Name == ModifyDBSearchSetName(dbClashTest.SearchSet2)).FirstOrDefault()
+                                SearchSet2 = nwASearchSets.Where(searchSet => searchSet.Name == ModifyDBSearchSetName(dbClashTest.SearchSet2)).FirstOrDefault(),
                             };
 
                             if (clashTest.SearchSet1 == null || clashTest.SearchSet2 == null)

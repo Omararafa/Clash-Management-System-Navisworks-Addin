@@ -111,7 +111,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             {
                 data.Add(aClashTest.Name + "," + aClashTest.Condition.ToString() + "," +
                          aClashTest.SearchSet1.Name + "," + aClashTest.SearchSet2.Name + "," +
-                         aClashTest.ClashTest.TestType.ToString() + "," + (aClashTest.Tolerance * 3.28084).ToString());
+                         aClashTest.TypeName + "," + aClashTest.Tolerance + "," + aClashTest.Priority);
             }
 
             return data;
@@ -131,7 +131,8 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
                 string searchSet2Name = ClashTest.SearchSet2.TradeAbbr + "-" + ClashTest.SearchSet2.Name;
 
                 data.Add(ClashTest.Name + "," + "NOT CREATED" + "," +
-                         searchSet1Name + "," + searchSet2Name);
+                         searchSet1Name + "," + searchSet2Name + "," + ClashTest.TypeName + "," +
+                         ClashTest.Tolerance + "," + ClashTest.Priority.Name + " - " + ClashTest.Priority.Description);
             }
 
             return data;
@@ -145,7 +146,7 @@ namespace Clash_Management_System_Navisworks_Addin.Reporting
             metaData.Add(string.Format("Username:,{0}", Views.ViewsHandler.CurrentUser.Name));
             metaData.Add(string.Format("Project:,{0}", Views.ViewsHandler.CurrentProject.Name));
             metaData.Add(string.Format("Clash Matrix:,{0}", Views.ViewsHandler.CurrentAClashMatrix.Name));
-            metaData.Add(string.Format("Time:,{0}", DateTime.Now.ToString("hh:mm:ss tt}")));
+            metaData.Add(string.Format("Time:,{0}", DateTime.Now.ToString("hh:mm:ss tt")));
             metaData.Add(string.Format("Date:,{0}", DateTime.Now.ToString("yyyy-M-dd")));
 
             metaData.Add(string.Empty);

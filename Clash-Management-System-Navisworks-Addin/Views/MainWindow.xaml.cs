@@ -122,10 +122,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         break;
                     case "Project.Name":
                         colName = "Project";
-                        break;
+                        continue;
                     case "ClashMatrix.Name":
                         colName = "Clash Matrix";
-                        break;
+                        continue;
                     default:
                         break;
                 }
@@ -142,7 +142,9 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         {
             if (data == null)
             {
-                return false;
+                datagrid.Columns.Clear();
+                datagrid.ItemsSource = new List<AClashTest>();
+                return true;
             }
 
             var checkBoxColumn = datagrid.Columns.First();
@@ -421,23 +423,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                     {
                         IsRunClicked = false;
 
-                        if (!NW.NWHandler.IsClashTestsCalled)
-                        {
-                            System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized or not found.");
-                            return false;
-                        }
-                        if (true)
-                        {
-
-                        }
                         List<AClashTest> comparedAClashTests = DBNWHandler.DBNWComparison.CompareNWDBAClashTests();
+
                         if (comparedAClashTests == null || comparedAClashTests.Count < 1)
                         {
-                            return false;
-                        }
-                        if (!NW.NWHandler.IsClashTestsCalled)
-                        {
-                            System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized.");
+                            System.Windows.Forms.MessageBox.Show("Clash Tests were not Synchronized or not found!");
                             return false;
                         }
 
@@ -676,7 +666,15 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             StatusBarMessage.Visibility = Visibility.Hidden;
 
-            UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
+            if (FunctionClashTestsRBtn.IsChecked == false)
+            {
+                UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
+            }
+            else
+            {
+                FunctionFeedbackTxt.Visibility = Visibility.Hidden;
+            }
+
             RunBtn.Focus();
         }
 

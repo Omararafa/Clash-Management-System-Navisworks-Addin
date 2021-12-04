@@ -22,6 +22,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
         public DateTime? LastRunDate { get; set; }
         public string AddedBy { get; set; }
         public string ProjectCode { get; set; }
+        public string Priority { get; set; }
         public ASearchSet SearchSet1 { get; set; }
         public ASearchSet SearchSet2 { get; set; }
         public ClashTest ClashTest { get; set; }
@@ -85,6 +86,7 @@ namespace Clash_Management_System_Navisworks_Addin.ViewModels
             this.SearchSet1 = searchSet1;
             this.SearchSet2 = searchSet2;
             this.IsFromNavis = isFromNavis;
+            this.TypeName = clashTest.TestType.ToString();
         }
 
 

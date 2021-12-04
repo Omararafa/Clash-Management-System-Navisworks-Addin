@@ -108,21 +108,22 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
             // 5. Create combined list = dbLst + nwLst
             try
             {
-
-
                 List<ASearchSet> nwASearchSet = NWHandler.NWASearchSets;
                 List<AClashTest> nwClashTests = NWHandler.NWAClashTests;
                 List<AClashTest> dbAClashTests = DBHandler.DBAClashTests;
                 List<AClashTest> combinedAClashTests = new List<AClashTest>();
 
+                // if no clash tests on the document create new clash tests from the database.
                 if (nwClashTests == null || nwClashTests.Count == 0)
                 {
-                    foreach (var aClashTest in dbAClashTests)
+                    foreach (var dbAClashTest in dbAClashTests)
                     {
-                        aClashTest.Condition = EntityComparisonResult.New;
-                        combinedAClashTests.Add(aClashTest);
-                        return combinedAClashTests;
+                        dbAClashTest.Condition = EntityComparisonResult.New;
+                        NWHandler.CreateNewClashTest(dbAClashTest);
+                        combinedAClashTests.Add(dbAClashTest);
                     }
+
+                    return combinedAClashTests;
                 }
 
                 Dictionary<string, AClashTest> nwAClashTestsDic = nwClashTests.ToDictionary(x => x.Name);
@@ -151,10 +152,8 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
                     {
                         try
                         {
-
                             NWHandler.CreateNewClashTest(dbAClashTest);
                             dbAClashTest.Condition = EntityComparisonResult.New;
-
                         }
                         catch (Exception e)
                         {
@@ -169,9 +168,9 @@ namespace Clash_Management_System_Navisworks_Addin.DBNWHandler
                 {
                     try
                     {
-
                         NWHandler.RemoveClashTest(nwAClashTestsDic[clashTestName]);
                         nwAClashTestsDic[clashTestName].Condition = EntityComparisonResult.Deleted;
+                        nwAClashTestsDic[clashTestName].Tolerance = Math.Round(nwAClashTestsDic[clashTestName].Tolerance / 3.28084, 3); // to convert to the internal unit (ft).
                     }
                     catch (Exception e)
                     {
