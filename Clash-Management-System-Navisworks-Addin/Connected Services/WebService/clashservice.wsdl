@@ -3,32 +3,6 @@
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="Dar">
       <s:import namespace="http://microsoft.com/wsdl/types/" />
-      <s:element name="DEBUG_CheckDatabaseConnection">
-        <s:complexType />
-      </s:element>
-      <s:element name="DEBUG_CheckDatabaseConnectionResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="DEBUG_CheckDatabaseConnectionResult" type="s:boolean" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="DEBUG_ThrowExceptionToFile">
-        <s:complexType />
-      </s:element>
-      <s:element name="DEBUG_ThrowExceptionToFileResponse">
-        <s:complexType />
-      </s:element>
-      <s:element name="DEBUG_FixSearchSetsLogTable">
-        <s:complexType />
-      </s:element>
-      <s:element name="DEBUG_FixSearchSetsLogTableResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="DEBUG_FixSearchSetsLogTableResult" type="s:boolean" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
       <s:element name="IsServiceAwake">
         <s:complexType />
       </s:element>
@@ -42,7 +16,6 @@
       <s:element name="GetProjects">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="domain" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="user" type="s:string" />
           </s:sequence>
         </s:complexType>
@@ -294,24 +267,6 @@
       </s:simpleType>
     </s:schema>
   </wsdl:types>
-  <wsdl:message name="DEBUG_CheckDatabaseConnectionSoapIn">
-    <wsdl:part name="parameters" element="tns:DEBUG_CheckDatabaseConnection" />
-  </wsdl:message>
-  <wsdl:message name="DEBUG_CheckDatabaseConnectionSoapOut">
-    <wsdl:part name="parameters" element="tns:DEBUG_CheckDatabaseConnectionResponse" />
-  </wsdl:message>
-  <wsdl:message name="DEBUG_ThrowExceptionToFileSoapIn">
-    <wsdl:part name="parameters" element="tns:DEBUG_ThrowExceptionToFile" />
-  </wsdl:message>
-  <wsdl:message name="DEBUG_ThrowExceptionToFileSoapOut">
-    <wsdl:part name="parameters" element="tns:DEBUG_ThrowExceptionToFileResponse" />
-  </wsdl:message>
-  <wsdl:message name="DEBUG_FixSearchSetsLogTableSoapIn">
-    <wsdl:part name="parameters" element="tns:DEBUG_FixSearchSetsLogTable" />
-  </wsdl:message>
-  <wsdl:message name="DEBUG_FixSearchSetsLogTableSoapOut">
-    <wsdl:part name="parameters" element="tns:DEBUG_FixSearchSetsLogTableResponse" />
-  </wsdl:message>
   <wsdl:message name="IsServiceAwakeSoapIn">
     <wsdl:part name="parameters" element="tns:IsServiceAwake" />
   </wsdl:message>
@@ -343,19 +298,8 @@
     <wsdl:part name="parameters" element="tns:SyncClashResultsResponse" />
   </wsdl:message>
   <wsdl:portType name="ClashServiceSoap">
-    <wsdl:operation name="DEBUG_CheckDatabaseConnection">
-      <wsdl:input message="tns:DEBUG_CheckDatabaseConnectionSoapIn" />
-      <wsdl:output message="tns:DEBUG_CheckDatabaseConnectionSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="DEBUG_ThrowExceptionToFile">
-      <wsdl:input message="tns:DEBUG_ThrowExceptionToFileSoapIn" />
-      <wsdl:output message="tns:DEBUG_ThrowExceptionToFileSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="DEBUG_FixSearchSetsLogTable">
-      <wsdl:input message="tns:DEBUG_FixSearchSetsLogTableSoapIn" />
-      <wsdl:output message="tns:DEBUG_FixSearchSetsLogTableSoapOut" />
-    </wsdl:operation>
     <wsdl:operation name="IsServiceAwake">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Check if service is running or not.</wsdl:documentation>
       <wsdl:input message="tns:IsServiceAwakeSoapIn" />
       <wsdl:output message="tns:IsServiceAwakeSoapOut" />
     </wsdl:operation>
@@ -382,33 +326,6 @@
   </wsdl:portType>
   <wsdl:binding name="ClashServiceSoap" type="tns:ClashServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="DEBUG_CheckDatabaseConnection">
-      <soap:operation soapAction="Dar/DEBUG_CheckDatabaseConnection" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="DEBUG_ThrowExceptionToFile">
-      <soap:operation soapAction="Dar/DEBUG_ThrowExceptionToFile" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="DEBUG_FixSearchSetsLogTable">
-      <soap:operation soapAction="Dar/DEBUG_FixSearchSetsLogTable" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="IsServiceAwake">
       <soap:operation soapAction="Dar/IsServiceAwake" style="document" />
       <wsdl:input>
@@ -457,33 +374,6 @@
   </wsdl:binding>
   <wsdl:binding name="ClashServiceSoap12" type="tns:ClashServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="DEBUG_CheckDatabaseConnection">
-      <soap12:operation soapAction="Dar/DEBUG_CheckDatabaseConnection" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="DEBUG_ThrowExceptionToFile">
-      <soap12:operation soapAction="Dar/DEBUG_ThrowExceptionToFile" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="DEBUG_FixSearchSetsLogTable">
-      <soap12:operation soapAction="Dar/DEBUG_FixSearchSetsLogTable" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="IsServiceAwake">
       <soap12:operation soapAction="Dar/IsServiceAwake" style="document" />
       <wsdl:input>
@@ -532,10 +422,10 @@
   </wsdl:binding>
   <wsdl:service name="ClashService">
     <wsdl:port name="ClashServiceSoap" binding="tns:ClashServiceSoap">
-      <soap:address location="http://localhost:9090/ClashService.asmx" />
+      <soap:address location="https://localhost:44386/ClashService.asmx" />
     </wsdl:port>
     <wsdl:port name="ClashServiceSoap12" binding="tns:ClashServiceSoap12">
-      <soap12:address location="http://localhost:9090/ClashService.asmx" />
+      <soap12:address location="https://localhost:44386/ClashService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

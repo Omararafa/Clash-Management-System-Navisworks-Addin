@@ -34,7 +34,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
             }
         }
 
-        static bool IsTradeAbbChecked=true;
+        static bool IsTradeAbbChecked = true;
 
         private static List<ASearchSet> _dbASearchSets;
         public static List<ASearchSet> DBASearchSets
@@ -171,12 +171,21 @@ namespace Clash_Management_System_Navisworks_Addin.DB
         {
             try
             {
+                /*
                 string userDomain = user.Domain;
                 string userName = user.Name;
 
                 userProjects = new List<Project>();
 
                 var serviceResponse = service.GetProjects(userDomain, userName);
+                */
+                string employeeId = user.EmployeeId;
+                string roleId = user.RoleId.ToString();
+                string userProjectCode = user.ProjectCode.ToString();
+
+                userProjects = new List<Project>();
+
+                var serviceResponse = service.GetProjects(employeeId);
 
                 switch (serviceResponse.State)
                 {
@@ -250,7 +259,7 @@ namespace Clash_Management_System_Navisworks_Addin.DB
                 string[] searchSetsNames = searchSetsFromNW.Select(x => x.Name).ToArray();
 
                 Dictionary<string, string[]> groupedSearchSetNames = GroupSearchSetsByTradeAbb(searchSetsNames);
-                if (groupedSearchSetNames==null)
+                if (groupedSearchSetNames == null)
                 {
                     return false;
                 }

@@ -15,27 +15,6 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
     [System.ServiceModel.ServiceContractAttribute(Namespace="Dar", ConfigurationName="WebService.ClashServiceSoap")]
     public interface ClashServiceSoap {
         
-        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_CheckDatabaseConnection", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        bool DEBUG_CheckDatabaseConnection();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_CheckDatabaseConnection", ReplyAction="*")]
-        System.Threading.Tasks.Task<bool> DEBUG_CheckDatabaseConnectionAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_ThrowExceptionToFile", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        void DEBUG_ThrowExceptionToFile();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_ThrowExceptionToFile", ReplyAction="*")]
-        System.Threading.Tasks.Task DEBUG_ThrowExceptionToFileAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_FixSearchSetsLogTable", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        bool DEBUG_FixSearchSetsLogTable();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="Dar/DEBUG_FixSearchSetsLogTable", ReplyAction="*")]
-        System.Threading.Tasks.Task<bool> DEBUG_FixSearchSetsLogTableAsync();
-        
         [System.ServiceModel.OperationContractAttribute(Action="Dar/IsServiceAwake", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         bool IsServiceAwake();
@@ -45,10 +24,10 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/GetProjects", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string domain, string user);
+        Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string user);
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/GetProjects", ReplyAction="*")]
-        System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> GetProjectsAsync(string domain, string user);
+        System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> GetProjectsAsync(string user);
         
         [System.ServiceModel.OperationContractAttribute(Action="Dar/SyncSearchSets", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -1215,30 +1194,6 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
                 base(binding, remoteAddress) {
         }
         
-        public bool DEBUG_CheckDatabaseConnection() {
-            return base.Channel.DEBUG_CheckDatabaseConnection();
-        }
-        
-        public System.Threading.Tasks.Task<bool> DEBUG_CheckDatabaseConnectionAsync() {
-            return base.Channel.DEBUG_CheckDatabaseConnectionAsync();
-        }
-        
-        public void DEBUG_ThrowExceptionToFile() {
-            base.Channel.DEBUG_ThrowExceptionToFile();
-        }
-        
-        public System.Threading.Tasks.Task DEBUG_ThrowExceptionToFileAsync() {
-            return base.Channel.DEBUG_ThrowExceptionToFileAsync();
-        }
-        
-        public bool DEBUG_FixSearchSetsLogTable() {
-            return base.Channel.DEBUG_FixSearchSetsLogTable();
-        }
-        
-        public System.Threading.Tasks.Task<bool> DEBUG_FixSearchSetsLogTableAsync() {
-            return base.Channel.DEBUG_FixSearchSetsLogTableAsync();
-        }
-        
         public bool IsServiceAwake() {
             return base.Channel.IsServiceAwake();
         }
@@ -1247,12 +1202,12 @@ namespace Clash_Management_System_Navisworks_Addin.WebService {
             return base.Channel.IsServiceAwakeAsync();
         }
         
-        public Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string domain, string user) {
-            return base.Channel.GetProjects(domain, user);
+        public Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse GetProjects(string user) {
+            return base.Channel.GetProjects(user);
         }
         
-        public System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> GetProjectsAsync(string domain, string user) {
-            return base.Channel.GetProjectsAsync(domain, user);
+        public System.Threading.Tasks.Task<Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse> GetProjectsAsync(string user) {
+            return base.Channel.GetProjectsAsync(user);
         }
         
         public Clash_Management_System_Navisworks_Addin.WebService.ServiceResponse SyncSearchSets(string userTradeAbbr, int clashMatrixId, string[] definedSearchSets) {
