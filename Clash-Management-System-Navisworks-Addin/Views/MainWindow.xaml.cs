@@ -243,6 +243,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         }
         private void UpdateFeedbackTextBlock(TextBlock feedbackTextBlock, bool isSuccess)
         {
+            /*
             feedbackTextBlock.Visibility = Visibility.Visible;
             if (isSuccess)
             {
@@ -256,6 +257,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             feedbackTextBlock.Background = Brushes.Red;
 
             return;
+            */
         }
         private bool LoginProcedure()
         {
@@ -691,11 +693,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             if (FunctionClashTestsRBtn.IsChecked == false)
             {
-                UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
+               // UpdateFeedbackTextBlock(FunctionFeedbackTxt, selectFunctionStatus);
             }
             else
             {
-                FunctionFeedbackTxt.Visibility = Visibility.Hidden;
+                //FunctionFeedbackTxt.Visibility = Visibility.Hidden;
             }
 
             RunBtn.Focus();

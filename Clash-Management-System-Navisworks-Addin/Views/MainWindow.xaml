@@ -165,12 +165,14 @@
                                  Content="Sync Clash Results"
                                  Margin="5,5,5,5" 
                                  Checked="SelectedFunctionChanged" GotFocus="FunctionClashTestsRBtn_GotFocus"/>
+                    <!--
                     <TextBlock  Name="FunctionFeedbackTxt"
                                 Foreground="WhiteSmoke"
                                 Text="Function Status"
                                 Visibility="Hidden"
                                 Margin="5,5,5,5"
                                 HorizontalAlignment="Center"/>
+                    -->
                 </StackPanel>
             </Expander>
         </StackPanel>
