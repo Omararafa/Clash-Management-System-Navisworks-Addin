@@ -217,6 +217,7 @@
                     <DataGridTemplateColumn.Header>
                             <CheckBox Name="SelectAllChkBox"
                                       HorizontalAlignment="Center"
+                                      IsChecked="True"
                                       Checked="SelectAllBtn_Click" 
                                       Unchecked="DeselectAllBtn_Click"></CheckBox>
                     </DataGridTemplateColumn.Header>

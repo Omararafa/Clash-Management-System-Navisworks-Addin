@@ -198,7 +198,11 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                 col.Binding = new Binding(colProperty);
                 datagrid.Columns.Add(col);
             }
-
+            var uncheckedCount = data.Where(x => !x.IsSelected).Count();
+            if (uncheckedCount > 0)
+            {
+                SelectAllChkBox.IsChecked = false;
+            }
             return true;
 
         }
@@ -402,6 +406,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
 
             if (FunctionSearchSetsRBtn.IsChecked == true)
             {
+                PresenterDataGrid.Visibility = Visibility.Visible;
                 try
                 {
                     List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
@@ -451,6 +456,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             if (FunctionClashTestsRBtn.IsChecked == true)
             {
+                PresenterDataGrid.Visibility = Visibility.Hidden;
                 try
                 {
                     List<ASearchSet> nwSearchSets = NW.NWHandler.NWASearchSets;
@@ -536,6 +542,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
             }
             if (FunctionClashResultsRBtn.IsChecked == true)
             {
+                PresenterDataGrid.Visibility = Visibility.Visible;
                 try
                 {
                     /*
@@ -555,6 +562,7 @@ namespace Clash_Management_System_Navisworks_Addin.Views
                         }
                         //Make all clash tests selected by default
                         nwClashTests.ForEach(x => x.IsSelected = true);
+                        SelectAllChkBox.IsChecked = true;
                     }
 
                     if (IsRunClicked)
@@ -766,6 +774,10 @@ namespace Clash_Management_System_Navisworks_Addin.Views
         private void SelectAllBtn_Click(object sender, RoutedEventArgs e)
         {
             var items = PresenterDataGrid.ItemsSource;
+            if (items == null)
+            {
+                return;
+            }
             foreach (var item in items)
             {
                 AClashTest test = item as AClashTest;
